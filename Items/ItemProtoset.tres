@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gloot/item_protoset.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+json_data = "[
+	{
+		\"id\": \"Corn\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"image\": \"res://World/Bush.png\"
+	},
+	{
+		\"id\": \"Wheat\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"image\": \"res://World/Tree.png\"
+	},
+]"

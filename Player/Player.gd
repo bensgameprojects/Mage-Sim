@@ -1,9 +1,7 @@
 extends KinematicBody2D
 
 # Member variable declaration
-export var ACCELERATION = 20
-export var FRICTION = 160
-export var MAX_SPEED = 80
+
 export var ROLL_SPEED = 120
 const ONE = 1
 
@@ -18,15 +16,19 @@ var state = MOVE
 var velocity = Vector2.ZERO
 var input_vector = Vector2.ZERO
 var direction_vector = Vector2.DOWN # was roll_vector
+# get the global auto-load singleton for player stats (see project settings auto-load)
+var stats = PlayerStats
 
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
+onready var hurtbox = $Hurtbox
 # Called when the node enters the scene tree for the first time. (init)
 func _ready():
 	# activate the animation tree.
+	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	swordHitbox.knockback_vector = direction_vector
 
@@ -96,14 +98,14 @@ func move_state(_delta):
 		# change state
 		animationState.travel("Run")
 		#speeding up/hitting max speed.
-		velocity = velocity.move_toward(input_vector.normalized() * MAX_SPEED, ACCELERATION)
+		velocity = velocity.move_toward(input_vector.normalized() * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
 		# outdated method
 		#velocity += input_vector * ACCELERATION * delta
 		#velocity = velocity.clamped(MAX_SPEED * delta)
 	else:
 		animationState.travel("Idle")
 		# slowing down with friction
-		velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+		velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
 
 func roll_state(_delta):
 	if direction_vector != Vector2.ZERO:
@@ -130,9 +132,19 @@ func spinny_attack_state(_delta):
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():
-	velocity.limit_length(MAX_SPEED)
+	velocity.limit_length(stats.MOVE_MAX_SPEED)
 	state = MOVE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Hurtbox_area_entered(area):
+	#makes sure that you aren't invincible before assigning damage
+	if hurtbox.invincible == false:
+		stats.health -= 1
+		# half second invincibility when hit
+		hurtbox.start_invincibility(stats.INVINCIBILITY_TIME)
+		hurtbox.create_hit_effect()
+	
