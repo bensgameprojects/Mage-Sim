@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -27,6 +28,10 @@ func _on_Hurtbox_area_entered(area):
 #	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
 
 
-
+#called when health <= 0
 func _on_Stats_no_health():
 	queue_free()
+	#instance the death effect
+	var enemyDeathEffect = EnemyDeathEffect.instance()
+	get_parent().add_child(enemyDeathEffect)
+	enemyDeathEffect.global_position = global_position
