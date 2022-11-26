@@ -84,8 +84,8 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity)
 
 func move_state(_delta):
-	# capture knockback_vector from input vector
-	swordHitbox.knockback_vector = input_vector
+	# capture knockback_vector from direction vector
+	swordHitbox.knockback_vector = direction_vector
 	# apply acceleration/decceleration, multiply by delta which is the tick rate (1/60 usually)
 	if input_vector != Vector2.ZERO:
 		#only update the blend position while moving so it will stop and face the right direction
