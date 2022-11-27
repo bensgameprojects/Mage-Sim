@@ -16,6 +16,7 @@ var state = MOVE
 var velocity = Vector2.ZERO
 var input_vector = Vector2.ZERO
 var direction_vector = Vector2.DOWN # was roll_vector
+var is_sprint = false
 # get the global auto-load singleton for player stats (see project settings auto-load)
 var stats = PlayerStats
 
@@ -33,33 +34,37 @@ func _ready():
 	swordHitbox.knockback_vector = direction_vector
 
 func _unhandled_input(event):
+	if event.is_action_pressed("sprint"):
+		is_sprint = true
+	elif event.is_action_released("sprint"):
+		is_sprint = false
 	#catching movement input and updating the roll vector (only normalized when needed)
-	if event.is_action_pressed("ui_right"):
-		input_vector.x += ONE
-	elif event.is_action_pressed("ui_left"):
-		input_vector.x -= ONE
-	elif event.is_action_pressed("ui_down"):
-		input_vector.y += ONE
-	elif event.is_action_pressed("ui_up"):
-		input_vector.y -= ONE
-	elif event.is_action_released("ui_left"):
-		# snapshot input vector for direction
-		direction_vector = input_vector
-		input_vector.x += ONE
-	elif event.is_action_released("ui_right"):
-		# snapshot input vector for direction
-		direction_vector = input_vector
-		input_vector.x -= ONE
-	elif event.is_action_released("ui_up"):
-		direction_vector = input_vector
-		input_vector.y += ONE
-	elif event.is_action_released("ui_down"):
-		direction_vector = input_vector
-		input_vector.y -= ONE
-	# check if you're still moving after release event
-	# to determine if snapshot is still needed.
-	if input_vector != Vector2.ZERO:
-		direction_vector = input_vector
+#	if event.is_action_pressed("ui_right"):
+#		input_vector.x += 1
+#	elif event.is_action_pressed("ui_left"):
+#		input_vector.x -= 1
+#	elif event.is_action_pressed("ui_down"):
+#		input_vector.y += 1
+#	elif event.is_action_pressed("ui_up"):
+#		input_vector.y -= 1
+#	elif event.is_action_released("ui_left"):
+#		# snapshot input vector for direction
+#		direction_vector = input_vector
+#		input_vector.x += ONE
+#	elif event.is_action_released("ui_right"):
+#		# snapshot input vector for direction
+#		direction_vector = input_vector
+#		input_vector.x -= ONE
+#	elif event.is_action_released("ui_up"):
+#		direction_vector = input_vector
+#		input_vector.y += ONE
+#	elif event.is_action_released("ui_down"):
+#		direction_vector = input_vector
+#		input_vector.y -= ONE
+#	# check if you're still moving after release event
+#	# to determine if snapshot is still needed.
+#	if input_vector != Vector2.ZERO:
+#		direction_vector = input_vector
 	if event.is_action_pressed("roll"):
 		state = ROLL
 	if event.is_action_pressed("attack"):
@@ -69,6 +74,12 @@ func _unhandled_input(event):
 
 # Called whenever physics tick happens, delta unlocks movement from framerate
 func _physics_process(delta):
+	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_raw_strength("ui_up")
+	input_vector = input_vector.normalized()
+	
+	if input_vector != Vector2.ZERO:
+		direction_vector = input_vector
 	# forces only 1 state to be running at a time
 	match state:
 		MOVE:
@@ -98,7 +109,10 @@ func move_state(_delta):
 		# change state
 		animationState.travel("Run")
 		#speeding up/hitting max speed.
-		velocity = velocity.move_toward(input_vector.normalized() * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
+		if is_sprint:
+			velocity = velocity.move_toward(input_vector * stats.SPRINT_MAX_SPEED, stats.SPRINT_ACCELERATION)
+		else:
+			velocity = velocity.move_toward(input_vector * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
 		# outdated method
 		#velocity += input_vector * ACCELERATION * delta
 		#velocity = velocity.clamped(MAX_SPEED * delta)
@@ -109,6 +123,7 @@ func move_state(_delta):
 
 func roll_state(_delta):
 	if direction_vector != Vector2.ZERO:
+		hurtbox.start_invincibility(stats.ROLL_INVINCIBILITY_TIME)
 		velocity = direction_vector.normalized() * ROLL_SPEED
 		animationState.travel("Roll")
 	else:
@@ -132,7 +147,10 @@ func spinny_attack_state(_delta):
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():
-	velocity.limit_length(stats.MOVE_MAX_SPEED)
+	if is_sprint:
+		velocity.limit_length(stats.SPRINT_MAX_SPEED)
+	else:
+		velocity.limit_length(stats.MOVE_MAX_SPEED)
 	state = MOVE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -140,11 +158,11 @@ func roll_animation_finished():
 #	pass
 
 
-func _on_Hurtbox_area_entered(area):
+func _on_Hurtbox_area_entered(_area):
 	#makes sure that you aren't invincible before assigning damage
 	if hurtbox.invincible == false:
 		stats.health -= 1
 		# half second invincibility when hit
-		hurtbox.start_invincibility(stats.INVINCIBILITY_TIME)
+		hurtbox.start_invincibility(stats.HIT_INVINCIBILITY_TIME)
 		hurtbox.create_hit_effect()
 	

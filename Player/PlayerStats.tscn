@@ -5,4 +5,4 @@
 [node name="PlayerStats" instance=ExtResource( 1 )]
 KNOCKBACK_FRICTION = 0
 KNOCKBACK_SPEED = 0
-max_health = 4
+max_health = 6

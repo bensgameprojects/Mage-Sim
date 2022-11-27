@@ -1,0 +1,4 @@
+[gd_resource type="Theme" format=2]
+
+[resource]
+MarginContainer/colors/backgroundcolor = Color( 0.266667, 0.47451, 0.768627, 1 )
