@@ -43,6 +43,7 @@ func _physics_process(_delta):
 	sprite.flip_h = velocity.x < 0
 	velocity = move_and_slide(velocity)
 
+# restarts wander timer and state picking on wander timeout
 func set_state_on_wander_timeout():
 	# wander timer is up!
 	if wanderController.get_time_left() == 0:
@@ -56,27 +57,24 @@ func set_state_and_wander_timer():
 
 func idle_state(_delta):
 	velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
-	seek_player()
 	set_state_on_wander_timeout()
+	seek_player()
 	
 func wander_state(_delta):
-	seek_player()
 	set_state_on_wander_timeout()
-	var direction = global_position.direction_to(wanderController.target_position)
-	velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
+	accelerate_to_point(wanderController.target_position)
 	# if it wanders close enough to target_position
 	if global_position.distance_to(wanderController.target_position) <= wanderController.TARGET_POS_TOLERANCE:
 		set_state_and_wander_timer()
+	seek_player()
 	
 func chase_state(_delta):
 	var player = playerDetectionZone.player
 	if player != null:
-		var direction = global_position.direction_to(player.global_position)
-		# outdated method, equivalent just not as good
-#		var direction = (player.global_position - global_position).normalized()
-		velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
+		accelerate_to_point(player.global_position)
 	else:
-		state = IDLE
+		set_state_and_wander_timer()
+		state = WANDER
 
 func seek_player():
 	if playerDetectionZone.can_see_player():
@@ -84,6 +82,12 @@ func seek_player():
 
 func pick_random_state(state_list):
 	return state_list[statePickerRNG.randi_range(0, state_list.size()-1)]
+
+func accelerate_to_point(position):
+	var direction = global_position.direction_to(position)
+	# outdated method, equivalent just not as good
+#	var direction = (player.global_position - global_position).normalized()
+	velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
 
 func _on_Hurtbox_area_entered(area):
 	stats.health -= area.damage
