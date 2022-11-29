@@ -1,5 +1,10 @@
 extends Control
 
+onready var playerInventoryGrid = $PlayerInventoryGrid
+onready var worldInventoryGrid = $WorldInventoryGrid
+
+signal item_dropped_to_floor(item)
+signal item_created_in_world_inv(spawn_area,item)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,3 +22,39 @@ func _input(event):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+# item is dropped and the drop_position is outside the UI bounds
+#item is type InventoryItem, drop_position is a Vector2 position vector
+func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
+	if(drop_position.x < self.rect_position.x || drop_position.x > self.rect_position.x + self.rect_size.x || drop_position.y < self.rect_position.y || drop_position.y > self.rect_position.y + self.rect_size.y):
+#		var item_properties = [item.protoset, item.prototype_id, item.properties]
+		#transfer the item to the world inventory
+		var succeeded = playerInventoryGrid.transfer_to(item, worldInventoryGrid, worldInventoryGrid.find_free_place(item))
+#		var succeeded = playerInventoryGrid.transfer(item, worldInventoryGrid)
+#		print("transfer compelte welcum to balnumng" + str(succeeded))
+		# if you fail to move item from player to world, leave item in player inv
+		if(succeeded):
+			emit_signal("item_dropped_to_floor", item)
+
+
+func _on_SpawnHandler_transfer_item_to_player_inv(itemToTransfer):
+	# attempts to move the item to the player inventory
+	var free_spot = playerInventoryGrid.find_free_place(itemToTransfer)
+	# returns -1 -1 if no free place can be found
+	if free_spot == Vector2(-1,-1):
+		emit_signal("item_dropped_to_floor", itemToTransfer)
+	else:
+		if not itemToTransfer.get_inventory().transfer_to(itemToTransfer, playerInventoryGrid, free_spot):
+			# didnt work so put it back on the ground
+			print("error: was not able to add to inventory! Item:" + str(itemToTransfer))
+			emit_signal("item_dropped_to_floor", itemToTransfer)
+
+
+func _on_SpawnHandler_create_and_add_item_to_world_inv(spawn_area, itemID, stackSize):
+	var item = worldInventoryGrid.create_and_add_item_at_next_free_position(itemID)
+	if item:
+		item.set_property("stack_size", stackSize)
+		emit_signal("item_created_in_world_inv", spawn_area,item)
+	else:
+		printerr("item could not be created!")
+	

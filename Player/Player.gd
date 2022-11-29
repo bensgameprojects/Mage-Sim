@@ -20,12 +20,18 @@ var is_sprint = false
 # get the global auto-load singleton for player stats (see project settings auto-load)
 var stats = PlayerStats
 
+var pickuppableItemArray = Array()
+var pickupHead = 0
+
+signal pickup_item_inv_transfer(itemToTransfer)
+
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
+onready var selectedItemOnGround = $SelectedItemOnGround
 # Called when the node enters the scene tree for the first time. (init)
 func _ready():
 	# activate the animation tree.
@@ -38,39 +44,18 @@ func _unhandled_input(event):
 		is_sprint = true
 	elif event.is_action_released("sprint"):
 		is_sprint = false
-	#catching movement input and updating the roll vector (only normalized when needed)
-#	if event.is_action_pressed("ui_right"):
-#		input_vector.x += 1
-#	elif event.is_action_pressed("ui_left"):
-#		input_vector.x -= 1
-#	elif event.is_action_pressed("ui_down"):
-#		input_vector.y += 1
-#	elif event.is_action_pressed("ui_up"):
-#		input_vector.y -= 1
-#	elif event.is_action_released("ui_left"):
-#		# snapshot input vector for direction
-#		direction_vector = input_vector
-#		input_vector.x += ONE
-#	elif event.is_action_released("ui_right"):
-#		# snapshot input vector for direction
-#		direction_vector = input_vector
-#		input_vector.x -= ONE
-#	elif event.is_action_released("ui_up"):
-#		direction_vector = input_vector
-#		input_vector.y += ONE
-#	elif event.is_action_released("ui_down"):
-#		direction_vector = input_vector
-#		input_vector.y -= ONE
-#	# check if you're still moving after release event
-#	# to determine if snapshot is still needed.
-#	if input_vector != Vector2.ZERO:
-#		direction_vector = input_vector
-	if event.is_action_pressed("roll"):
+	elif event.is_action_pressed("roll"):
 		state = ROLL
-	if event.is_action_pressed("attack"):
+	elif event.is_action_pressed("attack"):
 		state =  ATTACK
-	if event.is_action_pressed("spinny attack"):
+	elif event.is_action_pressed("spinny attack"):
 		state = SPINNYATTACK
+	elif event.is_action_pressed("CyclePickupTarget"):
+		nextItemInPickupStack()
+	elif event.is_action_pressed("PickupItem"):
+		if pickuppableItemArray.size() != 0:
+			var poppedItem = popPickupStack()
+			emit_signal("pickup_item_inv_transfer", poppedItem)
 
 # Called whenever physics tick happens, delta unlocks movement from framerate
 func _physics_process(delta):
@@ -165,4 +150,68 @@ func _on_Hurtbox_area_entered(_area):
 		# half second invincibility when hit
 		hurtbox.start_invincibility(stats.HIT_INVINCIBILITY_TIME)
 		hurtbox.create_hit_effect()
-	
+
+# go to the end of the array (which is the front of the stack)
+func addToPickupStack(item):
+	# no duplicates plz
+	if not pickuppableItemArray.has(item):
+		if pickuppableItemArray.size() == 0:
+			pickupHead = 0
+		pickuppableItemArray.push_back(item)
+		showItemPickupPrompt()
+#		print("adding item, array size is: " + str(pickuppableItemArray.size()))
+
+# seems like this is being called when an item is being picked up
+# because of the itemExitedPickupRange signal in DroppedItems.
+# it is useful for when it is moved out
+# perhaps to pick up an item we have to disconnect the signal first?
+func removeFromPickupStack(item):
+#	print("attempting to remove item" + item.get_item_reference().get_property("id"))
+	var index = pickuppableItemArray.find(item)
+	if index >= 0:
+#		print("erasing item")
+		pickuppableItemArray.erase(item)
+		pickupHead = 0
+#		print("array size is now: " + str(pickuppableItemArray.size()))
+		if pickuppableItemArray.size() == 0:
+#			print("calling hide item prompt")
+			hideItemPickupPrompt()
+		else:
+			showItemPickupPrompt()
+
+func peekPickupStack():
+	return pickuppableItemArray[pickupHead]
+
+func popPickupStack():
+	if pickuppableItemArray.size() != 0:
+#		print("popping item at pickupHead = ", pickupHead)
+		var poppedItem = pickuppableItemArray.pop_at(pickupHead)
+#		poppedItem.disconnect("ItemExitedPickupRange", self, "removeFromPickupStack")
+		# gotta make sure that the head is still ok
+		# it bein weird so just gonna set to 0 each time
+#		print("resetting pickupHead to 0 and calling nextItemInPickupStack")
+		pickupHead = 0
+		nextItemInPickupStack()
+		return poppedItem
+	printerr("Error: popping on empty pickup stack")
+	return null
+
+func nextItemInPickupStack():
+	if pickuppableItemArray.size() != 0:
+		pickupHead = (pickupHead + 1) % pickuppableItemArray.size()
+		# assign the label
+		showItemPickupPrompt()
+	else:
+		pickupHead = 0
+		hideItemPickupPrompt()
+
+# shows a item pickup prompt for whatever is at the head
+func showItemPickupPrompt():
+	var itemReference = pickuppableItemArray[pickupHead].get_item_reference()
+	var name = itemReference.get_property("id")
+	var quantity = itemReference.get_property("stack_size")
+	selectedItemOnGround.text = "F: Pick up " + str(quantity) + " " + name + "(s)"
+	selectedItemOnGround.visible = true
+
+func hideItemPickupPrompt():
+	selectedItemOnGround.visible = false

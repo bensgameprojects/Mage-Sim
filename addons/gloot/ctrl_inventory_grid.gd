@@ -107,11 +107,14 @@ func _ready() -> void:
 	_ctrl_item_container.anchor_right = 1.0
 	_ctrl_item_container.anchor_bottom = 1.0
 	add_child(_ctrl_item_container)
-
+	
+	# make a sprite object
 	_drag_sprite = Sprite.new()
+	# set params
 	_drag_sprite.centered = false
 	_drag_sprite.z_index = drag_sprite_z_index
 	_drag_sprite.hide()
+	# add as child to inv grid
 	add_child(_drag_sprite)
 	if has_node(inventory_path):
 		_set_inventory(get_node_or_null(inventory_path))

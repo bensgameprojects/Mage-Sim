@@ -6,17 +6,24 @@
 script = ExtResource( 1 )
 json_data = "[
 	{
-		\"id\": \"Corn\",
+		\"id\": \"Blueberry\",
 		\"width\": 1,
 		\"height\":1,
 		\"stack_size\":1,
-		\"image\": \"res://World/Bush.png\"
+		\"image\": \"res://Items/Fruits Asset/Black Outline/01.png\"
 	},
 	{
-		\"id\": \"Wheat\",
+		\"id\": \"Pear\",
 		\"width\": 1,
 		\"height\":1,
 		\"stack_size\":1,
-		\"image\": \"res://World/Tree.png\"
+		\"image\": \"res://Items/Fruits Asset/Black Outline/02.png\"
+	},
+		{
+		\"id\": \"Cherry\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"image\": \"res://Items/Fruits Asset/Black Outline/03.png\"
 	},
 ]"
