@@ -241,8 +241,8 @@ func rect_free(rect: Rect2, exception: InventoryItem = null) -> bool:
 
 func find_free_place(item: InventoryItem) -> Vector2:
 	var item_size = get_item_size(item)
-	for x in range(size.x - (item_size.x - 1)):
-		for y in range(size.y - (item_size.y - 1)):
+	for y in range(size.y - (item_size.y - 1)):
+		for x in range(size.x - (item_size.x - 1)):
 			var rect: Rect2 = Rect2(Vector2(x, y), item_size)
 			if rect_free(rect, item):
 				return Vector2(x, y)

@@ -642,6 +642,10 @@ max_stack = 999
 [node name="SpawnTimer" parent="SpawnHandler/DroppedItems/SpawnAreaBlueberry" index="2"]
 wait_time = 3.0
 
+[node name="SpawnArea" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
+position = Vector2( 369, -75 )
+item_ID = "Cherry"
+
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
 
 [node name="Bat3" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
@@ -673,8 +677,10 @@ visible = false
 [connection signal="create_and_add_item_to_world_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_create_and_add_item_to_world_inv"]
 [connection signal="transfer_item_to_player_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_transfer_item_to_player_inv"]
 [connection signal="pickup_item_inv_transfer" from="SpawnHandler/Player" to="SpawnHandler" method="_on_Player_pickup_item_inv_transfer"]
-[connection signal="needsNewItem" from="SpawnHandler/DroppedItems/SpawnAreaBlueberry" to="SpawnHandler" method="_on_SpawnAreaBlueberry_needsNewItem"]
+[connection signal="needsNewItem" from="SpawnHandler/DroppedItems/SpawnAreaBlueberry" to="SpawnHandler" method="_on_SpawnArea_needsNewItem"]
+[connection signal="needsNewItem" from="SpawnHandler/DroppedItems/SpawnArea" to="SpawnHandler" method="_on_SpawnArea_needsNewItem"]
 [connection signal="item_created_in_world_inv" from="UI Base/InventoryUI" to="SpawnHandler" method="_on_InventoryUI_item_created_in_world_inv"]
 [connection signal="item_dropped_to_floor" from="UI Base/InventoryUI" to="SpawnHandler" method="_on_InventoryUI_item_dropped_to_floor"]
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
+[editable path="SpawnHandler/DroppedItems/SpawnArea"]

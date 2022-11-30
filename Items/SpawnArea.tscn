@@ -3,7 +3,7 @@
 [ext_resource path="res://Items/SpawnArea.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 73.1095
+radius = 75.1066
 
 [node name="SpawnArea" type="Area2D"]
 collision_layer = 0

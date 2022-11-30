@@ -165,6 +165,16 @@ func get_item_by_id(prototype_id: String) -> InventoryItem:
 	return null
 
 
+# this function will iterate through all the items in your inventory
+# and return the first item that matches the prototype id with some free
+# space in the stack
+# if it doesn't find one then it will return null 
+func get_first_item_unmaxed_stack(prototype_id: String) -> InventoryItem:
+	for item in get_items():
+		if item.prototype_id == prototype_id && item.get_property("stack_size") != item.get_property("max_stack_size"):
+			return item
+	return null
+
 func has_item_by_id(prototype_id: String) -> bool:
 	return get_item_by_id(prototype_id) != null
 

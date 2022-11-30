@@ -84,7 +84,7 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity)
 
 func move_state(_delta):
-	print("in move state")
+#	print("in move state")
 	# capture knockback_vector from direction vector
 	swordHitbox.knockback_vector = direction_vector
 	# apply acceleration/decceleration, multiply by delta which is the tick rate (1/60 usually)
@@ -110,7 +110,7 @@ func move_state(_delta):
 		velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
 
 func roll_state(_delta):
-	print("in roll state")
+#	print("in roll state")
 	hurtbox.start_invincibility(stats.ROLL_INVINCIBILITY_TIME)
 	velocity = direction_vector.normalized() * ROLL_SPEED
 	animationState.travel("Roll")
@@ -123,7 +123,7 @@ func roll_state(_delta):
 #		state = MOVE
 
 func attack_state(_delta):
-	print("in attack state")
+#	print("in attack state")
 	# reset your velocity
 	velocity = Vector2.ZERO
 	#give u a little bit of invincibility frames
@@ -135,7 +135,7 @@ func attack_state(_delta):
 		#state = MOVE
 
 func attack_animation_finished():
-	print("attack finished")
+#	print("attack finished")
 	state = MOVE
 
 func spinny_attack_state(_delta):
@@ -143,7 +143,7 @@ func spinny_attack_state(_delta):
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():
-	print("roll finished")
+#	print("roll finished")
 	if is_sprint:
 		velocity.limit_length(stats.SPRINT_MAX_SPEED)
 	else:
@@ -227,3 +227,4 @@ func showItemPickupPrompt():
 
 func hideItemPickupPrompt():
 	selectedItemOnGround.visible = false
+

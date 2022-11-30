@@ -4,6 +4,7 @@ export var item_ID = ""
 # time in seconds
 export var respawn_time = 3
 export var max_stack = 3
+export var min_stack = 1
 signal needsNewItem(spawn_area, item_ID, stack_size)
 onready var spawnRegion = $SpawnRegion
 onready var spawnTimer = $SpawnTimer
@@ -36,10 +37,11 @@ func _on_SpawnTimer_timeout():
 	# timer will be paused and reset because a new item will be made
 	spawnTimer.set_paused(true)
 #	spawnTimer.start(respawn_time)
-	var stack_size = int(round(rand_range(1,max_stack)))
+	var stack_size = int(round(rand_range(min_stack,max_stack)))
 #	print("spawn timer timed out! about to make a new item")
 	emit_signal("needsNewItem", self, item_ID, stack_size)
 #	print("made the item!")
+	
 
 
 func _on_SpawnArea_body_exited(_body):

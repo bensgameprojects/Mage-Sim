@@ -9,7 +9,9 @@ var ctrl_inventory
 var texture: Texture setget _set_texture
 var selected: bool = false setget _set_selected
 var selection_bg_color: Color = Color.gray setget _set_selection_bg_color
-var stack_size_label = RichTextLabel.new()
+var stack_size_label = Label.new()
+var stack_size_font = DynamicFont.new()
+
 
 func _set_texture(new_texture: Texture) -> void:
 	texture = new_texture
@@ -75,6 +77,11 @@ func _get_item_position() -> Vector2:
 
 
 func _ready() -> void:
+	stack_size_font.font_data = load("res://Themes/Fonts/monogram/ttf/monogram.ttf")
+	stack_size_font.size = 8
+	stack_size_font.outline_size = 1
+	stack_size_font.outline_color = Color(0,0,0,1)
+	stack_size_label.set("custom_fonts/font", stack_size_font)
 	add_child(stack_size_label)
 	# add theme
 	if item && ctrl_inventory:

@@ -116,10 +116,15 @@ window/stretch/mode="2d"
 
 enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/gloot/plugin.cfg" )
 
+[global]
+
+gui=false
+theme=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
-theme/custom_font="res://UI/toriko_dynamicfont.tres"
+theme/custom_font="res://Themes/Fonts/monogram/monogram.tres"
 
 [importer_defaults]
 

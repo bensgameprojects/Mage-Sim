@@ -13,7 +13,7 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	rng.randomize()
 
-func _on_SpawnAreaBlueberry_needsNewItem(spawn_area, item_ID, stack_size):
+func _on_SpawnArea_needsNewItem(spawn_area, item_ID, stack_size):
 	create_new_dropped_item(spawn_area, item_ID, stack_size)
 
 func create_new_dropped_item(spawn_area, itemID, stackSize):
