@@ -25,6 +25,7 @@ func create_new_dropped_item(spawn_area, itemID, stackSize):
 func _on_InventoryUI_item_created_in_world_inv(spawnArea, item):
 	var newItem = itemScene.instance()
 	var texture = item.get_texture()
+#	spawnArea.getYSortNode().add_child(newItem)
 	spawnArea.add_child(newItem)
 #	add_child_below_node(spawnArea, newItem)
 	newItem.set_item_reference(item)

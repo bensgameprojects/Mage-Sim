@@ -75,6 +75,8 @@ func _physics_process(delta):
 			attack_state(delta)
 		SPINNYATTACK:
 			spinny_attack_state(delta)
+		_:
+			move_state(delta)
 	# set the movement and collision stuff, makes us sticky to collision polygons
 	# move_and_collide(velocity * delta)
 	# using move and slide so we can slide against walls, doesnt multiply by delta
@@ -82,6 +84,7 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity)
 
 func move_state(_delta):
+	print("in move state")
 	# capture knockback_vector from direction vector
 	swordHitbox.knockback_vector = direction_vector
 	# apply acceleration/decceleration, multiply by delta which is the tick rate (1/60 usually)
@@ -107,17 +110,24 @@ func move_state(_delta):
 		velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
 
 func roll_state(_delta):
-	if direction_vector != Vector2.ZERO:
-		hurtbox.start_invincibility(stats.ROLL_INVINCIBILITY_TIME)
-		velocity = direction_vector.normalized() * ROLL_SPEED
-		animationState.travel("Roll")
-	else:
-		# dont roll, go back to move state
-		state = MOVE
+	print("in roll state")
+	hurtbox.start_invincibility(stats.ROLL_INVINCIBILITY_TIME)
+	velocity = direction_vector.normalized() * ROLL_SPEED
+	animationState.travel("Roll")
+#	if direction_vector != Vector2.ZERO:
+#		hurtbox.start_invincibility(stats.ROLL_INVINCIBILITY_TIME)
+#		velocity = direction_vector.normalized() * ROLL_SPEED
+#		animationState.travel("Roll")
+#	else:
+#		# dont roll, go back to move state
+#		state = MOVE
 
 func attack_state(_delta):
+	print("in attack state")
 	# reset your velocity
 	velocity = Vector2.ZERO
+	#give u a little bit of invincibility frames
+	hurtbox.start_invincibility(0.4)
 	# move to attack state and play animation
 	animationState.travel("Attack")
 	# at the end of the animation it will call attack_animation_finished()
@@ -125,6 +135,7 @@ func attack_state(_delta):
 		#state = MOVE
 
 func attack_animation_finished():
+	print("attack finished")
 	state = MOVE
 
 func spinny_attack_state(_delta):
@@ -132,6 +143,7 @@ func spinny_attack_state(_delta):
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():
+	print("roll finished")
 	if is_sprint:
 		velocity.limit_length(stats.SPRINT_MAX_SPEED)
 	else:

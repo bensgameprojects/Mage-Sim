@@ -119,6 +119,7 @@ enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+theme/custom_font="res://UI/toriko_dynamicfont.tres"
 
 [importer_defaults]
 

@@ -2,6 +2,9 @@ class_name CtrlInventoryGrid
 extends Control
 tool
 
+# field_coordinates are the grid positions of the items 
+# i.e. (0,0) is top left box and (1,0) is the next one to the right
+
 signal item_dropped
 signal inventory_item_activated
 
@@ -253,6 +256,7 @@ func _populate_list() -> void:
 		ctrl_inventory_item.ctrl_inventory = self
 		ctrl_inventory_item.texture = default_item_texture
 		ctrl_inventory_item.item = item
+#		ctrl_inventory_item.stack_size_label = RichTextLabel.new()
 		ctrl_inventory_item.connect("grabbed", self, "_on_item_grab")
 		ctrl_inventory_item.connect("activated", self, "_on_item_activated")
 		_ctrl_item_container.add_child(ctrl_inventory_item)
@@ -338,6 +342,7 @@ func _input(event: InputEvent) -> void:
 	var global_grabbed_item_pos = _get_grabbed_item_global_pos()
 	if _is_hovering(global_grabbed_item_pos):
 		var field_coords = get_field_coords(global_grabbed_item_pos)
+		print("moving item to field coords" + str(field_coords))
 		_move_item(inventory.get_item_index(item), field_coords)
 	else:
 		emit_signal("item_dropped", item, global_grabbed_item_pos)

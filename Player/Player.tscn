@@ -756,7 +756,7 @@ states/SpinnyAttack/node = SubResource( 42 )
 states/SpinnyAttack/position = Vector2( 169, 77 )
 transitions = [ "Idle", "Run", SubResource( 27 ), "Run", "Idle", SubResource( 28 ), "Idle", "Attack", SubResource( 39 ), "Attack", "Idle", SubResource( 40 ), "Idle", "SpinnyAttack", SubResource( 43 ), "SpinnyAttack", "Idle", SubResource( 44 ), "Roll", "Idle", SubResource( 55 ), "Idle", "Roll", SubResource( 56 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -330.465, -77 )
+graph_offset = Vector2( -148.207, -43.7016 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
@@ -791,6 +791,7 @@ rotation = -1.5708
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_process_mode = 0
 anims/AttackDown = SubResource( 29 )
 anims/AttackLeft = SubResource( 31 )
 anims/AttackRight = SubResource( 32 )
@@ -813,6 +814,7 @@ anims/SpinnyAttack = SubResource( 41 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 15 )
 anim_player = NodePath("../AnimationPlayer")
+process_mode = 0
 parameters/playback = SubResource( 16 )
 parameters/Attack/blend_position = Vector2( 0, 1 )
 parameters/Idle/blend_position = Vector2( 0, 1 )
@@ -840,7 +842,7 @@ position = Vector2( 0, -5 )
 shape = SubResource( 57 )
 
 [node name="PickupPivot" type="Position2D" parent="."]
-rotation = -1.5708
+rotation = 1.5708
 
 [node name="PickupDetector" type="Area2D" parent="PickupPivot"]
 collision_layer = 128

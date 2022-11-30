@@ -170,13 +170,39 @@ func get_item_at(position: Vector2) -> InventoryItem:
 func move_item_to(item: InventoryItem, position: Vector2) -> bool:
 	var item_size = get_item_size(item)
 	var rect: Rect2 = Rect2(position, item_size)
+	var other_item = get_item_at(position)
 	if rect_free(rect, item):
 		item.properties[KEY_GRID_POSITION] = position
 		if item.properties[KEY_GRID_POSITION] == Vector2.ZERO:
 			item.properties.erase(KEY_GRID_POSITION)
 		emit_signal("contents_changed")
 		return true
-
+	# we can stack items here by checking
+	# in the case !rect_free(rect, item) &&
+	# get_item_at(position).get_property("id") == item.get_property("id")
+	# compare that they are the same item id
+	# also ensure the items are stackable type
+	elif other_item != null && other_item.prototype_id == item.prototype_id && item.get_property("is_stackable"):
+		var item_stack_size = item.get_property("stack_size")
+		var other_item_stack_size = other_item.get_property("stack_size")
+		var item_max_stack_size = item.get_property("max_stack_size")
+		var new_other_item_stack_size = item_stack_size + other_item_stack_size
+		var new_item_stack_size = 0
+		# logic to handle max stack size merges
+		if(new_other_item_stack_size > item_max_stack_size):
+			new_item_stack_size = new_other_item_stack_size - item_max_stack_size
+			item.set_property("stack_size", new_item_stack_size)
+			new_other_item_stack_size -= new_item_stack_size
+		else:
+			# the item was completely merged
+			# remove the donating item from the inventory (and existence :o)
+			self.remove_item(item)
+			emit_signal("item_removed", item)
+		
+		# now set the receiving items new stack_size
+		other_item.set_property("stack_size", new_other_item_stack_size)
+		return true
+		
 	return false
 
 

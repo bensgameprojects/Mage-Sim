@@ -637,8 +637,9 @@ position = Vector2( -45, -71 )
 collision_mask = 512
 item_ID = "Blueberry"
 respawn_time = 1
+max_stack = 999
 
-[node name="SpawnTimer" parent="SpawnHandler/DroppedItems/SpawnAreaBlueberry" index="1"]
+[node name="SpawnTimer" parent="SpawnHandler/DroppedItems/SpawnAreaBlueberry" index="2"]
 wait_time = 3.0
 
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
@@ -667,6 +668,7 @@ margin_right = 65.0
 margin_bottom = 18.0
 
 [node name="InventoryUI" parent="UI Base" instance=ExtResource( 9 )]
+visible = false
 
 [connection signal="create_and_add_item_to_world_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_create_and_add_item_to_world_inv"]
 [connection signal="transfer_item_to_player_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_transfer_item_to_player_inv"]
