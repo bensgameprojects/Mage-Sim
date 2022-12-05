@@ -7,7 +7,7 @@ onready var pickupItemUI = $PickupItemUI
 onready var inventoryPanelWindow = $InventoryPanelWindow
 signal item_dropped_to_floor(item)
 signal item_created_in_world_inv(spawn_area,item)
-
+onready var itemScene = preload("res://Items/Item.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -53,10 +53,20 @@ func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
 		#transfer the item to the world inventory
 		var succeeded = playerInventoryGrid.transfer_to(item, worldInventoryGrid, worldInventoryGrid.find_free_place(item))
 #		var succeeded = playerInventoryGrid.transfer(item, worldInventoryGrid)
-#		print("transfer compelte welcum to balnumng" + str(succeeded))
 		# if you fail to move item from player to world, leave item in player inv
 		if(succeeded):
-			emit_signal("item_dropped_to_floor", item)
+			var new_dropped_item = itemScene.instance()
+			#this needs to add the child to the world
+			# under some common ysort node SpawnHandler?
+			# should we just use groups and call a common method
+			# for when items are dropped.
+			add_child(new_dropped_item)
+			new_dropped_item.set_item_reference(item)
+			new_dropped_item.set_item_id(item.prototype_id)
+			new_dropped_item.set_sprite_texture(item.get_texture())
+			# this position should be a nudged position around the
+			# player's feet
+			new_dropped_item.spawn_sprite(Vector2.ZERO)
 
 
 func transfer_item_to_player_inv(itemToTransfer):
@@ -97,6 +107,7 @@ func transfer_item_to_player_inv(itemToTransfer):
 				emit_signal("item_dropped_to_floor", itemToTransfer)
 	else:
 		worldInventory.remove_item(itemToTransfer)
+		itemToTransfer.queue_free()
 
 
 func _on_SpawnHandler_create_and_add_item_to_world_inv(spawn_area, itemID, stackSize):

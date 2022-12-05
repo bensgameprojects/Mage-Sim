@@ -101,7 +101,7 @@ func _draw() -> void:
 		draw_rect(rect, Color.white, false)
 
 func _update_stack_size_label():
-	print("update stack size label called")
+#	print("update stack size label called")
 	# you must set rect_min_size for rich text labels to display properly
 	stack_size_label.rect_min_size = rect_size
 	var item_stack_size = item.get_property("stack_size")

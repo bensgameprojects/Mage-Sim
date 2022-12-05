@@ -540,7 +540,7 @@ zoom_increment = 0.05
 [node name="SpawnHandler" type="YSort" parent="."]
 script = ExtResource( 12 )
 
-[node name="Player" parent="SpawnHandler" instance=ExtResource( 2 )]
+[node name="Player" parent="SpawnHandler" groups=["Player"] instance=ExtResource( 2 )]
 position = Vector2( 149, 88 )
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="SpawnHandler/Player"]
