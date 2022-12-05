@@ -9,9 +9,16 @@ onready var pickupDetection = $PickupDetection
 var velocity = Vector2.ZERO
 var collisionCounter = 0
 var item
+var item_ID
 
 signal ItemEnteredPickupRange
 signal ItemExitedPickupRange
+
+func set_item_id(item_id):
+	item_ID = item_id
+
+func get_item_id(item_id):
+	return item_ID
 
 func set_item_reference(inventoryItem):
 	item = inventoryItem

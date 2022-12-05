@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Recipes/RecipeList.gd" type="Script" id=1]
+[ext_resource path="res://Recipes/recipe_data.tres" type="Resource" id=2]
+
+[node name="RecipeList" type="Node"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "[
+	{
+		\"id\": \"blueberrycherry\",
+		\"name\":\"Blerry\",
+		\"componentIDs\": [\"Blueberry\", \"Cherry\"],
+		\"componentAmts\":[1,1],
+		\"product_item_id\":\"blerry\"
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+]"
+}
+recipe_protoset = ExtResource( 2 )

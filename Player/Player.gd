@@ -1,5 +1,5 @@
 extends KinematicBody2D
-
+class_name Player
 # Member variable declaration
 
 export var ROLL_SPEED = 120
@@ -220,7 +220,7 @@ func nextItemInPickupStack():
 # shows a item pickup prompt for whatever is at the head
 func showItemPickupPrompt():
 	var itemReference = pickuppableItemArray[pickupHead].get_item_reference()
-	var name = itemReference.get_property("id")
+	var name = itemReference.get_property("name")
 	var quantity = itemReference.get_property("stack_size")
 	selectedItemOnGround.text = "F: Pick up " + str(quantity) + " " + name + "(s)"
 	selectedItemOnGround.visible = true

@@ -47,3 +47,27 @@ func get_item_property(id: String, property_name: String, default_value = null):
 			return prototype[property_name]
 	
 	return default_value
+
+func get_all_items_with_matching_property(property_name: String, property_value = null):
+	var return_value : Array = []
+	for prototype in _prototypes:
+		if(prototype.has(property_name) and prototype[property_name] == property_value):
+			return_value.append(prototype)
+	return return_value
+	
+func get_all_items_containing_property(property_name: String, property_value = null):
+	"""
+	Used for a property that has an array of values
+	Ex: 
+		property_name = "producible_recipes"
+		property_value = "recipeID1"
+		prototype[property_name] = ["recipeID1", "recipeID2"]
+		this will match this kind of situation
+	"""
+	var return_value : Array = []
+	for prototype in _prototypes:
+		if(prototype.has(property_name)):
+			for value in prototype[property_name]:
+				if(property_value == value):
+					return_value.append(prototype)
+	return return_value

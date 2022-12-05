@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=2]
+[gd_scene load_steps=66 format=2]
 
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://PlayerCamera.gd" type="Script" id=11]
 [ext_resource path="res://Items/DroppedItems.gd" type="Script" id=12]
 [ext_resource path="res://Items/SpawnArea.tscn" type="PackedScene" id=13]
+[ext_resource path="res://World.gd" type="Script" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -507,6 +508,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 0/z_index = 0
 
 [node name="World" type="Node2D"]
+script = ExtResource( 16 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 160, 96 )
@@ -520,7 +522,7 @@ tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -65535, 0, 0, -65534, 0, 1, -65533, 0, 1, -65532, 0, 2, 0, 0, 0, 1, 0, 65545, 2, 0, 131073, 3, 0, 131073, 4, 0, 131074, 8, 0, 0, 9, 0, 2, 65536, 0, 65540, 65537, 0, 131074, 65544, 0, 65536, 65545, 0, 65538, 131072, 0, 65539, 131080, 0, 65536, 131081, 0, 65538, 196608, 0, 65539, 196616, 0, 65536, 196617, 0, 65538, 262144, 0, 131076, 262145, 0, 2, 262152, 0, 65536, 262153, 0, 65538, 327680, 0, 131072, 327681, 0, 196613, 327682, 0, 196609, 327683, 0, 196609, 327684, 0, 196609, 327685, 0, 196610, 327688, 0, 131072, 327689, 0, 131074 )
+tile_data = PoolIntArray( 8, 0, 0, 9, 0, 2, 65544, 0, 65536, 65545, 0, 65538, 131080, 0, 65536, 131081, 0, 65538, 196616, 0, 65536, 196617, 0, 65538, 262144, 0, 0, 262145, 0, 2, 262152, 0, 65536, 262153, 0, 65538, 327680, 0, 131072, 327681, 0, 196613, 327682, 0, 196609, 327683, 0, 196609, 327684, 0, 196610, 327688, 0, 131072, 327689, 0, 131074 )
 
 [node name="DirtPathTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
@@ -635,33 +637,32 @@ position = Vector2( 248, 135 )
 [node name="SpawnAreaBlueberry" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
 position = Vector2( -45, -71 )
 collision_mask = 512
-item_ID = "Blueberry"
+item_ID = "blueberry"
 respawn_time = 1
 max_stack = 999
-
-[node name="SpawnTimer" parent="SpawnHandler/DroppedItems/SpawnAreaBlueberry" index="2"]
-wait_time = 3.0
+spawnRadius = 75.0
 
 [node name="SpawnArea" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
-position = Vector2( 369, -75 )
-item_ID = "Cherry"
+position = Vector2( 223, -74 )
+item_ID = "cherry"
+spawnRadius = 40.0
 
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
 
 [node name="Bat3" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 100, 119 )
+position = Vector2( 97, 148 )
 
 [node name="Bat5" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 75, 119 )
+position = Vector2( 72, 148 )
 
 [node name="Bat" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 232, 32 )
+position = Vector2( 335, 101 )
 
 [node name="Bat4" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 246, 31 )
+position = Vector2( 352, 85 )
 
 [node name="Bat2" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 248, 40 )
+position = Vector2( 351, 109 )
 
 [node name="UI Base" type="CanvasLayer" parent="."]
 
@@ -670,6 +671,9 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = 65.0
 margin_bottom = 18.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="InventoryUI" parent="UI Base" instance=ExtResource( 9 )]
 visible = false

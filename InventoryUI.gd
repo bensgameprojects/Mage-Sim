@@ -2,14 +2,19 @@ extends Control
 
 onready var playerInventoryGrid = $PlayerInventoryGrid
 onready var worldInventoryGrid = $WorldInventoryGrid
-
+onready var playerCtrlInventoryGrid = $PlayerInventoryGrid
 signal item_dropped_to_floor(item)
 signal item_created_in_world_inv(spawn_area,item)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	connect("new_dropped_item", self, "_on_new_dropped_item")
 
+func load_inventory(savedInventory):
+	playerInventoryGrid.deserialize(savedInventory)
+
+func save_inventory():
+	return playerInventoryGrid.serialize()
 # this only toggles the grid not the actual ui visibility
 # gotta figure out how to lay it on top
 # IDK why its laid on top now prolly should look into that
@@ -19,6 +24,14 @@ func _input(event):
 	if event.is_action_pressed("ui_inv_toggle"):
 #		InventoryGrid.draw_grid = not InventoryGrid.draw_grid
 		self.visible = not self.visible
+
+func _on_new_dropped_item(new_item):
+	# create a new item in the world inventory and set its item reference i guess
+	var world_inv_item_reference = worldInventoryGrid.create_and_add_item_at_next_free_position(new_item.get_item_ID())
+	if(world_inv_item_reference != null):
+		new_item.set_item_reference(world_inv_item_reference)
+	else:
+		printerr("New Item could not be created in WorldInventoryGrid!")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

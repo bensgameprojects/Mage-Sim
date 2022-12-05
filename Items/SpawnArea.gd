@@ -1,18 +1,26 @@
 extends Area2D
 
-export var item_ID = ""
+export(String) var item_ID = ""
+export(String) var item_texture_path = ""
 # time in seconds
 export var respawn_time = 3
 export var max_stack = 3
 export var min_stack = 1
+export(float) var spawnRadius = 50
 signal needsNewItem(spawn_area, item_ID, stack_size)
-onready var spawnRegion = $SpawnRegion
-onready var spawnTimer = $SpawnTimer
+#onready var spawnRegion = $SpawnRegion
 onready var ySort = $YSort
+var spawnRegion
+var spawnRegionShape
+var spawnTimer
+onready var itemScene = preload("res://Items/Item.tscn")
+const GATHERABLE_ITEM_LAYER_BIT = 9
+
 
 func setSpawnRegionRadius(radius):
 	if radius > 0:
-		spawnRegion.shape.radius = radius
+		spawnRadius = radius
+		spawnRegionShape.set_radius(radius)
 
 func getSpawnRegionRadius():
 	return spawnRegion.shape.radius
@@ -25,6 +33,14 @@ func getYSortNode():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	spawnRegion = CollisionShape2D.new()
+	spawnRegionShape = CircleShape2D.new()
+	spawnRegionShape.set_radius(spawnRadius)
+	spawnRegion.set_shape(spawnRegionShape)
+	add_child(spawnRegion)
+	spawnTimer = Timer.new()
+	spawnTimer.connect("timeout", self, "_on_SpawnTimer_timeout")
+	add_child(spawnTimer)
 	spawnTimer.start(respawn_time)
 
 
@@ -39,7 +55,32 @@ func _on_SpawnTimer_timeout():
 #	spawnTimer.start(respawn_time)
 	var stack_size = int(round(rand_range(min_stack,max_stack)))
 #	print("spawn timer timed out! about to make a new item")
-	emit_signal("needsNewItem", self, item_ID, stack_size)
+#	emit_signal("needsNewItem", self, item_ID, stack_size)
+	# replace the signal emit with make new item itself
+	var new_item = itemScene.instance()
+	add_child(new_item)
+	new_item.set_item_id(item_ID)
+	new_item.set_sprite_texture(load(item_texture_path))
+	new_item.set_collision_layer_bit(GATHERABLE_ITEM_LAYER_BIT, true)
+	# get a position inside the spawn area
+	var radius = getSpawnRegionRadius()
+#	var position = spawnArea.getSpawnRegionPosition()
+	# putting the item somewhere in the area by randomly generating
+	# a direction vector and then multiplying by the radius of the spawnArea
+	# spawnAreas must always be circles also since we add the new item
+	# as a child of the spawnArea, the position is relative to the center of the
+	# spawn area, i.e the spawnArea.position = 0,0
+	var nudge = Vector2(rand_range(-1,1),rand_range(-1,1)).normalized() * radius
+	nudge.x = nudge.x * rand_range(0,1)
+	nudge.y = nudge.y * rand_range(0,1)
+#	newItem.spawn_sprite(position+nudge)
+	new_item.spawn_sprite(nudge)
+	# this signal will get caught in the inventoryUI and a corresponding
+	# item will be made in the world inventory with a reference
+	emit_signal("new_dropped_item", new_item)
+	# ok now these hm... i think i need to hook it up in the UI probably
+#	new_item.connect("ItemEnteredPickupRange", player, "addToPickupStack", [new_item])
+#	new_item.connect("ItemExitedPickupRange", player, "removeFromPickupStack", [new_item])
 #	print("made the item!")
 	
 

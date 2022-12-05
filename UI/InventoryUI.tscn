@@ -11,8 +11,8 @@
 VBoxContainer/colors/backgroundcolor = Color( 0.572549, 0.164706, 0.164706, 1 )
 
 [node name="InventoryUI" type="Control"]
-margin_right = 225.0
-margin_bottom = 160.0
+margin_right = 151.0
+margin_bottom = 122.0
 theme = SubResource( 2 )
 script = ExtResource( 1 )
 
