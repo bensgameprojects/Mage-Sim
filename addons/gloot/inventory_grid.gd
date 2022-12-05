@@ -220,6 +220,10 @@ func transfer_to(item: InventoryItem, destination: InventoryGrid, position: Vect
 
 	return false
 
+func transfer_to_next_free_pos(item: InventoryItem, destination: InventoryGrid):
+	var position = destination.find_free_place(item)
+	transfer_to(item, destination, position)
+	
 
 func rect_free(rect: Rect2, exception: InventoryItem = null) -> bool:
 	if rect.position.x + rect.size.x > size.x:

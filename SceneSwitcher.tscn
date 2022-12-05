@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=3]
-[ext_resource path="res://UI/PickupItemUI.gd" type="Script" id=4]
 
 [node name="SceneSwitcher" type="Node"]
 script = ExtResource( 1 )
@@ -24,13 +23,4 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="HealthUI" parent="UILayer" instance=ExtResource( 3 )]
 
-[node name="InventoryUI" parent="UILayer" instance=ExtResource( 2 )]
-
-[node name="PickupItemUI" type="Control" parent="UILayer"]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 4 )
-
-[node name="FocusLabel" type="Label" parent="UILayer/PickupItemUI"]
-margin_right = 40.0
-margin_bottom = 20.0
+[node name="InventoryUI" parent="UILayer" groups=["InventoryUI"] instance=ExtResource( 2 )]

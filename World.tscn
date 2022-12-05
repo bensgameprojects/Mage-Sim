@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
@@ -7,13 +7,11 @@
 [ext_resource path="res://World/CliffTileset.png" type="Texture" id=5]
 [ext_resource path="res://World/Grass.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Enemies/Bat.tscn" type="PackedScene" id=7]
-[ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=8]
-[ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://World/Tree.tscn" type="PackedScene" id=10]
 [ext_resource path="res://PlayerCamera.gd" type="Script" id=11]
 [ext_resource path="res://Items/DroppedItems.gd" type="Script" id=12]
 [ext_resource path="res://Items/SpawnArea.tscn" type="PackedScene" id=13]
-[ext_resource path="res://World/SERENE_VILLAGE_REVAMPED/new_tileset.tres" type="TileSet" id=14]
+[ext_resource path="res://World.gd" type="Script" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -508,9 +506,10 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 0/z_index = 0
 
 [node name="World" type="Node2D"]
+script = ExtResource( 16 )
 
 [node name="Background" type="Sprite" parent="."]
-position = Vector2( 160, 94 )
+position = Vector2( 160, 96 )
 scale = Vector2( 1, 1.06667 )
 texture = ExtResource( 3 )
 region_enabled = true
@@ -521,21 +520,14 @@ tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -262150, 0, 0, -262149, 0, 2, -327666, 0, 0, -327665, 0, 2, -196614, 0, 65536, -196613, 0, 65538, -262130, 0, 65536, -262129, 0, 65538, -131078, 0, 65536, -131077, 0, 65538, -196594, 0, 65536, -196593, 0, 65538, -65542, 0, 65536, -65541, 0, 65538, -131058, 0, 65536, -131057, 0, 65538, -6, 0, 65536, -5, 0, 65538, -65522, 0, 65536, -65521, 0, 65538, 65530, 0, 65536, 65531, 0, 65538, 13, 0, 0, 14, 0, 65545, 15, 0, 131074, 131066, 0, 65536, 131067, 0, 65538, 65548, 0, 0, 65549, 0, 65545, 65550, 0, 131074, 196602, 0, 131072, 196603, 0, 9, 196604, 0, 1, 196605, 0, 2, 131082, 0, 0, 131083, 0, 1, 131084, 0, 65545, 131085, 0, 131074, 262139, 0, 131072, 262140, 0, 131073, 262141, 0, 9, 262142, 0, 1, 262143, 0, 2, 196616, 0, 0, 196617, 0, 1, 196618, 0, 65545, 196619, 0, 131073, 196620, 0, 131074, 327677, 0, 131072, 327678, 0, 131073, 327679, 0, 9, 262144, 0, 1, 262145, 0, 2, 262152, 0, 131072, 262153, 0, 131073, 262154, 0, 131074, 393215, 0, 131072, 327680, 0, 131073, 327681, 0, 131074 )
+tile_data = PoolIntArray( 8, 0, 0, 9, 0, 2, 65544, 0, 65536, 65545, 0, 65538, 131080, 0, 65536, 131081, 0, 65538, 196616, 0, 65536, 196617, 0, 65538, 262144, 0, 0, 262145, 0, 2, 262152, 0, 65536, 262153, 0, 65538, 327680, 0, 131072, 327681, 0, 196613, 327682, 0, 196609, 327683, 0, 196609, 327684, 0, 196610, 327688, 0, 131072, 327689, 0, 131074 )
 
 [node name="DirtPathTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -589814, 0, 0, -589813, 0, 2, -524278, 0, 65536, -524277, 0, 65538, -458742, 0, 65536, -458741, 0, 65538, -393206, 0, 65536, -393205, 0, 65538, -327670, 0, 65536, -327669, 0, 65538, -262134, 0, 65536, -262133, 0, 65538, -196598, 0, 65536, -196597, 0, 65538, -131062, 0, 65536, -131061, 0, 65538, -65526, 0, 65536, -65525, 0, 65538, 10, 0, 65536, 11, 0, 65538, 65546, 0, 65536, 65547, 0, 65538, 131082, 0, 65536, 131083, 0, 65538, 196618, 0, 65536, 196619, 0, 131077, 196620, 0, 2, 262144, 0, 0, 262145, 0, 1, 262146, 0, 1, 262147, 0, 2, 262153, 0, 0, 262154, 0, 131078, 262155, 0, 65537, 262156, 0, 131077, 262157, 0, 1, 262158, 0, 1, 262159, 0, 2, 327680, 0, 65536, 327681, 0, 65537, 327682, 0, 65537, 327683, 0, 131077, 327684, 0, 1, 327685, 0, 1, 327686, 0, 1, 327687, 0, 1, 327688, 0, 1, 327689, 0, 131078, 327690, 0, 65537, 327691, 0, 65541, 327692, 0, 131073, 327693, 0, 65542, 327694, 0, 65541, 327695, 0, 131074, 393216, 0, 65536, 393217, 0, 65537, 393218, 0, 65537, 393219, 0, 65537, 393220, 0, 65537, 393221, 0, 65537, 393222, 0, 65537, 393223, 0, 65537, 393224, 0, 65537, 393225, 0, 65537, 393226, 0, 65541, 393227, 0, 131074, 393229, 0, 65536, 393230, 0, 65538, 458752, 0, 131072, 458753, 0, 131073, 458754, 0, 131073, 458755, 0, 131073, 458756, 0, 131073, 458757, 0, 131073, 458758, 0, 131073, 458759, 0, 131073, 458760, 0, 131073, 458761, 0, 131073, 458762, 0, 131074, 458765, 0, 65536, 458766, 0, 65538, 524301, 0, 65536, 524302, 0, 65538, 589837, 0, 65536, 589838, 0, 65538, 655373, 0, 65536, 655374, 0, 65538, 720908, 0, 0, 720909, 0, 131078, 720910, 0, 65538, 786442, 0, 0, 786443, 0, 1, 786444, 0, 131078, 786445, 0, 65537, 786446, 0, 65538, 851976, 0, 0, 851977, 0, 1, 851978, 0, 131078, 851979, 0, 65537, 851980, 0, 65537, 851981, 0, 65537, 851982, 0, 65538, 917511, 0, 0, 917512, 0, 131078, 917513, 0, 65537, 917514, 0, 65541, 917515, 0, 131073, 917516, 0, 131073, 917517, 0, 65542, 917518, 0, 65538, 983045, 0, 0, 983046, 0, 1, 983047, 0, 131078, 983048, 0, 65537, 983049, 0, 65541, 983050, 0, 131074, 983053, 0, 65536, 983054, 0, 65538, 1048578, 0, 0, 1048579, 0, 1, 1048580, 0, 1, 1048581, 0, 131078, 1048582, 0, 65537, 1048583, 0, 65541, 1048584, 0, 131073, 1048585, 0, 131074, 1048589, 0, 65536, 1048590, 0, 65538, 1114112, 0, 0, 1114113, 0, 1, 1114114, 0, 131078, 1114115, 0, 65537, 1114116, 0, 65541, 1114117, 0, 131073, 1114118, 0, 131073, 1114119, 0, 131074, 1114125, 0, 65536, 1114126, 0, 65538, 1245182, 0, 0, 1245183, 0, 1, 1179648, 0, 131078, 1179649, 0, 65541, 1179650, 0, 131073, 1179651, 0, 131073, 1179652, 0, 131074, 1179661, 0, 65536, 1179662, 0, 131077, 1179663, 0, 1, 1179664, 0, 1, 1179665, 0, 1, 1179666, 0, 2, 1310718, 0, 131072, 1310719, 0, 131073, 1245184, 0, 131073, 1245185, 0, 131074, 1245197, 0, 65536, 1245198, 0, 65537, 1245199, 0, 65537, 1245200, 0, 65537, 1245201, 0, 65537, 1245202, 0, 131077, 1245203, 0, 1, 1245204, 0, 1, 1245205, 0, 1, 1245206, 0, 1, 1245207, 0, 1, 1245208, 0, 1, 1245209, 0, 1, 1245210, 0, 1, 1245211, 0, 1, 1245212, 0, 2, 1310733, 0, 131072, 1310734, 0, 131073, 1310735, 0, 131073, 1310736, 0, 131073, 1310737, 0, 131073, 1310738, 0, 131073, 1310739, 0, 131073, 1310740, 0, 131073, 1310741, 0, 131073, 1310742, 0, 131073, 1310743, 0, 131073, 1310744, 0, 131073, 1310745, 0, 131073, 1310746, 0, 131073, 1310747, 0, 131073, 1310748, 0, 196613, 1310749, 0, 196610 )
-
-[node name="WaterTileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 14 )
-cell_size = Vector2( 16, 16 )
-collision_mask = 0
-format = 1
-tile_data = PoolIntArray( 196612, 0, 0, 851960, 0, 0, 851961, 0, 1, 851962, 0, 1, 851963, 0, 1, 851964, 0, 1, 851965, 0, 2, 917496, 0, 65536, 917497, 0, 65537, 917498, 0, 65537, 917499, 0, 65537, 917500, 0, 65537, 917501, 0, 65538, 983032, 0, 65536, 983033, 0, 65537, 983034, 0, 65537, 983035, 0, 65537, 983036, 0, 65537, 983037, 0, 65538, 1048568, 0, 65536, 1048569, 0, 65537, 1048570, 0, 65537, 1048571, 0, 65537, 1048572, 0, 65537, 1048573, 0, 65538, 1114104, 0, 65536, 1114105, 0, 65537, 1114106, 0, 65537, 1114107, 0, 65537, 1114108, 0, 65537, 1114109, 0, 65538, 1179640, 0, 65536, 1179641, 0, 65537, 1179642, 0, 65537, 1179643, 0, 65537, 1179644, 0, 65537, 1179645, 0, 65538, 1245176, 0, 65536, 1245177, 0, 65537, 1245178, 0, 65537, 1245179, 0, 65537, 1245180, 0, 65537, 1245181, 0, 65538, 1310712, 0, 131072, 1310713, 0, 131073, 1310714, 0, 131073, 1310715, 0, 131073, 1310716, 0, 131073, 1310717, 0, 131074 )
+tile_data = PoolIntArray( -131062, 0, 0, -131061, 0, 2, -65526, 0, 65536, -65525, 0, 65538, 10, 0, 65536, 11, 0, 65538, 65546, 0, 65536, 65547, 0, 65538, 131082, 0, 65536, 131083, 0, 65538, 196618, 0, 65536, 196619, 0, 65538, 262146, 0, 0, 262147, 0, 2, 262154, 0, 65536, 262155, 0, 131077, 262156, 0, 1, 262157, 0, 1, 262158, 0, 1, 262159, 0, 2, 327682, 0, 65536, 327683, 0, 131077, 327684, 0, 2, 327690, 0, 65540, 327691, 0, 131073, 327692, 0, 131073, 327693, 0, 65542, 327694, 0, 65541, 327695, 0, 131074, 393218, 0, 65536, 393219, 0, 65537, 393220, 0, 131077, 393221, 0, 1, 393222, 0, 1, 393223, 0, 1, 393224, 0, 1, 393225, 0, 1, 393226, 0, 131079, 393229, 0, 65536, 393230, 0, 65538, 458754, 0, 131072, 458755, 0, 131073, 458756, 0, 131073, 458757, 0, 131073, 458758, 0, 131073, 458759, 0, 65544, 458760, 0, 131073, 458761, 0, 131073, 458762, 0, 131074, 458765, 0, 65536, 458766, 0, 65538, 524295, 0, 131075, 524301, 0, 65536, 524302, 0, 65538, 589837, 0, 65536, 589838, 0, 65538, 655373, 0, 65536, 655374, 0, 65538, 720909, 0, 131072, 720910, 0, 131074 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 position = Vector2( 149, 88 )
@@ -576,15 +568,6 @@ position = Vector2( 32, 144 )
 
 [node name="Bush7" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
 position = Vector2( 200, 152 )
-
-[node name="Bush8" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( -144, 207 )
-
-[node name="Bush9" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( -175, 263 )
-
-[node name="Bush10" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( -149, 310 )
 
 [node name="Grasses" type="YSort" parent="SpawnHandler"]
 
@@ -644,9 +627,6 @@ position = Vector2( 96, 48 )
 [node name="Tree" parent="SpawnHandler/Trees" instance=ExtResource( 10 )]
 position = Vector2( 199, 136 )
 
-[node name="Tree3" parent="SpawnHandler/Trees" instance=ExtResource( 10 )]
-position = Vector2( -52, 178 )
-
 [node name="Tree2" parent="SpawnHandler/Trees" instance=ExtResource( 10 )]
 position = Vector2( 248, 135 )
 
@@ -655,46 +635,34 @@ position = Vector2( 248, 135 )
 [node name="SpawnAreaBlueberry" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
 position = Vector2( -45, -71 )
 collision_mask = 512
-item_ID = "Blueberry"
+item_ID = "blueberry"
+item_texture_path = "res://Items/Fruits Asset/Black Outline/01.png"
 respawn_time = 1
 max_stack = 999
+spawnRadius = 75.0
 
-[node name="SpawnTimer" parent="SpawnHandler/DroppedItems/SpawnAreaBlueberry" index="2"]
-wait_time = 3.0
+[node name="SpawnArea" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
+position = Vector2( 223, -74 )
+item_ID = "cherry"
+item_texture_path = "res://Items/Fruits Asset/Black Outline/03.png"
+spawnRadius = 40.0
 
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
 
 [node name="Bat3" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 100, 119 )
+position = Vector2( 97, 148 )
 
 [node name="Bat5" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 75, 119 )
+position = Vector2( 72, 148 )
 
 [node name="Bat" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 232, 32 )
+position = Vector2( 335, 101 )
 
 [node name="Bat4" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 246, 31 )
+position = Vector2( 352, 85 )
 
 [node name="Bat2" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 248, 40 )
-
-[node name="UI Base" type="CanvasLayer" parent="."]
-
-[node name="HealthUI" parent="UI Base" instance=ExtResource( 8 )]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 65.0
-margin_bottom = 18.0
-
-[node name="InventoryUI" parent="UI Base" instance=ExtResource( 9 )]
-visible = false
-
-[connection signal="create_and_add_item_to_world_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_create_and_add_item_to_world_inv"]
-[connection signal="transfer_item_to_player_inv" from="SpawnHandler" to="UI Base/InventoryUI" method="_on_SpawnHandler_transfer_item_to_player_inv"]
-[connection signal="pickup_item_inv_transfer" from="SpawnHandler/Player" to="SpawnHandler" method="_on_Player_pickup_item_inv_transfer"]
-[connection signal="needsNewItem" from="SpawnHandler/DroppedItems/SpawnAreaBlueberry" to="SpawnHandler" method="_on_SpawnAreaBlueberry_needsNewItem"]
-[connection signal="item_created_in_world_inv" from="UI Base/InventoryUI" to="SpawnHandler" method="_on_InventoryUI_item_created_in_world_inv"]
-[connection signal="item_dropped_to_floor" from="UI Base/InventoryUI" to="SpawnHandler" method="_on_InventoryUI_item_dropped_to_floor"]
+position = Vector2( 351, 109 )
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
+[editable path="SpawnHandler/DroppedItems/SpawnArea"]

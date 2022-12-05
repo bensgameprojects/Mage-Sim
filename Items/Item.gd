@@ -17,7 +17,7 @@ signal ItemExitedPickupRange
 func set_item_id(item_id):
 	item_ID = item_id
 
-func get_item_id(item_id):
+func get_item_id():
 	return item_ID
 
 func set_item_reference(inventoryItem):
@@ -74,9 +74,9 @@ func _on_SoftCollision_area_exited(_area):
 # player has entered the pickup range
 func _on_PickupDetection_area_entered(_area):
 	# someone to deal with this
-	emit_signal("ItemEnteredPickupRange")
+	emit_signal("ItemEnteredPickupRange", self)
 
 
 func _on_PickupDetection_area_exited(_area):
 	# someone to deal with this
-	emit_signal("ItemExitedPickupRange")
+	emit_signal("ItemExitedPickupRange", self)

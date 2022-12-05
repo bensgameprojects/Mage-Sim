@@ -3,12 +3,15 @@ extends Control
 onready var playerInventoryGrid = $PlayerInventoryGrid
 onready var worldInventoryGrid = $WorldInventoryGrid
 onready var playerCtrlInventoryGrid = $PlayerInventoryGrid
+onready var pickupItemUI = $PickupItemUI
+onready var inventoryPanelWindow = $InventoryPanelWindow
 signal item_dropped_to_floor(item)
 signal item_created_in_world_inv(spawn_area,item)
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connect("new_dropped_item", self, "_on_new_dropped_item")
+	pass
 
 func load_inventory(savedInventory):
 	playerInventoryGrid.deserialize(savedInventory)
@@ -23,19 +26,24 @@ func save_inventory():
 func _input(event):
 	if event.is_action_pressed("ui_inv_toggle"):
 #		InventoryGrid.draw_grid = not InventoryGrid.draw_grid
-		self.visible = not self.visible
+		inventoryPanelWindow.visible = not inventoryPanelWindow.visible
 
-func _on_new_dropped_item(new_item):
+func create_new_dropped_item(new_item, stack_size):
 	# create a new item in the world inventory and set its item reference i guess
-	var world_inv_item_reference = worldInventoryGrid.create_and_add_item_at_next_free_position(new_item.get_item_ID())
+	var world_inv_item_reference = worldInventoryGrid.create_and_add_item_at_next_free_position(new_item.get_item_id())
 	if(world_inv_item_reference != null):
 		new_item.set_item_reference(world_inv_item_reference)
+		world_inv_item_reference.set_property("stack_size", stack_size)
 	else:
 		printerr("New Item could not be created in WorldInventoryGrid!")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+# the signal will come here, just go call it in the pickup item ui
+func add_to_pickup_stack(item):
+	pickupItemUI.add_to_pickup_stack(item)
+	
+func remove_from_pickup_stack(item):
+	pickupItemUI.remove_from_pickup_stack(item)
 
 # item is dropped and the drop_position is outside the UI bounds
 #item is type InventoryItem, drop_position is a Vector2 position vector
@@ -51,7 +59,7 @@ func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
 			emit_signal("item_dropped_to_floor", item)
 
 
-func _on_SpawnHandler_transfer_item_to_player_inv(itemToTransfer):
+func transfer_item_to_player_inv(itemToTransfer):
 	# try to merge the item with existing stack(s) of items
 	var worldInventory = itemToTransfer.get_inventory()
 	var transferItemStackSize = itemToTransfer.get_property("stack_size")

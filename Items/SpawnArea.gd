@@ -6,8 +6,7 @@ export(String) var item_texture_path = ""
 export var respawn_time = 3
 export var max_stack = 3
 export var min_stack = 1
-export(float) var spawnRadius = 50
-signal needsNewItem(spawn_area, item_ID, stack_size)
+export(float) var spawnRadius = 50.0
 #onready var spawnRegion = $SpawnRegion
 onready var ySort = $YSort
 var spawnRegion
@@ -77,10 +76,12 @@ func _on_SpawnTimer_timeout():
 	new_item.spawn_sprite(nudge)
 	# this signal will get caught in the inventoryUI and a corresponding
 	# item will be made in the world inventory with a reference
-	emit_signal("new_dropped_item", new_item)
+	# only one thing babyy
+	var inventoryUI = get_tree().get_nodes_in_group("InventoryUI")[0]
+	inventoryUI.create_new_dropped_item(new_item, stack_size)
 	# ok now these hm... i think i need to hook it up in the UI probably
-#	new_item.connect("ItemEnteredPickupRange", player, "addToPickupStack", [new_item])
-#	new_item.connect("ItemExitedPickupRange", player, "removeFromPickupStack", [new_item])
+	new_item.connect("ItemEnteredPickupRange", inventoryUI, "add_to_pickup_stack")
+	new_item.connect("ItemExitedPickupRange", inventoryUI, "remove_from_pickup_stack")
 #	print("made the item!")
 	
 
