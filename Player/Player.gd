@@ -27,12 +27,15 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
 onready var selectedItemOnGround = $SelectedItemOnGround
+onready var cameraHandler = $CameraHandler
 # Called when the node enters the scene tree for the first time. (init)
 func _ready():
 	# activate the animation tree.
 	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	swordHitbox.knockback_vector = direction_vector
+	# add the player to the player group
+	add_to_group(GroupConstants.PLAYER_GROUP)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("sprint"):
@@ -129,6 +132,7 @@ func attack_animation_finished():
 
 func spinny_attack_state(_delta):
 	velocity = Vector2.ZERO
+	hurtbox.start_invincibility(1.0)
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():
@@ -151,3 +155,9 @@ func _on_Hurtbox_area_entered(_area):
 		# half second invincibility when hit
 		hurtbox.start_invincibility(stats.HIT_INVINCIBILITY_TIME)
 		hurtbox.create_hit_effect()
+
+func attach_camera(camera_path):
+	cameraHandler.set("remote_path", camera_path)
+
+func detach_camera():
+	cameraHandler.set("remote_path", "")

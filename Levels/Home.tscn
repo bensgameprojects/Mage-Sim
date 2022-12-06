@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://World/SpawnLocation.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Buildings/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Items/DroppedItems.gd" type="Script" id=3]
+[ext_resource path="res://PlayerCamera.gd" type="Script" id=4]
+[ext_resource path="res://Levels/World.gd" type="Script" id=5]
+[ext_resource path="res://World/GrassBackground.png" type="Texture" id=6]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 160, 96 )
+scale = Vector2( 1, 1.06667 )
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 706, 452 )
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 1
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2( 149, 88 )
+current = true
+process_mode = 0
+smoothing_enabled = true
+script = ExtResource( 4 )
+zoom_increment = 0.05
+
+[node name="ZoneChanger" parent="." instance=ExtResource( 2 )]
+position = Vector2( 225, 174 )
+destination_scene = "res://Levels/World.tscn"
+
+[node name="SpawnHandler" type="YSort" parent="."]
+script = ExtResource( 3 )
+
+[node name="SpawnLocation" parent="SpawnHandler" instance=ExtResource( 1 )]
+position = Vector2( 224, 147 )
+
+[node name="Bushes" type="YSort" parent="SpawnHandler"]
+
+[node name="Grasses" type="YSort" parent="SpawnHandler"]
+
+[node name="Trees" type="YSort" parent="SpawnHandler"]
+
+[node name="DroppedItems" type="YSort" parent="SpawnHandler"]
+
+[node name="Enemies" type="YSort" parent="SpawnHandler"]

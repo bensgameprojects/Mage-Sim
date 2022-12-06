@@ -869,6 +869,8 @@ margin_right = -9.0
 margin_bottom = -21.0
 custom_fonts/font = SubResource( 59 )
 
+[node name="CameraHandler" type="RemoteTransform2D" parent="."]
+
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 
 [editable path="HitboxPivot/SwordHitbox"]

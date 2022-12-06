@@ -1,6 +1,6 @@
 extends Node
 
-#signal change_level
+signal change_level
 
 # might wanna go to these signals for adding/transferring items between
 # inventories

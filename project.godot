@@ -111,7 +111,9 @@ PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
 RecipeList="*res://Recipes/RecipeList.tscn"
 BuildingList="*res://Buildings/BuildingList.tscn"
-Signals="*res://signals.gd"
+Signals="res://signals.gd"
+GroupConstants="*res://group_constants.gd"
+LayerConstants="*res://layer_constants.gd"
 
 [display]
 

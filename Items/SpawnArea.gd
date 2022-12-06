@@ -13,7 +13,6 @@ var spawnRegion
 var spawnRegionShape
 var spawnTimer
 onready var itemScene = preload("res://Items/Item.tscn")
-const GATHERABLE_ITEM_LAYER_BIT = 9
 
 
 func setSpawnRegionRadius(radius):
@@ -60,7 +59,7 @@ func _on_SpawnTimer_timeout():
 	add_child(new_item)
 	new_item.set_item_id(item_ID)
 	new_item.set_sprite_texture(load(item_texture_path))
-	new_item.set_collision_layer_bit(GATHERABLE_ITEM_LAYER_BIT, true)
+	new_item.set_collision_layer_bit(LayerConstants.GATHERABLE_ITEM_LAYER_BIT, true)
 	# get a position inside the spawn area
 	var radius = getSpawnRegionRadius()
 #	var position = spawnArea.getSpawnRegionPosition()

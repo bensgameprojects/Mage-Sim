@@ -1,17 +1,13 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=60 format=2]
 
-[ext_resource path="res://World/Bush.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://World/GrassBackground.png" type="Texture" id=3]
-[ext_resource path="res://World/DirtTileset.png" type="Texture" id=4]
-[ext_resource path="res://World/CliffTileset.png" type="Texture" id=5]
-[ext_resource path="res://World/Grass.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Enemies/Bat.tscn" type="PackedScene" id=7]
-[ext_resource path="res://World/Tree.tscn" type="PackedScene" id=10]
-[ext_resource path="res://PlayerCamera.gd" type="Script" id=11]
-[ext_resource path="res://Items/DroppedItems.gd" type="Script" id=12]
-[ext_resource path="res://Items/SpawnArea.tscn" type="PackedScene" id=13]
-[ext_resource path="res://World.gd" type="Script" id=16]
+[ext_resource path="res://World/SpawnLocation.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Buildings/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Items/DroppedItems.gd" type="Script" id=3]
+[ext_resource path="res://PlayerCamera.gd" type="Script" id=4]
+[ext_resource path="res://Levels/World.gd" type="Script" id=5]
+[ext_resource path="res://World/GrassBackground.png" type="Texture" id=6]
+[ext_resource path="res://World/CliffTileset.png" type="Texture" id=7]
+[ext_resource path="res://World/DirtTileset.png" type="Texture" id=8]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -162,7 +158,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
 [sub_resource type="TileSet" id=2]
 0/name = "CliffTileset.png 0"
-0/texture = ExtResource( 5 )
+0/texture = ExtResource( 7 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 0, 352, 160 )
@@ -482,7 +478,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
 [sub_resource type="TileSet" id=1]
 0/name = "DirtTileset.png 0"
-0/texture = ExtResource( 4 )
+0/texture = ExtResource( 8 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 0, 176, 80 )
@@ -506,12 +502,12 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 0/z_index = 0
 
 [node name="World" type="Node2D"]
-script = ExtResource( 16 )
+script = ExtResource( 5 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 160, 96 )
 scale = Vector2( 1, 1.06667 )
-texture = ExtResource( 3 )
+texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 706, 452 )
 
@@ -520,149 +516,37 @@ tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 8, 0, 0, 9, 0, 2, 65544, 0, 65536, 65545, 0, 65538, 131080, 0, 65536, 131081, 0, 65538, 196616, 0, 65536, 196617, 0, 65538, 262144, 0, 0, 262145, 0, 2, 262152, 0, 65536, 262153, 0, 65538, 327680, 0, 131072, 327681, 0, 196613, 327682, 0, 196609, 327683, 0, 196609, 327684, 0, 196610, 327688, 0, 131072, 327689, 0, 131074 )
 
 [node name="DirtPathTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -131062, 0, 0, -131061, 0, 2, -65526, 0, 65536, -65525, 0, 65538, 10, 0, 65536, 11, 0, 65538, 65546, 0, 65536, 65547, 0, 65538, 131082, 0, 65536, 131083, 0, 65538, 196618, 0, 65536, 196619, 0, 65538, 262146, 0, 0, 262147, 0, 2, 262154, 0, 65536, 262155, 0, 131077, 262156, 0, 1, 262157, 0, 1, 262158, 0, 1, 262159, 0, 2, 327682, 0, 65536, 327683, 0, 131077, 327684, 0, 2, 327690, 0, 65540, 327691, 0, 131073, 327692, 0, 131073, 327693, 0, 65542, 327694, 0, 65541, 327695, 0, 131074, 393218, 0, 65536, 393219, 0, 65537, 393220, 0, 131077, 393221, 0, 1, 393222, 0, 1, 393223, 0, 1, 393224, 0, 1, 393225, 0, 1, 393226, 0, 131079, 393229, 0, 65536, 393230, 0, 65538, 458754, 0, 131072, 458755, 0, 131073, 458756, 0, 131073, 458757, 0, 131073, 458758, 0, 131073, 458759, 0, 65544, 458760, 0, 131073, 458761, 0, 131073, 458762, 0, 131074, 458765, 0, 65536, 458766, 0, 65538, 524295, 0, 131075, 524301, 0, 65536, 524302, 0, 65538, 589837, 0, 65536, 589838, 0, 65538, 655373, 0, 65536, 655374, 0, 65538, 720909, 0, 131072, 720910, 0, 131074 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 position = Vector2( 149, 88 )
 current = true
 process_mode = 0
 smoothing_enabled = true
-script = ExtResource( 11 )
+script = ExtResource( 4 )
 zoom_increment = 0.05
 
+[node name="ZoneChanger" parent="." instance=ExtResource( 2 )]
+position = Vector2( 225, 174 )
+
 [node name="SpawnHandler" type="YSort" parent="."]
-script = ExtResource( 12 )
+script = ExtResource( 3 )
 
-[node name="Player" parent="SpawnHandler" groups=["Player"] instance=ExtResource( 2 )]
-position = Vector2( 149, 88 )
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="SpawnHandler/Player"]
-remote_path = NodePath("../../../PlayerCamera")
+[node name="SpawnLocation" parent="SpawnHandler" instance=ExtResource( 1 )]
+visible = false
+position = Vector2( 225, 146 )
 
 [node name="Bushes" type="YSort" parent="SpawnHandler"]
 
-[node name="Bush" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 72, 48 )
-
-[node name="Bush2" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 72, 72 )
-
-[node name="Bush3" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 48, 160 )
-
-[node name="Bush4" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 24, 160 )
-
-[node name="Bush5" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 248, 152 )
-
-[node name="Bush6" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 32, 144 )
-
-[node name="Bush7" parent="SpawnHandler/Bushes" instance=ExtResource( 1 )]
-position = Vector2( 200, 152 )
-
 [node name="Grasses" type="YSort" parent="SpawnHandler"]
-
-[node name="Grass" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 64, 144 )
-
-[node name="Grass5" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 80, 144 )
-
-[node name="Grass6" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 96, 144 )
-
-[node name="Grass7" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 80, 128 )
-
-[node name="Grass8" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 96, 128 )
-
-[node name="Grass9" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 112, 144 )
-
-[node name="Grass10" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 128, 128 )
-
-[node name="Grass11" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 128, 144 )
-
-[node name="Grass12" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 144, 144 )
-
-[node name="Grass13" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 144, 128 )
-
-[node name="Grass2" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 64, 128 )
-
-[node name="Grass3" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 96, 32 )
-
-[node name="Grass14" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 112, 32 )
-
-[node name="Grass15" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 128, 32 )
-
-[node name="Grass16" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 144, 32 )
-
-[node name="Grass17" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 112, 48 )
-
-[node name="Grass4" parent="SpawnHandler/Grasses" instance=ExtResource( 6 )]
-position = Vector2( 96, 48 )
 
 [node name="Trees" type="YSort" parent="SpawnHandler"]
 
-[node name="Tree" parent="SpawnHandler/Trees" instance=ExtResource( 10 )]
-position = Vector2( 199, 136 )
-
-[node name="Tree2" parent="SpawnHandler/Trees" instance=ExtResource( 10 )]
-position = Vector2( 248, 135 )
-
 [node name="DroppedItems" type="YSort" parent="SpawnHandler"]
 
-[node name="SpawnAreaBlueberry" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
-position = Vector2( -45, -71 )
-collision_mask = 512
-item_ID = "blueberry"
-item_texture_path = "res://Items/Fruits Asset/Black Outline/01.png"
-respawn_time = 1
-max_stack = 999
-spawnRadius = 75.0
-
-[node name="SpawnArea" parent="SpawnHandler/DroppedItems" instance=ExtResource( 13 )]
-position = Vector2( 223, -74 )
-item_ID = "cherry"
-item_texture_path = "res://Items/Fruits Asset/Black Outline/03.png"
-spawnRadius = 40.0
-
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
-
-[node name="Bat3" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 97, 148 )
-
-[node name="Bat5" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 72, 148 )
-
-[node name="Bat" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 335, 101 )
-
-[node name="Bat4" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 352, 85 )
-
-[node name="Bat2" parent="SpawnHandler/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 351, 109 )
-
-[editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
-[editable path="SpawnHandler/DroppedItems/SpawnArea"]
