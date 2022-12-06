@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Simulation.gd" type="Script" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -56,3 +57,6 @@ color = Color( 0, 0, 0, 0 )
 [node name="HealthUI" parent="UILayer" instance=ExtResource( 3 )]
 
 [node name="InventoryUI" parent="UILayer" groups=["InventoryUI"] instance=ExtResource( 2 )]
+
+[node name="Simulation" type="Node" parent="." groups=["Simulation"]]
+script = ExtResource( 4 )
