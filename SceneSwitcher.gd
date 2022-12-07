@@ -13,7 +13,7 @@ var player_scene = preload("res://Player/Player.tscn")
 # will handle transferring the data of the player and any other necessary info
 # (note player inventory will be a child of the player)
 var current_scene
-
+var player
 onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
 onready var simulation = $Simulation
 
@@ -21,9 +21,12 @@ onready var simulation = $Simulation
 func _ready():
 	current_scene = load("res://Levels/World.tscn").instance()
 	add_child(current_scene)
-	current_scene.add_player(player_scene.instance())
+	var player = player_scene.instance()
+	current_scene.add_player(player)
 	simulation.set_ground_tiles(current_scene.get_ground_tiles())
-
+	simulation.set_thing_placer(current_scene.get_thing_placer())
+	simulation.set_player(player)
+	current_scene.setup_thing_placer(simulation.get_tracker(), current_scene.get_ground_tiles(), player)
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
@@ -39,6 +42,10 @@ func _on_SceneSwitcher_change_level(destination_scene_path):
 	new_scene.add_player(player_instance)
 	# get the ground tiles for the simulation system
 	simulation.set_ground_tiles(new_scene.get_ground_tiles())
+	simulation.set_thing_placer(current_scene.get_thing_placer())
+	simulation.set_player(player_instance)
+	# setup the entity_placer on the scene
+	new_scene.setup_entity_placer(simulation.get_tracker(), new_scene.get_ground_tiles(), player_instance)
 	# remove the old scene
 	remove_child(current_scene)
 

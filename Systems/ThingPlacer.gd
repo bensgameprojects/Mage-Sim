@@ -30,6 +30,38 @@ var _player: KinematicBody2D
 ## We split it in two: blueprints keyed by their names and things keyed by
 ## their blueprints.
 onready var Library := {
-	"AetherConverter": preload("res://Things/AetherConverterThing.tscn").instance(),
+	"AetherConverter": preload("res://Things/Blueprints/AetherConverterBlueprint.tscn").instance(),
 }
 
+func _ready() -> void:
+	# Use the existing blueprint to act as a key for the thing scene, so we can instance
+	# things given their blueprint
+	Library[Library.AetherConverter] = preload("res://Things/Things/AetherConverterThing.tscn")
+
+## Since we are temporarilty instancing blueprints for the library u ntil we have
+## set up a UI or something, clean up blueprints when object leaves the tree
+func _exit_tree() -> void:
+	Library.AetherConverter.queue_free()
+
+## Setup function sets the placer up with the data that it needs to function
+## and adds any preplaced things to the tracker
+func setup(tracker: ThingTracker, ground: TileMap, player: KinematicBody2D) -> void:
+	# Use the function to initialize our private references
+	# this makes refactoring easier because the ThingPlacer doesn't need
+	# hard-coded paths to the ThingTracker, Groundtiles, and Player nodes
+	_thing_tracker = tracker
+	_ground = ground
+	_player = player
+	
+	# for each child of thingPlacer, if it extended Thing, add it to the tracker
+	# and ensure its position snaps to the grid
+	for child in get_children():
+		if child is Thing:
+			# Get the world position of the child into map coordinates. These are
+			# integer coordinates, which makes them ideal for repeatable
+			# Dictionary keys, instead of the more rounding-error prone
+			# decimal numbers of world coordinates.
+			var map_position := world_to_map(child.global_position)
+			
+			# Report the Thing to the tracker to add it to the dictionary
+			_thing_tracker.place_thing(child, map_position)
