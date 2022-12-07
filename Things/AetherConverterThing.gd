@@ -1,4 +1,4 @@
-extends Building
+extends Thing
 
 
 # Declare member variables here. Examples:

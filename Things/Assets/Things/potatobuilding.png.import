@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/aetherconverter_base.png-c72444c2fc102b19f6507a83c8af0b01.stex"
+path="res://.import/potatobuilding.png-b9b59077587bf0c41be0cc755aa46453.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Objects/Assets/Buildings/aetherconverter_base.png"
-dest_files=[ "res://.import/aetherconverter_base.png-c72444c2fc102b19f6507a83c8af0b01.stex" ]
+source_file="res://Things/Assets/Things/potatobuilding.png"
+dest_files=[ "res://.import/potatobuilding.png-b9b59077587bf0c41be0cc755aa46453.stex" ]
 
 [params]
 

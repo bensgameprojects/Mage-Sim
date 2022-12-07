@@ -1,4 +1,4 @@
-class_name BlueprintBuilding
+class_name BlueprintThing
 extends Node2D
 
 

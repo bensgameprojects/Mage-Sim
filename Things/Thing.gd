@@ -1,4 +1,4 @@
-class_name Building
+class_name Thing
 extends Node2D
 
 ## Specifies the object type that is allowed to deconstruct this entity.

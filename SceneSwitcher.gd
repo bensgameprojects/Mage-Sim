@@ -15,12 +15,14 @@ var player_scene = preload("res://Player/Player.tscn")
 var current_scene
 
 onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
+onready var simulation = $Simulation
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_scene = load("res://Levels/World.tscn").instance()
 	add_child(current_scene)
 	current_scene.add_player(player_scene.instance())
+	simulation.set_ground_tiles(current_scene.get_ground_tiles())
 
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
@@ -35,6 +37,8 @@ func _on_SceneSwitcher_change_level(destination_scene_path):
 	add_child(new_scene)
 	# add the player to the new scene
 	new_scene.add_player(player_instance)
+	# get the ground tiles for the simulation system
+	simulation.set_ground_tiles(new_scene.get_ground_tiles())
 	# remove the old scene
 	remove_child(current_scene)
 

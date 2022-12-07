@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/aetherconverter_base_combined.png-006c09185bce896bc79b3797c9eae634.stex"
+path="res://.import/aetherconverter_base_combined.png-57d704bb2332f3eb97ecc4be8461e7e9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Objects/Assets/Buildings/aetherconverter_base_combined.png"
-dest_files=[ "res://.import/aetherconverter_base_combined.png-006c09185bce896bc79b3797c9eae634.stex" ]
+source_file="res://Things/Assets/Things/aetherconverter_base_combined.png"
+dest_files=[ "res://.import/aetherconverter_base_combined.png-57d704bb2332f3eb97ecc4be8461e7e9.stex" ]
 
 [params]
 

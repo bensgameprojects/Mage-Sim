@@ -9,15 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
-"class": "BlueprintBuilding",
+"base": "Node2D",
+"class": "BlueprintThing",
 "language": "GDScript",
-"path": "res://Objects/Blueprints/BlueprintObject.gd"
-}, {
-"base": "Reference",
-"class": "Building",
-"language": "GDScript",
-"path": "res://Objects/Building.gd"
+"path": "res://Things/Blueprints/BlueprintThing.gd"
 }, {
 "base": "Control",
 "class": "CtrlInventory",
@@ -88,10 +83,19 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
+}, {
+"base": "Node2D",
+"class": "Thing",
+"language": "GDScript",
+"path": "res://Things/Thing.gd"
+}, {
+"base": "Reference",
+"class": "ThingTracker",
+"language": "GDScript",
+"path": "res://Systems/ThingTracker.gd"
 } ]
 _global_script_class_icons={
-"BlueprintBuilding": "",
-"Building": "",
+"BlueprintThing": "",
 "CtrlInventory": "",
 "CtrlInventoryGrid": "",
 "CtrlInventoryGridEx": "",
@@ -105,7 +109,9 @@ _global_script_class_icons={
 "InventoryStacked": "",
 "ItemProtoset": "",
 "ItemSlot": "",
-"Player": ""
+"Player": "",
+"Thing": "",
+"ThingTracker": ""
 }
 
 [application]
@@ -122,8 +128,8 @@ config/icon="res://icon.png"
 PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
 RecipeList="*res://Recipes/RecipeList.tscn"
-BuildingList="*res://Objects/BuildingList.tscn"
-Signals="res://signals.gd"
+BuildingList="*res://Things/BuildingList.tscn"
+Events="*res://events.gd"
 GroupConstants="*res://group_constants.gd"
 LayerConstants="*res://layer_constants.gd"
 
