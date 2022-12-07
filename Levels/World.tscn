@@ -6,13 +6,14 @@
 [ext_resource path="res://World/SpawnLocation.tscn" type="PackedScene" id=4]
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=5]
 [ext_resource path="res://World/Tree.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Buildings/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Objects/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Items/DroppedItems.gd" type="Script" id=8]
 [ext_resource path="res://PlayerCamera.gd" type="Script" id=9]
 [ext_resource path="res://Levels/World.gd" type="Script" id=10]
 [ext_resource path="res://World/GrassBackground.png" type="Texture" id=11]
 [ext_resource path="res://World/CliffTileset.png" type="Texture" id=12]
 [ext_resource path="res://World/DirtTileset.png" type="Texture" id=13]
+
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )

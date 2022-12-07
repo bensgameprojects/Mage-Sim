@@ -9,15 +9,15 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Reference",
 "class": "BlueprintBuilding",
 "language": "GDScript",
-"path": "res://Buildings/Blueprints/BlueprintBuilding.gd"
+"path": "res://Objects/Blueprints/BlueprintObject.gd"
 }, {
-"base": "Node2D",
+"base": "Reference",
 "class": "Building",
 "language": "GDScript",
-"path": "res://Buildings/Building.gd"
+"path": "res://Objects/Building.gd"
 }, {
 "base": "Control",
 "class": "CtrlInventory",
@@ -122,7 +122,7 @@ config/icon="res://icon.png"
 PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
 RecipeList="*res://Recipes/RecipeList.tscn"
-BuildingList="*res://Buildings/BuildingList.tscn"
+BuildingList="*res://Objects/BuildingList.tscn"
 Signals="res://signals.gd"
 GroupConstants="*res://group_constants.gd"
 LayerConstants="*res://layer_constants.gd"
