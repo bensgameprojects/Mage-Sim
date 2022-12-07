@@ -30,6 +30,7 @@ func _ready():
 
 func _physics_process(_delta):
 	knockback = knockback.move_toward(Vector2.ZERO, stats.KNOCKBACK_FRICTION)
+	
 	knockback = move_and_slide(knockback)
 	match state:
 		IDLE:

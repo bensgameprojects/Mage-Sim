@@ -1,0 +1,6 @@
+TODO:
+1 ECS for abilities and redo player as extending character entity
+2 Attach Camera to player instead of using a remote transform or try moving the zoom code
+to use the remote transform so the player script can handle the input
+3 add cliff tileset and collision and bound the home world.
+4 

@@ -112,3 +112,4 @@ custom_fonts/font = ExtResource( 8 )
 align = 2
 
 [connection signal="item_dropped" from="InventoryPanelWindow/VBoxContainer/CenterContainer2/PlayerCtrlInventoryGrid" to="." method="_on_PlayerCtrlInventoryGrid_item_dropped"]
+[connection signal="transfer_item_to_player_inv" from="PickupItemUI" to="." method="transfer_item_to_player_inv"]

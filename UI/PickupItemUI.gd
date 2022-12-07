@@ -3,10 +3,11 @@ extends Control
 onready var focusLabel = $FocusLabel
 var pickuppableItemArray = Array()
 var pickupHead = 0
+signal transfer_item_to_player_inv
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
 func _unhandled_input(event):
 	if event.is_action("ui_focus_next"):
@@ -16,7 +17,7 @@ func _unhandled_input(event):
 	elif event.is_action("pickup_item"):
 		if(!pickuppableItemArray.empty()):
 			var poppedItem = pop_pickup_stack()
-			get_tree().call_group("InventoryUI", "transfer_item_to_player_inv", poppedItem.get_item_reference())
+			emit_signal("transfer_item_to_player_inv", poppedItem.get_item_reference())
 			poppedItem.queue_free()
 
 # go to the end of the array (which is the front of the stack)

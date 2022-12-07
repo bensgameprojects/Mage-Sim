@@ -31,5 +31,7 @@ func _on_ZoneChanger_body_exited(body):
 # if the timer times out then we change zones
 func _on_TeleportWait_timeout():
 	# emit level changed
+	# if you decide where levels go you can build the path here
+	# and make destination_scene the name of the scene instead
 	emit_signal("change_level", destination_scene)
 

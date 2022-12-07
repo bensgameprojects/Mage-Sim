@@ -1,29 +1,21 @@
-extends Area2D
+class_name Building
+extends Node2D
+
+## Specifies the object type that is allowed to deconstruct this entity.
+## Deconstructing means harvesting a resource or turning an entity in the world into an item.
+## For example, the player must hold an Axe to chop down a tree,
+## so we'll store that requirement as a text string here.
+export var deconstruct_filter: String
+
+## Specifies number of entities to create when deconstructing the object.
+## For example, a tree could drop 5 logs. In that case, we'd set the `pickup_count` to `5` in the Inspector.
+export var pickup_count := 1
 
 
-export(String) var building_id
-var building
-onready var buildingList = get_node("/root/BuildingList")
-var sprite
-var worldCollision
-var worldCollisionShape
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	# get the meta data for this building
-	building = buildingList.get_building_by_id(building_id)
-	sprite = Sprite.new()
-	sprite.set_texture(building["texture_path"])
-	add_child(sprite)
-	worldCollision = CollisionShape2D.new()
-	# for now im just going to set the shape to be a circle
-	# but we might want something more sophisticated for each building later
-	worldCollisionShape = CircleShape2D.new()
-	worldCollisionShape.set_radius(30)
-	worldCollision.add_child(worldCollisionShape)
-	add_child(worldCollision)
+## Any initialization step occurs in this override-able `_setup()` function. Overriding it
+## is optional, but if the entity requires information from the blueprint,
+## such as the direction of power, this is where we will code provide this information.
+## We haven't created the blueprint's type yet, so for now we leave it out. We'll code a `BlueprintEntity` type in a moment.
+func _setup(_blueprint) -> void:
 	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	

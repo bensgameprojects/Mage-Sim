@@ -11,7 +11,7 @@ onready var itemScene = preload("res://Items/Item.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	inventoryPanelWindow.visible = false
 
 func load_inventory(savedInventory):
 	playerInventoryGrid.deserialize(savedInventory)
@@ -23,7 +23,7 @@ func save_inventory():
 # IDK why its laid on top now prolly should look into that
 # and put a background behind it...
 # watch UI tutorials
-func _input(event):
+func _unhandled_input(event):
 	if event.is_action_pressed("ui_inv_toggle"):
 #		InventoryGrid.draw_grid = not InventoryGrid.draw_grid
 		inventoryPanelWindow.visible = not inventoryPanelWindow.visible
@@ -118,3 +118,6 @@ func _on_SpawnHandler_create_and_add_item_to_world_inv(spawn_area, itemID, stack
 	else:
 		printerr("item could not be created!")
 	
+
+
+

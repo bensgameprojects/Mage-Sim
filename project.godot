@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "BlueprintBuilding",
+"language": "GDScript",
+"path": "res://Buildings/Blueprints/BlueprintBuilding.gd"
+}, {
+"base": "Node2D",
+"class": "Building",
+"language": "GDScript",
+"path": "res://Buildings/Building.gd"
+}, {
 "base": "Control",
 "class": "CtrlInventory",
 "language": "GDScript",
@@ -80,6 +90,8 @@ _global_script_classes=[ {
 "path": "res://Player/Player.gd"
 } ]
 _global_script_class_icons={
+"BlueprintBuilding": "",
+"Building": "",
 "CtrlInventory": "",
 "CtrlInventoryGrid": "",
 "CtrlInventoryGridEx": "",

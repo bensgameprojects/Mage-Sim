@@ -49,11 +49,16 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("spinny attack"):
 		state = SPINNYATTACK
 
+func _get_direction():
+	var direction_vector : Vector2 = Vector2.ZERO
+	direction_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	direction_vector.y = Input.get_action_strength("ui_down") - Input.get_action_raw_strength("ui_up")
+	return direction_vector.normalized()
+
 # Called whenever physics tick happens, delta unlocks movement from framerate
 func _physics_process(delta):
-	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_raw_strength("ui_up")
-	input_vector = input_vector.normalized()
+	
+	input_vector = _get_direction()
 	
 	if input_vector != Vector2.ZERO:
 		direction_vector = input_vector

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Buildings/Assets/Buildings/aetherconverter_base_combined.png" type="Texture" id=1]
+[ext_resource path="res://Buildings/Blueprints/BlueprintBuilding.tscn" type="PackedScene" id=2]
+
+[node name="BlueprintBuilding" instance=ExtResource( 2 )]
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+position = Vector2( 0, -16 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 16, 0, 16, 16 )
