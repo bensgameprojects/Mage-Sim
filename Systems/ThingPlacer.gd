@@ -8,8 +8,10 @@ const MAXIMUM_WORK_DISTANCE := 275.0
 ## top-left corner of the tile.
 ## We might need an offset of like 16,16 or something but for now im going to
 ## leave it at 0,0
-const POSITION_OFFSET := Vector2(0,0)
-
+const POSITION_OFFSET := Vector2(16,16)
+# idk why but this needs to be 2 times more offset than above in the y direction
+# to place accurately
+const MOUSE_PLACEMENT_OFFSET := Vector2(16,32)
 ## Temporary variable to hold the active blueprint.
 ## For testing purposes, we hold it here until we build the inventory.
 var _blueprint: BlueprintThing
@@ -26,6 +28,15 @@ var _ground: TileMap
 ## the player from interacting with things that are too far away.
 var _player: KinematicBody2D
 
+## Base time in seconds it takes to deconstruct something
+const DECONSTRUCT_TIME := 1.5
+
+## this variable keeps track of the current deconstruction target cell.
+## If the mouse moves to another cell, we can abort the operation by checking against this
+## value.
+var _current_deconstruct_location := Vector2.ZERO
+
+onready var _deconstruct_timer := $DeconstructTimer
 ## Temporary variable to store references to things and blueprint scenes.
 ## We split it in two: blueprints keyed by their names and things keyed by
 ## their blueprints.
@@ -65,3 +76,114 @@ func setup(tracker: ThingTracker, ground: TileMap, player: KinematicBody2D) -> v
 			
 			# Report the Thing to the tracker to add it to the dictionary
 			_thing_tracker.place_thing(child, map_position)
+
+func _process(_delta: float) -> void:
+	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
+	if has_placeable_blueprint:
+		_move_blueprint_in_world(world_to_map(get_global_mouse_position()))
+
+func _unhandled_input(event: InputEvent) -> void:
+	var global_mouse_position := get_global_mouse_position()
+	# check whether we have a blueprint in hand (selected from ui) that can be placed
+	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
+	# we check if the mouse is close enough to the Player node
+	var is_close_to_player := (
+		global_mouse_position.distance_to(_player.global_position) < MAXIMUM_WORK_DISTANCE
+	)
+	# get the coordinates of the cell the mouse is hovering over
+	var cellv := world_to_map(global_mouse_position)
+	# check if occupied
+	var cell_is_occupied := _thing_tracker.is_cell_occupied(cellv)
+	# check if there's a ground tile to place on
+	var is_on_ground := _ground.get_cellv(cellv) == 0
+	# If the user releases the deconstruct key or presses another mouse button,
+	# we can abort. _abort_deconstruct safely disconnects the timer
+	if event is InputEventMouseButton or event.is_action_released("deconstruct"):
+		_abort_deconstruct()
+	# left click to place an item
+	if event.is_action_pressed("left_click"):
+		if has_placeable_blueprint:
+			if not cell_is_occupied and is_close_to_player and is_on_ground:
+				_place_thing(cellv)
+				# deduct cost from inventory here perhaps?
+	# press and hold "deconstruct" action (or G rn) to deconstruct an item
+	elif event.is_action_pressed("deconstruct") and not has_placeable_blueprint:
+		if cell_is_occupied and is_close_to_player:
+			# we remove the thing that the mouse is hovering over
+			_deconstruct(global_mouse_position, cellv)
+	# this moves the blueprint to follow the mouse cursor	
+	elif event is InputEventMouseMotion:
+		if cellv != _current_deconstruct_location:
+			_abort_deconstruct()
+		if has_placeable_blueprint:
+			_move_blueprint_in_world(cellv)
+	# If user wants to cancel the placement we should remove the blueprint
+	# note that the blueprint instances are shared in a library so we dont
+	# want to free them
+	elif event.is_action_pressed("ui_cancel") and _blueprint:
+		remove_child(_blueprint)
+		_blueprint = null
+	# for now we will just hook quickbar_1 directly to aether converter to test it
+	elif event.is_action_pressed("quickbar_1"):
+		if _blueprint:
+			remove_child(_blueprint)
+		_blueprint = Library.AetherConverter
+		add_child(_blueprint)
+		_move_blueprint_in_world(cellv)
+
+func _move_blueprint_in_world(cellv: Vector2) -> void:
+	# snap the blueprints position to the mouse with an offset
+	_blueprint.global_position = map_to_world(cellv) + MOUSE_PLACEMENT_OFFSET
+	
+	# determine each of the placeable conditions
+	var is_close_to_player := (
+		get_global_mouse_position().distance_to(_player.global_position) < MAXIMUM_WORK_DISTANCE
+	)
+	var is_on_ground : bool = _ground.get_cellv(cellv) == 0
+	var cell_is_occupied := _thing_tracker.is_cell_occupied(cellv)
+	
+	# Tint according to whether the current tile is valid or not.
+	if not cell_is_occupied and is_close_to_player and is_on_ground:
+		_blueprint.modulate = Color.white
+	else:
+		_blueprint.modulate = Color.red
+		
+func _place_thing(cellv: Vector2) -> void:
+	# Use the blueprint prepared in _ready to instance a new thing
+	var new_thing: Node2D = Library[_blueprint].instance()
+	
+	add_child(new_thing)
+	
+	# snap its position to the map, adding POSITION_OFFSET to thet the center of the grid cell
+	new_thing.global_position = map_to_world(cellv) + POSITION_OFFSET
+	
+	new_thing._setup(_blueprint)
+	
+	_thing_tracker.place_thing(new_thing, cellv)
+
+# Begin the deconstruction process at the current cell
+func _deconstruct(event_position: Vector2, cellv: Vector2) -> void:
+	# We connect tot the timer's 'timeout' signal. We pass in the targeted tile
+	# as a bind argument and make sure that the signal disconnects after
+	# emitting once using the CONNECT_ONESHOT flag. This is becase once the
+	# signal has triggered, we do not want to have to disconnect manually.
+	# Once the timer ends, the deconstruct operation ends.
+	_deconstruct_timer.connect("timeout", self, "_finish_deconstruct", [cellv], CONNECT_ONESHOT)
+	_deconstruct_timer.start(DECONSTRUCT_TIME)
+	# save the location of the current deconstruction for reference
+	_current_deconstruct_location = cellv
+
+# if the timer goes off (confirmed deconstruction) then run this function
+func _finish_deconstruct(cellv: Vector2) -> void:
+	var thing := _thing_tracker.get_thing_at(cellv)
+	_thing_tracker.remove_thing(cellv)
+	# refund the build cost of thing to the player's inventory HERE!
+	# or if the deconstruct operation causes a gatherable item to drop, then do that
+	# instead
+
+# Disconnect from the timer if connected and stop it from continuing
+# to prevent deconstruction from completing
+func _abort_deconstruct() -> void:
+	if _deconstruct_timer.is_connected("timeout", self, "_finish_deconstruct"):
+		_deconstruct_timer.disconnect("timeout", self, "_finish_deconstruct")
+	_deconstruct_timer.stop()

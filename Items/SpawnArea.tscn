@@ -9,4 +9,5 @@ script = ExtResource( 1 )
 
 [node name="YSort" type="YSort" parent="."]
 
+[connection signal="body_entered" from="." to="." method="_on_SpawnArea_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_SpawnArea_body_exited"]

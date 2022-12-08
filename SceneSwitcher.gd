@@ -19,9 +19,9 @@ onready var simulation = $Simulation
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	current_scene = load("res://Levels/World.tscn").instance()
+	current_scene = load("res://Levels/Home.tscn").instance()
 	add_child(current_scene)
-	var player = player_scene.instance()
+	player = player_scene.instance()
 	current_scene.add_player(player)
 	simulation.set_ground_tiles(current_scene.get_ground_tiles())
 	simulation.set_thing_placer(current_scene.get_thing_placer())

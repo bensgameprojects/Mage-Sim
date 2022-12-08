@@ -1,9 +1,9 @@
 extends Node
 
-## Signal emitted when the player places an object, passing the object and its
+## Signal emitted when the player places a thing, passing the object and its
 ## position in map coordinates
-signal object_placed(object, cellv)
+signal thing_placed(thing, cellv)
 
-## Signal emitted when the player removes an object, passing the object and its
+## Signal emitted when the player removes a thing, passing the object and its
 ## position in map coordinates
-signal object_removed(object, cellv)
+signal thing_removed(thing, cellv)

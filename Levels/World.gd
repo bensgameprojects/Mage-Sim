@@ -26,7 +26,7 @@ func get_ground_tiles():
 func get_thing_placer():
 	return _thing_placer
 
-func setup_entity_placer(tracker, ground, player) -> void:
+func setup_thing_placer(tracker, ground, player) -> void:
 	_thing_placer.setup(tracker, ground, player)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

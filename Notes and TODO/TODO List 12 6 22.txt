@@ -1,6 +1,13 @@
 TODO:
 1 ECS for abilities and redo player as extending character entity
 2 Attach Camera to player instead of using a remote transform or try moving the zoom code
-to use the remote transform so the player script can handle the input
+to use the remote transform so the player script can handle the input or map the input controls to the UI layer and call the functions on the camera from there
+2 COMPLETE! Just had to set the UI nodes' mouse filter to ignore.
 3 add cliff tileset and collision and bound the home world.
-4 
+4 Why is the placer not respecting the world collisions? Look into that
+5 Integrate dropped items as an entity that can be deconstructed with a button
+6 The ThingPlacer needs tiles around the map boundary to stop the player from building outside the map on every buildable map. Also needs tiles placed wherever we dont want the 
+player to be able to build. The the first tutorial or two discuss how to make a tileset
+and have it swap from a visible tile to an invisible one so we can draw it on the map.
+It also needs some tiles at or beyond the map boundary to form a rectangle around the map
+in order to draw the grid tiles.

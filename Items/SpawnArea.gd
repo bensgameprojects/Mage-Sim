@@ -90,3 +90,7 @@ func _on_SpawnArea_body_exited(_body):
 	# spawn timer should be started and unpaused
 	spawnTimer.set_paused(false)
 	spawnTimer.start(respawn_time)
+
+# if there is an item then the spawn timer should be paused
+func _on_SpawnArea_body_entered(_body):
+	spawnTimer.set_paused(true)

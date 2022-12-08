@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Simulation.gd" type="Script" id=4]
-[ext_resource path="res://Systems/ThingPlacer.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -56,11 +55,11 @@ color = Color( 0, 0, 0, 0 )
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="HealthUI" parent="UILayer" instance=ExtResource( 3 )]
+mouse_filter = 2
 
 [node name="InventoryUI" parent="UILayer" groups=["InventoryUI"] instance=ExtResource( 2 )]
+mouse_filter = 2
+mouse_default_cursor_shape = 2
 
 [node name="Simulation" type="Node" parent="." groups=["Simulation"]]
 script = ExtResource( 4 )
-
-[node name="ThingPlacer" type="Node" parent="Simulation"]
-script = ExtResource( 5 )

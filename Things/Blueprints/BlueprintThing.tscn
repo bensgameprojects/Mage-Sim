@@ -3,4 +3,5 @@
 [ext_resource path="res://Things/Blueprints/BlueprintThing.gd" type="Script" id=1]
 
 [node name="BlueprintThing" type="Node2D"]
+z_index = 9
 script = ExtResource( 1 )
