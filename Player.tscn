@@ -750,14 +750,14 @@ states/Attack/position = Vector2( 357, 163 )
 states/Idle/node = SubResource( 21 )
 states/Idle/position = Vector2( 357, 77 )
 states/Roll/node = SubResource( 54 )
-states/Roll/position = Vector2( 357, -19 )
+states/Roll/position = Vector2( 357, -20 )
 states/Run/node = SubResource( 26 )
 states/Run/position = Vector2( 544, 77 )
 states/SpinnyAttack/node = SubResource( 42 )
 states/SpinnyAttack/position = Vector2( 169, 77 )
 transitions = [ "Idle", "Run", SubResource( 27 ), "Run", "Idle", SubResource( 28 ), "Idle", "Attack", SubResource( 39 ), "Attack", "Idle", SubResource( 40 ), "Idle", "SpinnyAttack", SubResource( 43 ), "SpinnyAttack", "Idle", SubResource( 44 ), "Roll", "Idle", SubResource( 55 ), "Idle", "Roll", SubResource( 56 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -148.207, -49.8633 )
+graph_offset = Vector2( -148.207, -43.7016 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
@@ -870,10 +870,7 @@ custom_fonts/font = SubResource( 59 )
 
 [node name="CameraHandler" type="RemoteTransform2D" parent="."]
 
-[node name="Cooldown" type="Timer" parent="."]
-
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
-[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
 
 [editable path="HitboxPivot/SwordHitbox"]
 [editable path="Hurtbox"]

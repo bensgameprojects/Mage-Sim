@@ -3,4 +3,8 @@ TODO:
 2 Attach Camera to player instead of using a remote transform or try moving the zoom code
 to use the remote transform so the player script can handle the input
 3 add cliff tileset and collision and bound the home world.
-4 
+4 Save and load (make group for all persisting items, serialize then deserialize)
+	a. inventory saving/loading
+	b. level/location saving/loading
+	c. buildings/objects
+5. Main menu UI

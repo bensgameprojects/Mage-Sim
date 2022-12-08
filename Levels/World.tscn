@@ -7,7 +7,7 @@
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=5]
 [ext_resource path="res://World/Tree.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Buildings/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Items/DroppedItems.gd" type="Script" id=8]
+[ext_resource path="res://SpawnHandler.gd" type="Script" id=8]
 [ext_resource path="res://PlayerCamera.gd" type="Script" id=9]
 [ext_resource path="res://Levels/World.gd" type="Script" id=10]
 [ext_resource path="res://World/GrassBackground.png" type="Texture" id=11]
@@ -665,6 +665,8 @@ position = Vector2( 352, 85 )
 
 [node name="Bat2" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
 position = Vector2( 351, 109 )
+
+[connection signal="child_entered_tree" from="SpawnHandler" to="SpawnHandler" method="_on_SpawnHandler_child_entered_tree"]
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
 [editable path="SpawnHandler/DroppedItems/SpawnArea"]

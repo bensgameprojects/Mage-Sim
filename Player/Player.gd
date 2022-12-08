@@ -9,16 +9,25 @@ enum {
 	MOVE, 
 	ROLL, 
 	ATTACK,
-	SPINNYATTACK
+	SPINNYATTACK,
+	CAST
 }
 
 var state = MOVE
 var velocity = Vector2.ZERO
 var input_vector = Vector2.ZERO
 var direction_vector = Vector2.DOWN # was roll_vector
+var last_input_direction = Vector2.ZERO
+var player_last_spellcast_position_and_direction
+var on_cooldown = false
 var is_sprint = false
+var bullet_start_position
+var bullet_direction
 # get the global auto-load singleton for player stats (see project settings auto-load)
 var stats = PlayerStats
+
+signal bullet_fired
+signal spell_cast
 
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
@@ -45,9 +54,15 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("roll"):
 		state = ROLL
 	elif event.is_action_pressed("attack"):
-		state =  ATTACK
+		state = ATTACK
 	elif event.is_action_pressed("spinny attack"):
 		state = SPINNYATTACK
+	elif event.is_action_pressed("ability_1"):
+		if on_cooldown == false:
+			state = CAST
+			bullet_start_position = global_position
+			bullet_direction = direction_vector
+			use_ability_1(load("res://Effects/Projectiles/WindAttack1.tscn"))
 
 func _get_direction():
 	var direction_vector : Vector2 = Vector2.ZERO
@@ -62,6 +77,7 @@ func _physics_process(delta):
 	
 	if input_vector != Vector2.ZERO:
 		direction_vector = input_vector
+		last_input_direction = input_vector
 	# forces only 1 state to be running at a time
 	match state:
 		MOVE:
@@ -72,6 +88,8 @@ func _physics_process(delta):
 			attack_state(delta)
 		SPINNYATTACK:
 			spinny_attack_state(delta)
+		CAST:
+			cast_state(delta)
 		_:
 			move_state(delta)
 	# set the movement and collision stuff, makes us sticky to collision polygons
@@ -148,11 +166,6 @@ func roll_animation_finished():
 		velocity.limit_length(stats.MOVE_MAX_SPEED)
 	state = MOVE
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func _on_Hurtbox_area_entered(_area):
 	#makes sure that you aren't invincible before assigning damage
 	if hurtbox.invincible == false:
@@ -166,3 +179,25 @@ func attach_camera(camera_path):
 
 func detach_camera():
 	cameraHandler.set("remote_path", "")
+	
+func cast_state(_delta):
+	animationState.travel("Attack")
+	$Cooldown.start()
+	on_cooldown = true
+	
+func use_ability_1(spell):
+	#need to add function to check ability 1 slot in UI and use that as the spell
+	
+	#adds instance of spell to parent node, which is "SpawnHandler" as of 12/7
+	var spell_instance = spell.instance()
+	get_parent().add_child(spell_instance)
+	spell_instance.setup(bullet_start_position, bullet_direction)
+
+func _on_Cooldown_timeout():
+	on_cooldown = false
+#	print("TIME")
+
+#func _on_Bullet_entity_spawned():
+#	connect("bullet_fired", get_tree().get_nodes_in_group("Bullet")[0], "_on_Player_bullet_fired")
+#	player_last_spellcast_position_and_direction = [position, last_input_direction]
+#	emit_signal("bullet_fired", player_last_spellcast_position_and_direction)
