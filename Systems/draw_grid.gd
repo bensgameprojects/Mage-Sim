@@ -1,5 +1,9 @@
 extends Node2D
 
+# This node draws a grid on the tileset. It uses the tilemap_rect.size
+# to get the size of the tilemap which is a limitation since you must place some tiles
+# around the edge of where you want the grid to draw (like around the outside of the map somewhere)
+
 onready var tilemap_rect = get_parent().get_used_rect()
 onready var tilemap_cell_size = get_parent().cell_size
 onready var color = Color(0.0, 1.0, 0.0)

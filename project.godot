@@ -79,6 +79,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/gloot/item_slot.gd"
 }, {
+"base": "BlueprintThing",
+"class": "PipeBlueprint",
+"language": "GDScript",
+"path": "res://Things/Blueprints/PipeBlueprint.gd"
+}, {
+"base": "Thing",
+"class": "PipeThing",
+"language": "GDScript",
+"path": "res://Things/Things/PipeThing.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
@@ -109,6 +119,8 @@ _global_script_class_icons={
 "InventoryStacked": "",
 "ItemProtoset": "",
 "ItemSlot": "",
+"PipeBlueprint": "",
+"PipeThing": "",
 "Player": "",
 "Thing": "",
 "ThingTracker": ""
@@ -129,9 +141,10 @@ PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
 RecipeList="*res://Recipes/RecipeList.tscn"
 BuildingList="*res://Things/BuildingList.tscn"
-Events="*res://events.gd"
-GroupConstants="*res://group_constants.gd"
-LayerConstants="*res://layer_constants.gd"
+Events="*res://Shared/events.gd"
+GroupConstants="*res://Shared/group_constants.gd"
+LayerConstants="*res://Shared/layer_constants.gd"
+Types="*res://Shared/Types.gd"
 
 [display]
 
@@ -263,6 +276,11 @@ right_click={
 quickbar_1={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":49,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+quickbar_2={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":50,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 deconstruct={

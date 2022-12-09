@@ -16,41 +16,53 @@ var current_scene
 var player
 onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
 onready var simulation = $Simulation
-
+var current_scene_name
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	current_scene = load("res://Levels/Home.tscn").instance()
+	current_scene_name = "Home"
+	current_scene = load(_build_scene_path(current_scene_name)).instance()
 	add_child(current_scene)
 	player = player_scene.instance()
 	current_scene.add_player(player)
-	simulation.set_ground_tiles(current_scene.get_ground_tiles())
-	simulation.set_thing_placer(current_scene.get_thing_placer())
-	simulation.set_player(player)
-	current_scene.setup_thing_placer(simulation.get_tracker(), current_scene.get_ground_tiles(), player)
+	# get the ground tiles and other stuff for the simulation system
+	var ground_tiles = current_scene.get_ground_tiles()
+	var thing_placer = current_scene.get_thing_placer()
+	var flat_things = current_scene.get_flat_things()
+	var new_thing_tracker = ThingTracker.new()
+	simulation.setup(current_scene_name, new_thing_tracker, ground_tiles, thing_placer, flat_things, player)
+	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
-func _on_SceneSwitcher_change_level(destination_scene_path):
+func _on_SceneSwitcher_change_level(destination_scene_name):
 	levelTransitionAnimation.play("fade_in")
 	# load an instance of the destination scene
-	var new_scene = load(destination_scene_path).instance()
+	var new_scene = load(_build_scene_path(destination_scene_name)).instance()
 	# get the player node from the current scene
-	var player_instance = current_scene.remove_player()
+	player = current_scene.remove_player()
+	# set the new scene name
+	current_scene_name = destination_scene_name
 	# add the new scene
 	add_child(new_scene)
 	# add the player to the new scene
-	new_scene.add_player(player_instance)
-	# get the ground tiles for the simulation system
-	simulation.set_ground_tiles(new_scene.get_ground_tiles())
-	simulation.set_thing_placer(current_scene.get_thing_placer())
-	simulation.set_player(player_instance)
+	new_scene.add_player(player)
+	# get the ground tiles and other stuff for the simulation system
+	var ground_tiles = new_scene.get_ground_tiles()
+	var thing_placer = new_scene.get_thing_placer()
+	var flat_things = new_scene.get_flat_things()
+	var new_thing_tracker = ThingTracker.new()
+	simulation.setup(current_scene_name, new_thing_tracker, ground_tiles, thing_placer, flat_things, player)
 	# setup the entity_placer on the scene
-	new_scene.setup_entity_placer(simulation.get_tracker(), new_scene.get_ground_tiles(), player_instance)
+	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 	# remove the old scene
 	remove_child(current_scene)
-
 	# call the queue free on the old scene
 	current_scene.queue_free()
 	# reassign current scene var for next time
 	current_scene = new_scene
 	levelTransitionAnimation.play("fade_out")
+
+func _build_scene_path(scene_name):
+	var path = "res://Levels/" + scene_name + ".tscn"
+	return path
+	

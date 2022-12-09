@@ -7,6 +7,8 @@ onready var spawnHandler = $SpawnHandler
 # needs to INCLUDE ALL of the relevant collision information for the level
 onready var _ground = $GroundLayer1
 onready var _thing_placer = $SpawnHandler/ThingPlacer
+onready var _flat_things = $FlatThings
+var _scene_name
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -26,8 +28,13 @@ func get_ground_tiles():
 func get_thing_placer():
 	return _thing_placer
 
-func setup_thing_placer(tracker, ground, player) -> void:
-	_thing_placer.setup(tracker, ground, player)
+func get_flat_things():
+	return _flat_things
+
+func setup_thing_placer(scene_name, tracker, ground, flat_things, player) -> void:
+	# give the world script a copy of the scene name just so it has it for later
+	_scene_name = scene_name
+	_thing_placer.setup(scene_name, tracker, ground, flat_things, player)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

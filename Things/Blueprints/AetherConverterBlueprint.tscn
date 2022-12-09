@@ -4,9 +4,9 @@
 [ext_resource path="res://Things/Blueprints/BlueprintThing.tscn" type="PackedScene" id=2]
 
 [node name="BlueprintThing" instance=ExtResource( 2 )]
+position = Vector2( 0, 15 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
-position = Vector2( 0, -16 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 region_enabled = true

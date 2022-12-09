@@ -2,7 +2,7 @@ extends Node2D
 
 signal change_level
 
-export(String) var destination_scene
+export(String) var destination_scene_name = "Home"
 onready var teleportWait = $TeleportWait
 onready var baseSprite = $BaseSprite
 # Called when the node enters the scene tree for the first time.
@@ -33,5 +33,5 @@ func _on_TeleportWait_timeout():
 	# emit level changed
 	# if you decide where levels go you can build the path here
 	# and make destination_scene the name of the scene instead
-	emit_signal("change_level", destination_scene)
+	emit_signal("change_level", destination_scene_name)
 
