@@ -2,13 +2,13 @@ extends Area2D
 
 var knockback_vector
 var damage
-
+var response
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	monitoring = true
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+#hit confirmation behavior
+func hit_confirm(entity) -> bool:
+	response = get_parent().on_hit_confirmed(entity)
+	return response

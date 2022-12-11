@@ -1,0 +1,35 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/Acid VFX 02Repeatable6.png-ddf59bf87a209bdf3c10a3bd2a59fe5d.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Effects/Projectiles/Acid VFX 01 - 02/Acid VFX 2/Separated Frames/Acid VFX 02Repeatable6.png"
+dest_files=[ "res://.import/Acid VFX 02Repeatable6.png-ddf59bf87a209bdf3c10a3bd2a59fe5d.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=false
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+process/normal_map_invert_y=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=1.0

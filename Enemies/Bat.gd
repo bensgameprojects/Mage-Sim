@@ -91,10 +91,11 @@ func accelerate_to_point(position):
 	velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
 
 func _on_Hurtbox_area_entered(area):
-	stats.health -= area.damage
-	knockback = area.knockback_vector.normalized() * stats.KNOCKBACK_SPEED
-#	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
-	hurtbox.create_hit_effect()
+	if area.hit_confirm(self):
+		stats.health -= area.damage
+		knockback = area.knockback_vector.normalized() * stats.KNOCKBACK_SPEED
+	#	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
+		hurtbox.create_hit_effect()
 
 #called when health <= 0
 func _on_Stats_no_health():

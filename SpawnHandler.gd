@@ -21,5 +21,5 @@ func add_player(player_instance):
 
 func remove_player() -> Player:
 	remove_child(player)
-	return player
 	player_spawned = false
+	return player

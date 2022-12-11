@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Effects/Projectiles/Fire Effect 1/Firebolt SpriteSheet_projectile.png" type="Texture" id=2]
+[ext_resource path="res://Effects/Projectiles/FireAttack1.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 48, 0, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 96, 0, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 144, 0, 48, 32 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 6.0
+height = 12.0
+
+[node name="BulletNode" type="Area2D"]
+physics_interpolation_mode = 2
+scale = Vector2( 1, 1.00979 )
+collision_layer = 0
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -6, 1 )
+scale = Vector2( 0.998297, 1.03551 )
+frames = SubResource( 7 )
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite")
+
+[node name="BulletShape" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+scale = Vector2( 1.01425, 1 )
+shape = SubResource( 8 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

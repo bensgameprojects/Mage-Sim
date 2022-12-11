@@ -18,16 +18,12 @@ var velocity = Vector2.ZERO
 var input_vector = Vector2.ZERO
 var direction_vector = Vector2.DOWN # was roll_vector
 var last_input_direction = Vector2.ZERO
-var player_last_spellcast_position_and_direction
 var on_cooldown = false
 var is_sprint = false
 var bullet_start_position
 var bullet_direction
 # get the global auto-load singleton for player stats (see project settings auto-load)
 var stats = PlayerStats
-
-signal bullet_fired
-signal spell_cast
 
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
@@ -63,6 +59,12 @@ func _unhandled_input(event):
 			bullet_start_position = global_position
 			bullet_direction = direction_vector
 			use_ability_1(load("res://Effects/Projectiles/WindAttack1.tscn"))
+	elif event.is_action_pressed("ability_2"):
+		if on_cooldown == false:
+			state = CAST
+			bullet_start_position = global_position
+			bullet_direction = direction_vector
+			use_ability_2(load("res://Effects/Projectiles/FireAttack1.tscn"))
 
 func _get_direction():
 	var direction_vector : Vector2 = Vector2.ZERO
@@ -191,13 +193,16 @@ func use_ability_1(spell):
 	#adds instance of spell to parent node, which is "SpawnHandler" as of 12/7
 	var spell_instance = spell.instance()
 	get_parent().add_child(spell_instance)
-	spell_instance.setup(bullet_start_position, bullet_direction)
+	spell_instance.setup(self, bullet_start_position, bullet_direction)
+	
+func use_ability_2(spell):
+	#need to add function to check ability 1 slot in UI and use that as the spell
+	
+	#adds instance of spell to parent node, which is "SpawnHandler" as of 12/7
+	var spell_instance = spell.instance()
+	get_parent().add_child(spell_instance)
+	spell_instance.setup(self, bullet_start_position, bullet_direction)
 
 func _on_Cooldown_timeout():
 	on_cooldown = false
 #	print("TIME")
-
-#func _on_Bullet_entity_spawned():
-#	connect("bullet_fired", get_tree().get_nodes_in_group("Bullet")[0], "_on_Player_bullet_fired")
-#	player_last_spellcast_position_and_direction = [position, last_input_direction]
-#	emit_signal("bullet_fired", player_last_spellcast_position_and_direction)
