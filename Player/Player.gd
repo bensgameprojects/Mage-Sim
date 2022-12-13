@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Entity
 class_name Player
 # Member variable declaration
 
@@ -13,15 +13,9 @@ enum {
 	CAST
 }
 
-var state = MOVE
-var velocity = Vector2.ZERO
-var input_vector = Vector2.ZERO
 var direction_vector = Vector2.DOWN # was roll_vector
 var last_input_direction = Vector2.ZERO
-var on_cooldown = false
 var is_sprint = false
-var bullet_start_position
-var bullet_direction
 # get the global auto-load singleton for player stats (see project settings auto-load)
 var stats = PlayerStats
 
@@ -36,7 +30,6 @@ onready var cameraHandler = $CameraHandler
 # Called when the node enters the scene tree for the first time. (init)
 func _ready():
 	# activate the animation tree.
-	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	swordHitbox.knockback_vector = direction_vector
 	# add the player to the player group
@@ -206,3 +199,6 @@ func use_ability_2(spell):
 func _on_Cooldown_timeout():
 	on_cooldown = false
 #	print("TIME")
+
+func _on_Player_no_health():
+	queue_free()

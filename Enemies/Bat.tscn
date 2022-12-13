@@ -50,14 +50,13 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id=10]
 radius = 64.0
 
-[node name="Bat" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D"]
 collision_layer = 32
 collision_mask = 33
 script = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 6 )
-frame = 4
 playing = true
 offset = Vector2( 0, -12 )
 
@@ -95,8 +94,9 @@ shape = SubResource( 10 )
 
 [node name="WanderController" parent="." instance=ExtResource( 8 )]
 
+[connection signal="no_health" from="." to="." method="_on_Bat_no_health"]
+[connection signal="no_health" from="." to="." method="_on_Enemy_no_health"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
-[connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 
 [editable path="Hurtbox"]
 [editable path="Hitbox"]

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Entity
 
 enum {
 	IDLE,
@@ -6,30 +6,31 @@ enum {
 	CHASE
 }
 
-var state = CHASE
-# init rng
-var statePickerRNG = RandomNumberGenerator.new()
-
-
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 
 var knockback = Vector2.ZERO
-var velocity = Vector2.ZERO
 var softCollisionPushVector = Vector2.ZERO
 
-onready var stats = $Stats
+
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var sprite = $AnimatedSprite
 onready var hurtbox = $Hurtbox
 onready var wanderController = $WanderController
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# seed rng
+	MOVE_ACCELERATION = 20
+	MOVE_FRICTION = 160
+	MOVE_MAX_SPEED = 80
+	SPRINT_MAX_SPEED = 120
+	SPRINT_ACCELERATION = 40
+	KNOCKBACK_FRICTION = 30
+	KNOCKBACK_SPEED = 420
+	state = CHASE
 	statePickerRNG.randomize()
 	set_state_and_wander_timer()
 
 func _physics_process(_delta):
-	knockback = knockback.move_toward(Vector2.ZERO, stats.KNOCKBACK_FRICTION)
+	knockback = knockback.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION)
 	
 	knockback = move_and_slide(knockback)
 	match state:
@@ -57,7 +58,7 @@ func set_state_and_wander_timer():
 	wanderController.start_wander_timer(rand_range(1,3))
 
 func idle_state(_delta):
-	velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
+	velocity = velocity.move_toward(Vector2.ZERO, MOVE_FRICTION)
 	set_state_on_wander_timeout()
 	seek_player()
 	
@@ -88,17 +89,17 @@ func accelerate_to_point(position):
 	var direction = global_position.direction_to(position)
 	# outdated method, equivalent just not as good
 #	var direction = (player.global_position - global_position).normalized()
-	velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
+	velocity = velocity.move_toward(direction * MOVE_MAX_SPEED, MOVE_ACCELERATION)
 
 func _on_Hurtbox_area_entered(area):
 	if area.hit_confirm(self):
-		stats.health -= area.damage
-		knockback = area.knockback_vector.normalized() * stats.KNOCKBACK_SPEED
+		health -= area.damage
+		knockback = area.knockback_vector.normalized() * KNOCKBACK_SPEED
 	#	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
 		hurtbox.create_hit_effect()
 
 #called when health <= 0
-func _on_Stats_no_health():
+func _on_Enemy_no_health():
 	queue_free()
 	#instance the death effect
 	var enemyDeathEffect = EnemyDeathEffect.instance()

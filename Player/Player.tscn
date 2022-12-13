@@ -871,6 +871,7 @@ custom_fonts/font = SubResource( 59 )
 
 [node name="Cooldown" type="Timer" parent="."]
 
+[connection signal="no_health" from="." to="." method="_on_Player_no_health"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
 

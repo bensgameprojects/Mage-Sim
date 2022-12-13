@@ -1,3 +1,4 @@
+class_name Entity
 extends KinematicBody2D
 
 
@@ -7,6 +8,8 @@ var input_vector = Vector2.ZERO
 var on_cooldown = false
 var bullet_start_position
 var bullet_direction
+# init rng
+var statePickerRNG = RandomNumberGenerator.new()
 #default values, can change per enemy in their individual script
 export var MOVE_ACCELERATION = 20
 export var MOVE_FRICTION = 160
