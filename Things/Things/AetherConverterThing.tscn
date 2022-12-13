@@ -1,10 +1,79 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Things/Things/AetherConverterThing.gd" type="Script" id=1]
 [ext_resource path="res://Things/Assets/Things/aetherconverter_base_combined.png" type="Texture" id=2]
+[ext_resource path="res://Systems/Power/PowerSource.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 16 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "generate_air_power"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.3, 2, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.423529, 0.101961, 0.690196, 1 ), Color( 0.423529, 0.101961, 0.690196, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "generate_earth_power"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.3, 2, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.356863, 0.172549, 0.0627451, 1 ), Color( 0.356863, 0.172549, 0.0627451, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "generate_fire_power"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.3, 2, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.572549, 0.164706, 0.164706, 1 ), Color( 0.572549, 0.164706, 0.164706, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "generate_water_power"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.3, 2, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.266667, 0.47451, 0.768627, 1 ), Color( 0.266667, 0.47451, 0.768627, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="AetherConverterThing" type="StaticBody2D" groups=["power_sources"]]
 script = ExtResource( 1 )
@@ -19,3 +88,12 @@ region_rect = Rect2( 0, 0, 16, 16 )
 position = Vector2( 0, 9 )
 rotation = 1.5708
 shape = SubResource( 1 )
+
+[node name="PowerSource" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/generate_air_power = SubResource( 2 )
+anims/generate_earth_power = SubResource( 3 )
+anims/generate_fire_power = SubResource( 4 )
+anims/generate_water_power = SubResource( 5 )

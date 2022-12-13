@@ -26,8 +26,8 @@ const DIRECTIONS_DATA := {
 onready var sprite = $Sprite
 # Helper function to set the sprite based on the provided combined value for 'directions'
 # in which there are neighboring pipes or machines to connect pipes to
-static func set_sprite_for_direction(sprite: Sprite, directions: int) -> void:
-	sprite.region_rect = get_region_for_direction(directions)
+static func set_sprite_for_direction(_sprite: Sprite, directions: int) -> void:
+	_sprite.region_rect = get_region_for_direction(directions)
 	
 # static function to get an appropriate value from 'DIRECITONS_DATA'.
 static func get_region_for_direction(directions: int) -> Rect2:

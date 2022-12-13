@@ -63,3 +63,7 @@ mouse_default_cursor_shape = 2
 
 [node name="Simulation" type="Node" parent="." groups=["Simulation"]]
 script = ExtResource( 4 )
+
+[node name="SimulationTimer" type="Timer" parent="Simulation"]
+
+[connection signal="timeout" from="Simulation/SimulationTimer" to="Simulation" method="_on_SimulationTimer_timeout"]

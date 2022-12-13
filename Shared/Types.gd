@@ -18,6 +18,9 @@ const NEIGHBORS := {
 	Direction.UP: Vector2.UP
 }
 
+# Constants for possible element types.
+enum Element { AIR = 1, FIRE = 2, WATER = 4, EARTH = 8}
+
 # Group name constants. Storing them as constants help prevent typos.
 const POWER_MOVERS := "power_movers"
 const POWER_RECEIVERS := "power_receivers"

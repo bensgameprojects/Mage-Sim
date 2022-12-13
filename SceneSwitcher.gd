@@ -29,13 +29,16 @@ func _ready():
 	var thing_placer = current_scene.get_thing_placer()
 	var flat_things = current_scene.get_flat_things()
 	var new_thing_tracker = ThingTracker.new()
-	simulation.setup(current_scene_name, new_thing_tracker, ground_tiles, thing_placer, flat_things, player)
+	var new_power_system = PowerSystem.new()
+	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, ground_tiles, thing_placer, flat_things, player)
 	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
 func _on_SceneSwitcher_change_level(destination_scene_name):
 	levelTransitionAnimation.play("fade_in")
+	# stop the simulation timer while the level switches
+	$Simulation/SimulationTimer.stop()
 	# load an instance of the destination scene
 	var new_scene = load(_build_scene_path(destination_scene_name)).instance()
 	# get the player node from the current scene
@@ -51,7 +54,8 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	var thing_placer = new_scene.get_thing_placer()
 	var flat_things = new_scene.get_flat_things()
 	var new_thing_tracker = ThingTracker.new()
-	simulation.setup(current_scene_name, new_thing_tracker, ground_tiles, thing_placer, flat_things, player)
+	var new_power_system = PowerSystem.new()
+	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, ground_tiles, thing_placer, flat_things, player)
 	# setup the entity_placer on the scene
 	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 	# remove the old scene

@@ -46,6 +46,7 @@ onready var _deconstruct_timer := $DeconstructTimer
 onready var Library := {
 	"AetherConverter": preload("res://Things/Blueprints/AetherConverterBlueprint.tscn").instance(),
 	"Pipe": preload("res://Things/Blueprints/PipeBlueprint.tscn").instance(),
+	"Battery": preload("res://Things/Blueprints/BatteryBlueprint.tscn").instance(),
 }
 
 func _ready() -> void:
@@ -53,12 +54,14 @@ func _ready() -> void:
 	# things given their blueprint
 	Library[Library.AetherConverter] = preload("res://Things/Things/AetherConverterThing.tscn")
 	Library[Library.Pipe] = preload("res://Things/Things/PipeThing.tscn")
+	Library[Library.Battery] = preload("res://Things/Things/BatteryThing.tscn")
 
 ## Since we are temporarilty instancing blueprints for the library u ntil we have
 ## set up a UI or something, clean up blueprints when object leaves the tree
 func _exit_tree() -> void:
 	Library.AetherConverter.queue_free()
 	Library.Pipe.queue_free()
+	Library.Battery.queue_free()
 
 ## Setup function sets the placer up with the data that it needs to function
 ## and adds any preplaced things to the tracker
@@ -131,6 +134,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_cancel") and _blueprint:
 		remove_child(_blueprint)
 		_blueprint = null
+	elif event.is_action_pressed("ui_focus_next") and _blueprint:
+		_blueprint.rotate_blueprint()
 	# for now we will just hook quickbar_1 directly to aether converter to test it
 	elif event.is_action_pressed("quickbar_1"):
 		if _blueprint:
@@ -142,6 +147,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _blueprint:
 			remove_child(_blueprint)
 		_blueprint = Library.Pipe
+		add_child(_blueprint)
+		_move_blueprint_in_world(cellv)
+	elif event.is_action_pressed("quickbar_3"):
+		if _blueprint:
+			remove_child(_blueprint)
+		_blueprint = Library.Battery
 		add_child(_blueprint)
 		_move_blueprint_in_world(cellv)
 

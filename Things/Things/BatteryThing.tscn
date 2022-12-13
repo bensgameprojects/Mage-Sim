@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Systems/Power/PowerReceiver.gd" type="Script" id=1]
+[ext_resource path="res://Systems/Power/PowerSource.gd" type="Script" id=2]
+[ext_resource path="res://Things/Things/BatteryThing.gd" type="Script" id=3]
+[ext_resource path="res://Things/Assets/Things/battery_thing_base.png" type="Texture" id=4]
+[ext_resource path="res://UI/toriko_dynamicfont.tres" type="DynamicFont" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="BatteryThing" type="StaticBody2D" groups=["power_receivers", "power_sources"]]
+script = ExtResource( 3 )
+
+[node name="PowerSource" type="Node" parent="."]
+script = ExtResource( 2 )
+output_direction = 4
+
+[node name="PowerReceiver" type="Node" parent="."]
+script = ExtResource( 1 )
+power_required = 100.0
+input_direction = 11
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="ChargeIndicator" type="Label" parent="."]
+margin_left = -16.0
+margin_top = -14.0
+margin_right = 16.0
+margin_bottom = -7.0
+custom_fonts/font = ExtResource( 5 )
+
+[connection signal="power_updated" from="PowerSource" to="." method="_on_PowerSource_power_updated"]
+[connection signal="received_power" from="PowerReceiver" to="." method="_on_PowerReceiver_received_power"]

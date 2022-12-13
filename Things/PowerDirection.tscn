@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Shared/directional_arrow_sheet.png" type="Texture" id=1]
+[ext_resource path="res://Things/Blueprints/PowerDirection.gd" type="Script" id=2]
+
+[node name="PowerDirection" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="E" type="Sprite" parent="."]
+position = Vector2( 32, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 32, 0, 32, 32 )
+
+[node name="S" type="Sprite" parent="."]
+position = Vector2( 0, 32 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 64, 0, 32, 32 )
+
+[node name="W" type="Sprite" parent="."]
+position = Vector2( -32, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 96, 0, 32, 32 )
+
+[node name="N" type="Sprite" parent="."]
+position = Vector2( 0, -32 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 32, 32 )

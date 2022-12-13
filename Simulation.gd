@@ -3,6 +3,10 @@ extends Node
 # This node will keep track of the simulation
 # For the buildings that need to use it
 # This node is the only member of the Simulation group
+# update 30 times per second by default
+export var simulation_speed := 1.0 / 30.0
+
+onready var simulation_timer = $SimulationTimer
 
 var _thing_tracker: ThingTracker
 
@@ -12,12 +16,14 @@ var _ground : TileMap
 var _thing_placer : TileMap
 var _player : Player
 var _flat_things : YSort
+var _power_system : PowerSystem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# NOTE: the tutorial says to set the entity_placer setup here
 	# but since we are using the scene switcher for scene setup
 	# we can make the call there
-	pass # Replace with function body.
+	# simulation_timer.start(simulation_speed)
+	pass
 
 func set_thing_placer(thing_placer) -> void:
 	_thing_placer = thing_placer
@@ -43,10 +49,17 @@ func get_tracker() -> ThingTracker:
 
 
 
-func setup(scene_name, thing_tracker, ground_tiles, thing_placer, flat_things, player) -> void:
+func setup(
+	scene_name: String, thing_tracker: ThingTracker, power_system : PowerSystem, ground_tiles, thing_placer, flat_things, player
+	) -> void:
 	_scene_name = scene_name
 	_thing_tracker = thing_tracker
 	_ground = ground_tiles
 	_thing_placer = thing_placer
 	_flat_things = flat_things
 	_player = player
+	_power_system = power_system
+	simulation_timer.start(simulation_speed)
+
+func _on_SimulationTimer_timeout():
+	Events.emit_signal("systems_ticked", simulation_speed)
