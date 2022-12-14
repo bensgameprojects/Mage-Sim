@@ -1,11 +1,9 @@
 extends Bullet
 
-onready var bulletnode = self
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	speed = 0.5
-	knockback = 0.1
+	knockback_speed = 200
 	damage = 1
 	element = "WIND"
 	max_hits_per_entity = 3
@@ -14,7 +12,6 @@ func _ready():
 
 func _process(_delta):
 	position += velocity
-	knockback_vector = velocity.normalized() * knockback
 	rotation_degrees = velocity.angle() * (180/PI)
 	# check to see if bullet needs to be destroyed or not
 	.check_and_destroy_bullet()
@@ -28,11 +25,14 @@ func setup(caster, bullet_start_position, bullet_direction):
 	initial_direction = bullet_direction
 	position = initial_position
 	velocity = speed * bullet_direction
-	
-#adding projectile max duration
-func _on_Timer_timeout():
-	self.queue_free()
-	
+
+
 #turning world collision on
-func _on_BulletNode_body_entered(body):
+func _on_BulletNode_body_entered(_body):
 	self.queue_free()
+
+func _on_BulletNode_area_entered(area):
+	var entity = area.get_parent()
+	if entity is Entity and hit_confirm(entity): # you hit something
+		entity.take_damage(damage)
+		entity.apply_knockback(self.global_position, knockback_speed)

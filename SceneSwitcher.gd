@@ -13,15 +13,16 @@ var player_scene = preload("res://Player/Player.tscn")
 # will handle transferring the data of the player and any other necessary info
 # (note player inventory will be a child of the player)
 var current_scene
-
+var player
 onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
-
+onready var health_ui = $UILayer/HealthUI
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_scene = load("res://Levels/World.tscn").instance()
 	add_child(current_scene)
-	current_scene.add_player(player_scene.instance())
-
+	player = player_scene.instance()
+	current_scene.add_player(player)
+	health_ui.setup(player)
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.

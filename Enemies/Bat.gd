@@ -6,33 +6,24 @@ enum {
 	CHASE
 }
 
-const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-
-var knockback = Vector2.ZERO
 var softCollisionPushVector = Vector2.ZERO
 
+var fireball = load_ability("FireAttack1")
 
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var sprite = $AnimatedSprite
-onready var hurtbox = $Hurtbox
 onready var wanderController = $WanderController
+var shoot_timer = Timer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	MOVE_ACCELERATION = 20
-	MOVE_FRICTION = 160
-	MOVE_MAX_SPEED = 80
-	SPRINT_MAX_SPEED = 120
-	SPRINT_ACCELERATION = 40
-	KNOCKBACK_FRICTION = 30
-	KNOCKBACK_SPEED = 420
 	state = CHASE
 	statePickerRNG.randomize()
 	set_state_and_wander_timer()
+	add_child(shoot_timer)
 
 func _physics_process(_delta):
-	knockback = knockback.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION)
-	
-	knockback = move_and_slide(knockback)
+	knockback_vector = move_and_slide(knockback_vector)
+	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION)
 	match state:
 		IDLE:
 			idle_state(_delta)
@@ -43,7 +34,8 @@ func _physics_process(_delta):
 	
 	# flip the sprite for the direction its facing
 	sprite.flip_h = velocity.x < 0
-	velocity = move_and_slide(velocity)
+	if not is_stunned:
+		velocity = move_and_slide(velocity)
 
 # restarts wander timer and state picking on wander timeout
 func set_state_on_wander_timeout():
@@ -74,7 +66,13 @@ func chase_state(_delta):
 	var player = playerDetectionZone.player
 	if player != null:
 		accelerate_to_point(player.global_position)
+		if shoot_timer.is_stopped():
+			shoot_timer.connect("timeout", self, "_on_shoot_timer_timeout", [player])
+			shoot_timer.start(rand_range(0,3))
 	else:
+		if not shoot_timer.is_stopped():
+			shoot_timer.stop()
+			shoot_timer.disconnect("timeout", self, "_on_shoot_timer_timeout")
 		set_state_and_wander_timer()
 		state = WANDER
 
@@ -91,18 +89,10 @@ func accelerate_to_point(position):
 #	var direction = (player.global_position - global_position).normalized()
 	velocity = velocity.move_toward(direction * MOVE_MAX_SPEED, MOVE_ACCELERATION)
 
-func _on_Hurtbox_area_entered(area):
-	if area.hit_confirm(self):
-		health -= area.damage
-		knockback = area.knockback_vector.normalized() * KNOCKBACK_SPEED
-	#	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
-		hurtbox.create_hit_effect()
+func create_on_hit_effect():
+	hurtbox.create_hit_effect()
 
-#called when health <= 0
-func _on_Enemy_no_health():
-	queue_free()
-	#instance the death effect
-	var enemyDeathEffect = EnemyDeathEffect.instance()
-	get_parent().add_child(enemyDeathEffect)
-	enemyDeathEffect.global_position = global_position
-	
+func _on_shoot_timer_timeout(player):
+	if player != null:
+		use_ability_if_able(fireball, self.global_position, self.global_position.direction_to(player.global_position))
+		shoot_timer.start(rand_range(0,3))

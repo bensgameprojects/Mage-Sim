@@ -782,6 +782,7 @@ font_data = ExtResource( 8 )
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
 script = ExtResource( 1 )
+max_health = 8
 
 [node name="MediumShadow" type="Sprite" parent="."]
 position = Vector2( 0, 1 )
@@ -868,12 +869,6 @@ margin_bottom = -21.0
 custom_fonts/font = SubResource( 59 )
 
 [node name="CameraHandler" type="RemoteTransform2D" parent="."]
-
-[node name="Cooldown" type="Timer" parent="."]
-
-[connection signal="no_health" from="." to="." method="_on_Player_no_health"]
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
-[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
 
 [editable path="HitboxPivot/SwordHitbox"]
 [editable path="Hurtbox"]

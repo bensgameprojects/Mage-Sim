@@ -1,11 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Effects/Projectiles/Wind Projectile.png" type="Texture" id=1]
-[ext_resource path="res://Effects/Projectiles/WindAttack.gd" type="Script" id=2]
-
-[sub_resource type="CapsuleShape2D" id=8]
-radius = 9.0
-height = 2.0
+[ext_resource path="res://Abilities/Abilities/WindAttack1.gd" type="Script" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -39,17 +35,27 @@ animations = [ {
 "speed": 10.0
 } ]
 
-[node name="WindAttack" type="Node2D"]
-physics_interpolation_mode = 2
-script = ExtResource( 2 )
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 9.0
+height = 2.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 8 )
+[node name="BulletNode" type="Area2D"]
+physics_interpolation_mode = 2
+collision_layer = 1024
+collision_mask = 0
+script = ExtResource( 2 )
+bullet_duration = 5.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 7 )
-frame = 5
+frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite")
+
+[node name="BulletShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 8 )
+
+[connection signal="area_entered" from="." to="." method="_on_BulletNode_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]
