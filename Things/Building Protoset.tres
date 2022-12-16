@@ -4,4 +4,32 @@
 
 [resource]
 script = ExtResource( 1 )
-json_data = ""
+json_data = "[
+	{
+		\"id\": \"AetherConverter\",
+		\"name\": \"Aether Converter\",
+		\"description\": \"Converts aether into power usable by other machines.\",
+		\"category\": \"power\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
+	{
+		\"id\": \"Battery\",
+		\"name\": \"Battery\",
+		\"description\": \"Stores usable power for later use.\",
+		\"category\": \"power\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
+	{
+		\"id\": \"Pipe\",
+		\"name\": \"Pipe\",
+		\"description\": \"Allows power to move between sources and receivers.\",
+		\"category\": \"power\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	}
+]"
