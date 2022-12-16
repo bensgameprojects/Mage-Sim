@@ -2,7 +2,7 @@ extends Bullet
 
 # Input stats here:
 func _ready():
-	speed = 1
+	speed = 2
 	knockback_speed = 400
 	damage = 1
 	element = "FIRE"

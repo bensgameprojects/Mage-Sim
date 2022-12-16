@@ -18,6 +18,7 @@ var ability_1 = load_ability("FireAttack1")
 var ability_2 = load_ability("WindAttack1")
 var ability_3 = load_ability("StunAttack")
 var ability_4 = load_ability("HomingAttack")
+var ability_5 = load_ability("Blink")
 
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
@@ -51,7 +52,9 @@ func _unhandled_input(event):
 		use_ability_if_able(ability_3, global_position, direction_vector)
 	elif event.is_action_pressed("ability_4"):
 		use_ability_if_able(ability_4, global_position, direction_vector)
-
+	elif event.is_action_pressed("ability_5"):
+		use_ability_if_able(ability_5, global_position, direction_vector)
+		
 func _get_direction():
 	var direction_vector : Vector2 = Vector2.ZERO
 	direction_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -140,6 +143,7 @@ func roll_animation_finished():
 		velocity.limit_length(MOVE_MAX_SPEED)
 	state = MOVE
 
+#This function is currently unused as bullets apply their damage to the enemy
 func _on_Hurtbox_area_entered(area):
 	#makes sure that you aren't invincible before assigning damage
 	if hurtbox.invincible == false:
@@ -159,3 +163,16 @@ func cast_state(_delta):
 
 func create_on_hit_effect():
 	hurtbox.create_hit_effect()
+
+# overwrite the _on_no_health() function for the player
+# so they dont queue_free because we need the player
+# as a reference for the simulation.
+func _on_no_health():
+	self.visible = false
+	self.is_stunned = true
+	$Hurtbox.set_invincibility(true)
+	# change to player death effect if we ever get one of those.
+	var enemyDeathEffect = EnemyDeathEffect.instance()
+	get_parent().add_child(enemyDeathEffect)
+	enemyDeathEffect.global_position = global_position
+	Events.emit_signal("player_died", self)

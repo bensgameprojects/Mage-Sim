@@ -2,7 +2,7 @@ extends Bullet
 export var stun_duration := 1.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	speed = 0.5
+	speed = 2
 	knockback_speed = 0.1
 	damage = 1
 	element = "WIND"

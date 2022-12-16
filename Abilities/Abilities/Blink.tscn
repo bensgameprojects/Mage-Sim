@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Abilities/Abilities/Blink.gd" type="Script" id=1]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.0
+height = 4.0
+
+[node name="BulletNode" type="Area2D"]
+physics_interpolation_mode = 2
+collision_layer = 1024
+collision_mask = 0
+script = ExtResource( 1 )
+bullet_duration = 5.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("")
+
+[node name="BulletShape" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

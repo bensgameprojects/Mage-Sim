@@ -2,7 +2,7 @@ class_name Bullet
 extends Area2D
 
 var velocity = Vector2.ZERO
-export var speed = 1
+export var speed = 2
 var initial_position
 var initial_direction
 # speed in m/s to knockback with

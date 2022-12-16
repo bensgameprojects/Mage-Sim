@@ -7,7 +7,6 @@ var setup_complete := false
 var hit_all_targets_counter = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-#	pass
 	animation_player.play("start")
 
 func setup(caster, bullet_start_position, bullet_direction):
@@ -35,7 +34,7 @@ func setup(caster, bullet_start_position, bullet_direction):
 func _process(_delta):
 	if(current_target == null):
 		current_target = find_nearest_target()
-		if(current_target == null and hit_all_targets()):
+		if((current_target == null or not is_instance_valid(current_target)) and hit_all_targets()):
 			hit_all_targets_counter += 1
 	else:
 		#reset the hit all targets counter cause you found one
@@ -85,7 +84,7 @@ func find_nearest_target():
 	return nearest_target
 
 func get_current_target_position():
-	if(current_target != null):
+	if(current_target != null and is_instance_valid(current_target)):
 		return current_target.global_position
 	else:
 		return Vector2.ZERO

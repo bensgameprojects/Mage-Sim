@@ -6,19 +6,21 @@ export(String) var item_texture_path = ""
 export var respawn_time = 3
 export var max_stack = 3
 export var min_stack = 1
-export(float) var spawnRadius = 50.0
 #onready var spawnRegion = $SpawnRegion
 onready var ySort = $YSort
-var spawnRegion
-var spawnRegionShape
+onready var spawnRegion = $CollisionShape2D
 var spawnTimer
 onready var itemScene = preload("res://Items/Item.tscn")
 
-
+# You can use these functions to move a spawn area or change it's radius
+# while the game is running. They work but have no use atm.
+# To change the radius of a spawn area you can make a SpawnArea and
+# enable Editable Children by right-clicking it
+# Then you can click on the collision shape in the 2D scene inspector
+# and adjust it's radius and position that way.
 func setSpawnRegionRadius(radius):
 	if radius > 0:
-		spawnRadius = radius
-		spawnRegionShape.set_radius(radius)
+		spawnRegion.shape.set_radius(radius)
 
 func getSpawnRegionRadius():
 	return spawnRegion.shape.radius
@@ -31,16 +33,10 @@ func getYSortNode():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	spawnRegion = CollisionShape2D.new()
-	spawnRegionShape = CircleShape2D.new()
-	spawnRegionShape.set_radius(spawnRadius)
-	spawnRegion.set_shape(spawnRegionShape)
-	add_child(spawnRegion)
 	spawnTimer = Timer.new()
 	spawnTimer.connect("timeout", self, "_on_SpawnTimer_timeout")
 	add_child(spawnTimer)
 	spawnTimer.start(respawn_time)
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
