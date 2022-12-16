@@ -20,7 +20,11 @@ func setup(caster, bullet_start_position, bullet_direction):
 	# (its the last argument the other two trues are default settings)
 	var collision_info = caster.move_and_collide(velocity, true, true, true)
 	if collision_info:
-		caster.position = collision_info.position
+		# Maybe we can allow blinking through some collisions
+		# Check out KinematicCollision2D
+		# This puts you 2 units away from the collision position
+		# so you dont get stuck
+		caster.position = collision_info.position - 2*bullet_direction
 	else:
 		caster.position += velocity
 	
