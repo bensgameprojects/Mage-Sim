@@ -528,6 +528,7 @@ format = 1
 
 [node name="ZoneChanger" parent="." instance=ExtResource( 7 )]
 position = Vector2( 225, 174 )
+destination_scene_name = "World"
 
 [node name="SpawnHandler" type="YSort" parent="."]
 script = ExtResource( 5 )

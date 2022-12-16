@@ -21,6 +21,8 @@ VBoxContainer/colors/backgroundcolor = Color( 0.572549, 0.164706, 0.164706, 1 )
 [node name="InventoryUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -168.0
+margin_bottom = -60.0
 theme = SubResource( 2 )
 script = ExtResource( 1 )
 
@@ -46,11 +48,11 @@ size = Vector2( 50, 20 )
 
 [node name="InventoryPanelWindow" type="PanelContainer" parent="."]
 margin_right = 152.0
-margin_bottom = 123.0
+margin_bottom = 120.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="InventoryPanelWindow"]
 margin_right = 152.0
-margin_bottom = 123.0
+margin_bottom = 120.0
 
 [node name="CenterContainer" type="CenterContainer" parent="InventoryPanelWindow/VBoxContainer"]
 margin_right = 152.0

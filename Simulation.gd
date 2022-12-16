@@ -58,6 +58,11 @@ func setup(
 	_thing_placer = thing_placer
 	_flat_things = flat_things
 	_player = player
+	# This will need to be redone so we can save the state of the things,
+	# then disconnect signal and clean up. but for now it works.
+	if _power_system != null:
+		_power_system.disconnect_signals()
+		_power_system.queue_free()
 	_power_system = power_system
 	simulation_timer.start(simulation_speed)
 

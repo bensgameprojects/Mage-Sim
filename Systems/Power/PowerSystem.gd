@@ -38,6 +38,14 @@ var cells_travelled := []
 var receivers_already_provided := {}
 
 func _init() -> void:
+	connect_signals()
+
+func disconnect_signals() -> void:
+	Events.disconnect("thing_placed",self,"_on_thing_placed")
+	Events.disconnect("thing_removed", self, "_on_thing_removed")
+	Events.disconnect("systems_ticked", self, "_on_systems_ticked")
+
+func connect_signals():
 	Events.connect("thing_placed", self, "_on_thing_placed")
 	Events.connect("thing_removed", self, "_on_thing_removed")
 	Events.connect("systems_ticked", self, "_on_systems_ticked")

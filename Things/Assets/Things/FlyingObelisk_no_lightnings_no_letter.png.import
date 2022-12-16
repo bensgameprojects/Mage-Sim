@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/FlyingObelisk_no_lightnings_no_letter.png-7a30af98941a79e142e48512d24e8ed5.stex"
+path="res://.import/FlyingObelisk_no_lightnings_no_letter.png-159afcded324dd1c302203dbc9079d12.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Buildings/Assets/Buildings/FlyingObelisk_no_lightnings_no_letter.png"
-dest_files=[ "res://.import/FlyingObelisk_no_lightnings_no_letter.png-7a30af98941a79e142e48512d24e8ed5.stex" ]
+source_file="res://Things/Assets/Things/FlyingObelisk_no_lightnings_no_letter.png"
+dest_files=[ "res://.import/FlyingObelisk_no_lightnings_no_letter.png-159afcded324dd1c302203dbc9079d12.stex" ]
 
 [params]
 

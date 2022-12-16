@@ -60,13 +60,16 @@ func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
 			# under some common ysort node SpawnHandler?
 			# should we just use groups and call a common method
 			# for when items are dropped.
-			add_child(new_dropped_item)
+			get_tree().get_nodes_in_group(GroupConstants.SPAWNHANDLER_GROUP)[0].add_child(new_dropped_item)
 			new_dropped_item.set_item_reference(item)
+			new_dropped_item.set_collision_layer_bit(LayerConstants.GATHERABLE_ITEM_LAYER_BIT, true)
 			new_dropped_item.set_item_id(item.prototype_id)
 			new_dropped_item.set_sprite_texture(item.get_texture())
+			new_dropped_item.connect("ItemEnteredPickupRange", self, "add_to_pickup_stack")
+			new_dropped_item.connect("ItemExitedPickupRange", self, "remove_from_pickup_stack")
 			# this position should be a nudged position around the
 			# player's feet
-			new_dropped_item.spawn_sprite(Vector2.ZERO)
+			new_dropped_item.spawn_sprite(get_tree().get_nodes_in_group(GroupConstants.PLAYER_GROUP)[0].global_position)
 
 
 func transfer_item_to_player_inv(itemToTransfer):

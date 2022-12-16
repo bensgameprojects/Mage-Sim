@@ -137,19 +137,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_focus_next") and _blueprint:
 		_blueprint.rotate_blueprint()
 	# for now we will just hook quickbar_1 directly to aether converter to test it
-	elif event.is_action_pressed("quickbar_1"):
+	elif event.is_action_pressed("ability_8"):
 		if _blueprint:
 			remove_child(_blueprint)
 		_blueprint = Library.AetherConverter
 		add_child(_blueprint)
 		_move_blueprint_in_world(cellv)
-	elif event.is_action_pressed("quickbar_2"):
+	elif event.is_action_pressed("ability_9"):
 		if _blueprint:
 			remove_child(_blueprint)
 		_blueprint = Library.Pipe
 		add_child(_blueprint)
 		_move_blueprint_in_world(cellv)
-	elif event.is_action_pressed("quickbar_3"):
+	elif event.is_action_pressed("ability_0"):
 		if _blueprint:
 			remove_child(_blueprint)
 		_blueprint = Library.Battery
