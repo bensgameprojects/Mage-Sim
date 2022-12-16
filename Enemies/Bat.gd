@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Entity
 
 enum {
 	IDLE,
@@ -6,32 +6,24 @@ enum {
 	CHASE
 }
 
-var state = CHASE
-# init rng
-var statePickerRNG = RandomNumberGenerator.new()
-
-
-const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-
-var knockback = Vector2.ZERO
-var velocity = Vector2.ZERO
 var softCollisionPushVector = Vector2.ZERO
 
-onready var stats = $Stats
+var fireball = load_ability("FireAttack1")
+
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var sprite = $AnimatedSprite
-onready var hurtbox = $Hurtbox
 onready var wanderController = $WanderController
+var shoot_timer = Timer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# seed rng
+	state = CHASE
 	statePickerRNG.randomize()
 	set_state_and_wander_timer()
+	add_child(shoot_timer)
 
 func _physics_process(_delta):
-	knockback = knockback.move_toward(Vector2.ZERO, stats.KNOCKBACK_FRICTION)
-	
-	knockback = move_and_slide(knockback)
+	knockback_vector = move_and_slide(knockback_vector)
+	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION)
 	match state:
 		IDLE:
 			idle_state(_delta)
@@ -42,7 +34,8 @@ func _physics_process(_delta):
 	
 	# flip the sprite for the direction its facing
 	sprite.flip_h = velocity.x < 0
-	velocity = move_and_slide(velocity)
+	if not is_stunned:
+		velocity = move_and_slide(velocity)
 
 # restarts wander timer and state picking on wander timeout
 func set_state_on_wander_timeout():
@@ -57,7 +50,7 @@ func set_state_and_wander_timer():
 	wanderController.start_wander_timer(rand_range(1,3))
 
 func idle_state(_delta):
-	velocity = velocity.move_toward(Vector2.ZERO, stats.MOVE_FRICTION)
+	velocity = velocity.move_toward(Vector2.ZERO, MOVE_FRICTION)
 	set_state_on_wander_timeout()
 	seek_player()
 	
@@ -73,7 +66,13 @@ func chase_state(_delta):
 	var player = playerDetectionZone.player
 	if player != null:
 		accelerate_to_point(player.global_position)
+		if shoot_timer.is_stopped():
+			shoot_timer.connect("timeout", self, "_on_shoot_timer_timeout", [player])
+			shoot_timer.start(rand_range(0,3))
 	else:
+		if not shoot_timer.is_stopped():
+			shoot_timer.stop()
+			shoot_timer.disconnect("timeout", self, "_on_shoot_timer_timeout")
 		set_state_and_wander_timer()
 		state = WANDER
 
@@ -88,19 +87,12 @@ func accelerate_to_point(position):
 	var direction = global_position.direction_to(position)
 	# outdated method, equivalent just not as good
 #	var direction = (player.global_position - global_position).normalized()
-	velocity = velocity.move_toward(direction * stats.MOVE_MAX_SPEED, stats.MOVE_ACCELERATION)
+	velocity = velocity.move_toward(direction * MOVE_MAX_SPEED, MOVE_ACCELERATION)
 
-func _on_Hurtbox_area_entered(area):
-	stats.health -= area.damage
-	knockback = area.knockback_vector.normalized() * stats.KNOCKBACK_SPEED
-#	knockback = Vector2.RIGHT * KNOCKBACK_SPEED
+func create_on_hit_effect():
 	hurtbox.create_hit_effect()
 
-#called when health <= 0
-func _on_Stats_no_health():
-	queue_free()
-	#instance the death effect
-	var enemyDeathEffect = EnemyDeathEffect.instance()
-	get_parent().add_child(enemyDeathEffect)
-	enemyDeathEffect.global_position = global_position
-	
+func _on_shoot_timer_timeout(player):
+	if player != null:
+		use_ability_if_able(fireball, self.global_position, self.global_position.direction_to(player.global_position))
+		shoot_timer.start(rand_range(0,3))

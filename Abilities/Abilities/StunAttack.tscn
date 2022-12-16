@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Abilities/Abilities/StunAttack.gd" type="Script" id=1]
+[ext_resource path="res://Effects/Projectiles/Thunder Effect 01/Thunder Projectile 1/Thunder projectile1 wo blur.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 96, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "animate",
+"speed": 10.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 11.0
+height = 6.0
+
+[node name="BulletNode" type="Area2D"]
+collision_layer = 1024
+script = ExtResource( 1 )
+bullet_duration = 5.0
+stun_duration = 2.0
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 6 )
+animation = "animate"
+frame = 2
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite")
+
+[node name="BulletShape" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[connection signal="area_entered" from="." to="." method="_on_BulletNode_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]

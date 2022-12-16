@@ -30,13 +30,11 @@ func set_max_hearts(value):
 		heartUIEmpty.rect_size.x = max_hearts * 15
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	self.max_hearts = PlayerStats.max_health
-	self.hearts = PlayerStats.health
-	# connect at ready: signal, object to get connect it to, function to run
-	PlayerStats.connect("health_changed", self, "set_hearts")
-	PlayerStats.connect("max_health_changed", self, "set_max_hearts")
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
+#func _ready():
 #	pass
+
+func setup(player: Player) -> void:
+	self.max_hearts = player.max_health
+	self.hearts = player.health
+	player.connect("health_changed", self, "set_hearts")
+	player.connect("max_health_changed", self, "set_max_hearts")

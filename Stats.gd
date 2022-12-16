@@ -8,6 +8,7 @@ export var SPRINT_MAX_SPEED = 120
 export var SPRINT_ACCELERATION = 40
 export var KNOCKBACK_FRICTION = 30
 export var KNOCKBACK_SPEED = 420
+export var COOLDOWN_REDUCTION = 0
 # invincibility time in seconds
 export var HIT_INVINCIBILITY_TIME = 0.5
 export var ROLL_INVINCIBILITY_TIME = 0.6

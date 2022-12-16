@@ -7,7 +7,7 @@
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=5]
 [ext_resource path="res://World/Tree.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Things/ZoneTeleporter/ZoneChanger.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Items/DroppedItems.gd" type="Script" id=8]
+[ext_resource path="res://SpawnHandler.gd" type="Script" id=8]
 [ext_resource path="res://PlayerCamera.gd" type="Script" id=9]
 [ext_resource path="res://Levels/World.gd" type="Script" id=10]
 [ext_resource path="res://World/GrassBackground.png" type="Texture" id=11]
@@ -512,7 +512,7 @@ script = ExtResource( 10 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 160, 96 )
-scale = Vector2( 1, 1.06667 )
+scale = Vector2( 1.00171, 1.05873 )
 texture = ExtResource( 11 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 706, 452 )
@@ -653,19 +653,19 @@ spawnRadius = 40.0
 [node name="Enemies" type="YSort" parent="SpawnHandler"]
 
 [node name="Bat3" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 97, 148 )
+position = Vector2( 104, 112 )
 
 [node name="Bat5" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 72, 148 )
+position = Vector2( 88, 112 )
 
 [node name="Bat" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 335, 101 )
+position = Vector2( 184, 8 )
 
 [node name="Bat4" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 352, 85 )
+position = Vector2( 208, 8 )
 
 [node name="Bat2" parent="SpawnHandler/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 351, 109 )
+position = Vector2( 200, -16 )
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
 [editable path="SpawnHandler/DroppedItems/SpawnArea"]

@@ -17,6 +17,8 @@ func create_grass_effect():
 	# put grass effect global position to the grass position
 	grassEffect.global_position = global_position
 
-func _on_Hurtbox_area_entered(_area):
-	create_grass_effect()
-	queue_free()
+func _on_Hurtbox_area_entered(area):
+	# SeekArea is used for homing projectiles so exclude it
+	if area.name != "SeekArea":
+		create_grass_effect()
+		queue_free()

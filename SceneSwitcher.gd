@@ -17,6 +17,7 @@ var player
 onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
 onready var simulation = $Simulation
 var current_scene_name
+onready var health_ui = $UILayer/HealthUI
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_scene_name = "Home"
@@ -32,6 +33,7 @@ func _ready():
 	var new_power_system = PowerSystem.new()
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, ground_tiles, thing_placer, flat_things, player)
 	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
+	health_ui.setup(player)
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
