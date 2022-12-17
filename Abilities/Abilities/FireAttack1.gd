@@ -11,7 +11,7 @@ func _ready():
 	bullet_duration = 5.0
 	# Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func _process(_delta):
+func _physics_process(_delta):
 	position += velocity
 #	knockback_vector = velocity.normalized() * knockback
 	rotation_degrees = velocity.angle() * (180/PI)

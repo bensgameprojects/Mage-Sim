@@ -163,6 +163,7 @@ config/description="https://www.youtube.com/watch?v=mAbG8Oi-SvQ&list=PL9FzW-m48f
 
 resources link: https://github.com/uheartbeast/youtube-tutorials/blob/master/Action%20RPG/Action%20RPG%20Resources.zip"
 run/main_scene="res://SceneSwitcher.tscn"
+run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [autoload]
@@ -175,6 +176,10 @@ Events="*res://Shared/events.gd"
 GroupConstants="*res://Shared/group_constants.gd"
 LayerConstants="*res://Shared/layer_constants.gd"
 Types="*res://Shared/Types.gd"
+
+[debug]
+
+settings/fps/force_fps=60
 
 [display]
 

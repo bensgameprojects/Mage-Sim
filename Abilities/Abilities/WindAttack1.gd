@@ -10,7 +10,7 @@ func _ready():
 	max_hits_before_destruct = 3
 	# Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func _process(_delta):
+func _physics_process(delta):
 	position += velocity
 	rotation_degrees = velocity.angle() * (180/PI)
 	# check to see if bullet needs to be destroyed or not

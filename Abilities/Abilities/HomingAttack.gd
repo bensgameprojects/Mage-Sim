@@ -31,7 +31,7 @@ func setup(caster, bullet_start_position, bullet_direction):
 # check that it hit_all_targets() 100 times before
 # being able to fizzle
 
-func _process(_delta):
+func _physics_process(_delta):
 	if(current_target == null):
 		current_target = find_nearest_target()
 		if((current_target == null or not is_instance_valid(current_target)) and hit_all_targets()):
