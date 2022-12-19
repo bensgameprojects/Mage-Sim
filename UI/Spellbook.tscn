@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://UI/Spellbook.gd" type="Script" id=1]
+
+[node name="Spellbook" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+
+[node name="SpellList" type="ItemList" parent="."]
+anchor_bottom = 1.0
+margin_right = 168.0
+
+[node name="QuickwheelSlotMenu" type="PopupMenu" parent="SpellList"]
+margin_right = 20.0
+margin_bottom = 20.0
+
+[connection signal="item_activated" from="SpellList" to="." method="_on_SpellList_item_activated"]

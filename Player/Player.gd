@@ -13,7 +13,8 @@ enum {
 var direction_vector = Vector2.DOWN # was roll_vector
 var last_input_direction = Vector2.ZERO
 
-
+var left_click_ability
+var right_click_ability
 var ability_1 = load_ability("FireAttack1")
 var ability_2 = load_ability("WindAttack1")
 var ability_3 = load_ability("StunAttack")
@@ -34,6 +35,7 @@ func _ready():
 	swordHitbox.knockback_vector = direction_vector
 	# add the player to the player group
 	add_to_group(GroupConstants.PLAYER_GROUP)
+	Events.connect("update_action", self, "_update_action")
 
 func _unhandled_input(event):
 	if event.is_action_pressed("sprint"):
@@ -54,7 +56,8 @@ func _unhandled_input(event):
 		use_ability_if_able(ability_4, global_position, direction_vector)
 	elif event.is_action_pressed("ability_5"):
 		use_ability_if_able(ability_5, global_position, direction_vector)
-		
+	elif event.is_action_pressed("left_click"):
+		use_ability_if_able(left_click_ability, global_position, global_position.direction_to(get_global_mouse_position()))
 func _get_direction():
 	var direction_vector : Vector2 = Vector2.ZERO
 	direction_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -176,3 +179,9 @@ func _on_no_health():
 	get_parent().add_child(enemyDeathEffect)
 	enemyDeathEffect.global_position = global_position
 	Events.emit_signal("player_died", self)
+
+func _update_action(action, ability):
+	if action == "left_click":
+		left_click_ability = load_ability(ability)
+	elif action == "right_click":
+		right_click_ability = load_ability(ability)

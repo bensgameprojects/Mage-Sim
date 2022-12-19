@@ -14,3 +14,10 @@ signal systems_ticked(delta)
 #Signal emitted when the player dies so systems can update
 #TODO: on_death/respawn_ui and respawn function in player.gd
 signal player_died(player)
+
+# Signal emitted by the quickwheels whenever a new ability
+# is selected. Will send the action button and the
+# corresponding ability name
+signal update_action(action, ability)
+
+signal assign_quickwheel(slot_name, selected_spell)
