@@ -40,28 +40,12 @@ const DECONSTRUCT_TIME := 1.5
 var _current_deconstruct_location := Vector2.ZERO
 
 onready var _deconstruct_timer := $DeconstructTimer
-## Temporary variable to store references to things and blueprint scenes.
-## We split it in two: blueprints keyed by their names and things keyed by
-## their blueprints.
-onready var Library := {
-	"AetherConverter": preload("res://Things/Blueprints/AetherConverterBlueprint.tscn").instance(),
-	"Pipe": preload("res://Things/Blueprints/PipeBlueprint.tscn").instance(),
-	"Battery": preload("res://Things/Blueprints/BatteryBlueprint.tscn").instance(),
-}
+
 
 func _ready() -> void:
 	# Use the existing blueprint to act as a key for the thing scene, so we can instance
 	# things given their blueprint
-	Library[Library.AetherConverter] = preload("res://Things/Things/AetherConverterThing.tscn")
-	Library[Library.Pipe] = preload("res://Things/Things/PipeThing.tscn")
-	Library[Library.Battery] = preload("res://Things/Things/BatteryThing.tscn")
-
-## Since we are temporarilty instancing blueprints for the library u ntil we have
-## set up a UI or something, clean up blueprints when object leaves the tree
-func _exit_tree() -> void:
-	Library.AetherConverter.queue_free()
-	Library.Pipe.queue_free()
-	Library.Battery.queue_free()
+	Events.connect("place_blueprint", self, "_place_blueprint")
 
 ## Setup function sets the placer up with the data that it needs to function
 ## and adds any preplaced things to the tracker
@@ -132,29 +116,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	# note that the blueprint instances are shared in a library so we dont
 	# want to free them
 	elif event.is_action_pressed("ui_cancel") and _blueprint:
-		remove_child(_blueprint)
+		_blueprint.queue_free()
 		_blueprint = null
 	elif event.is_action_pressed("ui_focus_next") and _blueprint:
 		_blueprint.rotate_blueprint()
-	# for now we will just hook quickbar_1 directly to aether converter to test it
-	elif event.is_action_pressed("ability_8"):
-		if _blueprint:
-			remove_child(_blueprint)
-		_blueprint = Library.AetherConverter
-		add_child(_blueprint)
-		_move_blueprint_in_world(cellv)
-	elif event.is_action_pressed("ability_9"):
-		if _blueprint:
-			remove_child(_blueprint)
-		_blueprint = Library.Pipe
-		add_child(_blueprint)
-		_move_blueprint_in_world(cellv)
-	elif event.is_action_pressed("ability_0"):
-		if _blueprint:
-			remove_child(_blueprint)
-		_blueprint = Library.Battery
-		add_child(_blueprint)
-		_move_blueprint_in_world(cellv)
+
+func _place_blueprint(thing_id) -> void:
+	var cellv := world_to_map(get_global_mouse_position())
+	if _blueprint:
+		_blueprint.queue_free()
+	_blueprint = BuildingList.blueprints[thing_id].instance()
+	add_child(_blueprint)
+	_move_blueprint_in_world(cellv)
 
 func _move_blueprint_in_world(cellv: Vector2) -> void:
 	# snap the blueprints position to the mouse with an offset
@@ -176,8 +149,9 @@ func _move_blueprint_in_world(cellv: Vector2) -> void:
 		PipeBlueprint.set_sprite_for_direction(_blueprint.sprite, _get_powered_neighbors(cellv))
 		
 func _place_thing(cellv: Vector2) -> void:
+	var thing_name := BuildingList.get_thing_name_from(_blueprint)
 	# Use the blueprint prepared in _ready to instance a new thing
-	var new_thing: Node2D = Library[_blueprint].instance()
+	var new_thing: Node2D = BuildingList.things[thing_name].instance()
 	# check if pipe to get the required direction and sprite stuff
 	# place it under the _flat_things ysort so its sorted correctly
 	if _blueprint is PipeBlueprint:

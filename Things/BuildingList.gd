@@ -29,10 +29,15 @@ corresponding value a bool of whether the building is unlocked (and therefore
 can show up in the build menu list). This dictionary will be part of the 
 save and load states of the game.
 """
+const BASE_PATH := "res://Things"
+const BLUEPRINT := "Blueprint.tscn"
+const THING := "Thing.tscn"
 
 export(Resource) var building_protoset: Resource setget _set_building_protoset
 
 var unlock_status : Dictionary = {}
+var things := {}
+var blueprints := {}
 
 func _set_building_protoset(new_building_protoset: Resource) -> void:
 	assert((new_building_protoset is ItemProtoset) || (new_building_protoset == null), \
@@ -68,6 +73,44 @@ func get_unlock_status_by_id(id: String) -> bool:
 		return unlock_status[id]
 	return false
 
+func get_thing_name_from(node: Node) -> String:
+	if node:
+		if node.has_method("get_thing_name"):
+			return node.get_thing_name()
+		
+		var filename := node.filename.substr(node.filename.rfind("/")+ 1)
+		filename = filename.replace(BLUEPRINT,"").replace(THING,"")
+		
+		return filename
+	return ""
+
+func _find_things_in(path: String) -> void:
+	var directory := Directory.new()
+	var error := directory.open(path)
+	if error != OK:
+		print("Library Error: %s" % error)
+		return
+	
+	error = directory.list_dir_begin(true,true)
+	
+	if error != OK:
+		print("Library Error: %s" % error)
+		return
+	
+	var filename := directory.get_next()
+	
+	while not filename.empty():
+		if directory.current_is_dir():
+			_find_things_in("%s/%s" % [directory.get_current_dir(), filename])
+		else:
+			if filename.ends_with(BLUEPRINT):
+				blueprints[filename.replace(BLUEPRINT, "")] = load("%s/%s" % [directory.get_current_dir(), filename])
+			if filename.ends_with(THING):
+				things[filename.replace(THING, "")] = load(
+					"%s/%s" % [directory.get_current_dir(), filename]
+				)
+		filename = directory.get_next()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	_find_things_in(BASE_PATH)

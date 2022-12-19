@@ -552,6 +552,5 @@ position = Vector2( 225, 146 )
 
 [node name="SpawnArea" parent="SpawnHandler" instance=ExtResource( 10 )]
 position = Vector2( 286, 106 )
-collision_mask = 512
 item_ID = "cherry"
 item_texture_path = "res://Items/Fruits Asset/03.png"

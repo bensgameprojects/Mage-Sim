@@ -17,9 +17,9 @@ margin_bottom = 20.0
 text = "Building Select"
 align = 1
 
-[node name="BuildingList" type="ItemList" parent="."]
+[node name="BuildingSelectList" type="ItemList" parent="."]
 margin_top = 20.0
 margin_right = 192.0
 margin_bottom = 179.0
 
-[connection signal="item_activated" from="BuildingList" to="." method="_on_BuildingList_item_activated"]
+[connection signal="item_activated" from="BuildingSelectList" to="." method="_on_BuildingSelectList_item_activated"]

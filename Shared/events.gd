@@ -20,4 +20,8 @@ signal player_died(player)
 # corresponding ability name
 signal update_action(action, ability)
 
+# Signal to assign a given quickwheel slot to the selected spell
 signal assign_quickwheel(slot_name, selected_spell)
+
+# signal to place a blueprint, given the blueprint packed scene
+signal place_blueprint(thing_id)
