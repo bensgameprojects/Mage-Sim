@@ -123,7 +123,7 @@ func attack_state(_delta):
 	# reset your velocity
 	velocity = Vector2.ZERO
 	#give u a little bit of invincibility frames
-	hurtbox.start_invincibility(0.4)
+	self.set_invincibility()
 	# move to attack state and play animation
 	animationState.travel("Attack")
 	# at the end of the animation it will call attack_animation_finished()
@@ -135,7 +135,7 @@ func attack_animation_finished():
 
 func spinny_attack_state(_delta):
 	velocity = Vector2.ZERO
-	hurtbox.start_invincibility(1.0)
+	self.set_invincibility()
 	animationState.travel("SpinnyAttack")
 
 func roll_animation_finished():

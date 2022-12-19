@@ -50,7 +50,8 @@ func get_item_property(id: String, property_name: String, default_value = null):
 
 func get_all_items_with_matching_property(property_name: String, property_value = null):
 	var return_value : Array = []
-	for prototype in _prototypes:
+	for key in _prototypes.keys():
+		var prototype = _prototypes[key]
 		if(prototype.has(property_name) and prototype[property_name] == property_value):
 			return_value.append(prototype)
 	return return_value
@@ -65,7 +66,8 @@ func get_all_items_containing_property(property_name: String, property_value = n
 		this will match this kind of situation
 	"""
 	var return_value : Array = []
-	for prototype in _prototypes:
+	for key in _prototypes.keys():
+		var prototype = _prototypes[key]
 		if(prototype.has(property_name)):
 			for value in prototype[property_name]:
 				if(property_value == value):

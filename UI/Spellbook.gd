@@ -14,6 +14,10 @@ func _ready():
 	for position in quickwheel_positions:
 		quickwheel_slot_menu.add_item(position)
 
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel") and self.visible:
+		self.visible = false
+
 func get_spell_names() -> Array:
 	var dir := Directory.new()
 	if dir.open(spell_dir) != OK:
