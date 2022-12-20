@@ -24,6 +24,10 @@ containing the following properties:
 		This property is (will be) used to populate the unlock_status dict
 		when a new game is started.
 
+Also there are two dictionaries, things and blueprints which contain 
+packed scenes of each Thing in the Things/Things/ folder. They are used by
+the ThingPlacer to place things.
+
 Lastly, the unlock_status dictionary uses the building id as a key and the 
 corresponding value a bool of whether the building is unlocked (and therefore
 can show up in the build menu list). This dictionary will be part of the 

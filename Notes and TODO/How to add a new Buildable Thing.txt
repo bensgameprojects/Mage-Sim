@@ -1,0 +1,8 @@
+First make the scene under Things/Things and a blueprint scene under Things/Blueprints.
+
+The Thing scene should be named BuildingIDThing.tscn where BuildingID is the building id of the thing you are adding.
+Similarly, the Blueprint scene should be named BuildingIDBlueprint.tscn.
+Place the assets you need for the thing and the blueprint in Things/Assets and a 32x32 icon under Things/Assets/Icons/ in .png format.
+Then add an entry for your new Thing in the BuildingList protoset attached to the global BuildingList node.
+
+I think that is all you need to do.

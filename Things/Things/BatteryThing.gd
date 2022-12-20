@@ -11,7 +11,7 @@ var stored_power := 0.0 setget _set_stored_power
 onready var receiver := $PowerReceiver
 onready var source := $PowerSource
 onready var charge_label = $ChargeIndicator
-
+onready var sprite = $Sprite
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# If the source is not omnidirectional:
@@ -48,6 +48,7 @@ func _set_stored_power(value: float) -> void:
 		# being full
 		else min((max_storage - stored_power) / receiver.power_required, 1.0)
 	)
+	
 	# Set the source efficiency to 0 if there is no power.
 	# Otherwise, set it to a percentage of how full the battery is.
 	# A battery that has more power than it must provide returns 1,
