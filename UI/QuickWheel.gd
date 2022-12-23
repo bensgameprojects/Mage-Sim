@@ -1,11 +1,13 @@
 extends Control
 
-
+var slots = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
 var player
 var is_open = false
 var new_selected_node = ""
 var selected_node = "N"
 var assigned_action = "left_click"
+var center : Vector2
+var offset = Vector2(64,64)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect("assign_quickwheel", self, "_on_assign_quickwheel")
@@ -18,7 +20,8 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("quickwheel_1"):
 		is_open = true
-		self.set_global_position(get_global_mouse_position() - Vector2(64,64))
+		center = get_global_mouse_position() - offset
+		self.set_global_position(center)
 		self.visible = true
 		new_selected_node = ""
 	elif event.is_action_released("quickwheel_1"):
@@ -50,3 +53,27 @@ func _on_assign_quickwheel(slot_name, selected_spell):
 	get_node(slot_name).assign_ability(selected_spell)
 	if(slot_name == selected_node):
 		Events.emit_signal("update_action", assigned_action, selected_spell)
+
+func _process(_delta):
+	if self.visible:
+		var mouse_pos = get_global_mouse_position()
+		if (mouse_pos - offset - center).length() >= 4:
+			var direction = center.direction_to(mouse_pos - offset)
+			var angle = direction.angle()
+			# truncate and divide the angle by 2PI/num_slots
+			# same as multiply by 4 / PI in this case
+			# modulo by slots.length in case of 2pi => 8 => 0
+			var choice = slots[int(floor(angle * 4/PI)) % slots.size()]
+			# new_selected_node is keeping track of what the user
+			# is selecting when the menu is open
+			# selected_node is the selected item from last time
+			# a selection was confirmed
+			# we are constantly updating choice while the 
+			# menu is open and whenever it doesnt match new_selected_node
+			# then we update that.
+			if choice != new_selected_node:
+				if new_selected_node != "":
+					_mouse_exited(new_selected_node)
+				else:
+					_mouse_exited(selected_node)
+				_mouse_entered(choice)
