@@ -16,6 +16,26 @@ __meta__ = {
 		\"amount_produced\":1,
 		\"base_craft_time\":1
 	},
+	{
+		\"id\":\"potato\",
+		\"name\":\"Potato\",
+		\"producing_thing\":\"Farm\",
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"potato\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+	{
+		\"id\":\"lumber\",
+		\"name\":\"Lumber\",
+		\"producing_thing\":\"Farm\",
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"Lumber\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
 ]"
 }
 recipe_protoset = ExtResource( 2 )

@@ -17,7 +17,7 @@ var _blueprint: BlueprintThing
 var _scene_name: String
 
 ## The simulation's thing tracker. We use its functions to know if a cell is available or it
-## already has an thing.
+## already has a thing.
 var _thing_tracker: ThingTracker
 
 ## The ground tiles. We can check the position we're trying to put an thing down on
@@ -30,6 +30,8 @@ var _flat_things: YSort
 ## The player thing. We can use it to check the distance from the mouse to prevent
 ## the player from interacting with things that are too far away.
 var _player: KinematicBody2D
+
+var _player_facing_tile : Vector2
 
 ## Base time in seconds it takes to deconstruct something
 const DECONSTRUCT_TIME := 1.5
@@ -75,6 +77,16 @@ func _process(_delta: float) -> void:
 	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
 	if has_placeable_blueprint:
 		_move_blueprint_in_world(world_to_map(get_global_mouse_position()))
+	# get the tile the player is looking at
+	var new_active_tile = get_active_tile()
+	# if it changed since last time then update
+	if(_player_facing_tile != new_active_tile):
+		# clear the old cell
+		_clear_player_facing_thing(_player_facing_tile)
+		# assign new cell
+		_player_facing_tile = new_active_tile
+		# get thing at the new tile and update display etc
+		_player_facing_thing(_player_facing_tile)
 
 func _unhandled_input(event: InputEvent) -> void:
 	var global_mouse_position := get_global_mouse_position()
@@ -98,8 +110,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		if has_placeable_blueprint:
 			if not cell_is_occupied and is_close_to_player and is_on_ground:
-				_place_thing(cellv)
-				_update_neighboring_flat_things(cellv)
+				# This line needs to get the building_id from somewhere and
+				# pass it rather than the name of the building.
+				if get_tree().get_nodes_in_group("InventoryUI")[0].deduct_cost_from_player_inv(BuildingList.get_recipe_by_id(BuildingList.get_thing_name_from(_blueprint))):
+					_place_thing(cellv)
+					_update_neighboring_flat_things(cellv)
+				else: # Unable to afford building
+					print("Can't afford building!")
 				# deduct cost from inventory here perhaps?
 	# press and hold "deconstruct" action (or G rn) to deconstruct an item
 	elif event.is_action_pressed("deconstruct") and not has_placeable_blueprint:
@@ -112,6 +129,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_abort_deconstruct()
 		if has_placeable_blueprint:
 			_move_blueprint_in_world(cellv)
+		else:
+			_update_hover(cellv)
 	# If user wants to cancel the placement we should remove the blueprint
 	# note that the blueprint instances are shared in a library so we dont
 	# want to free them
@@ -120,6 +139,30 @@ func _unhandled_input(event: InputEvent) -> void:
 		_blueprint = null
 	elif event.is_action_pressed("ui_focus_next") and _blueprint:
 		_blueprint.rotate_blueprint()
+
+func _update_hover(cellv: Vector2) -> void:
+	var is_close_to_player := (
+		get_global_mouse_position().distance_to(_player.global_position)
+		< MAXIMUM_WORK_DISTANCE
+	)
+	if _thing_tracker.is_cell_occupied(cellv) and is_close_to_player:
+		_hover_thing(cellv)
+	else:
+		_clear_hover_thing(cellv)
+
+func _hover_thing(cellv: Vector2) -> void:
+	var thing = _thing_tracker.get_thing_at(cellv)
+	Events.emit_signal("hovered_over_thing", thing)
+	
+func _clear_hover_thing(cellv: Vector2) -> void:
+	Events.emit_signal("hovered_over_thing", null)
+
+func _player_facing_thing(cellv: Vector2) -> void:
+	var thing = _thing_tracker.get_thing_at(cellv)
+	Events.emit_signal("player_facing_thing", thing)
+
+func _clear_player_facing_thing(cellv: Vector2) -> void:
+	Events.emit_signal("player_facing_thing", null)
 
 func _place_blueprint(thing_id) -> void:
 	var cellv := world_to_map(get_global_mouse_position())
@@ -187,6 +230,8 @@ func _finish_deconstruct(cellv: Vector2) -> void:
 	# update da pipes
 	_update_neighboring_flat_things(cellv)
 	# refund the build cost of thing to the player's inventory HERE!
+	# we might want to check that the deconstruct thing is a building vs something else
+	get_tree().get_nodes_in_group("InventoryUI")[0].refund_cost_to_player_inv(BuildingList.get_recipe_by_id(BuildingList.get_thing_name_from(thing)))
 	# or if the deconstruct operation causes a gatherable item to drop, then do that
 	# instead
 
@@ -235,3 +280,9 @@ func _update_neighboring_flat_things(cellv: Vector2) -> void:
 		if object and object is PipeThing:
 			var tile_directions := _get_powered_neighbors(key)
 			PipeBlueprint.set_sprite_for_direction(object.sprite, tile_directions)
+
+func get_active_tile() -> Vector2:
+	var offset = Vector2(32,32)
+	# returns cellv in front of the player in the direction they are facing.
+	return world_to_map(_player.global_position + _player.direction_vector * offset)
+

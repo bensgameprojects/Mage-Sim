@@ -17,7 +17,6 @@ var buildingNameToID = {}
 func _ready():
 	self.visible = false
 	var unlocked_buildings = BuildingList.get_unlocked_buildings()
-	print(unlocked_buildings)
 	for building in unlocked_buildings:
 		building_select_list.add_item(building["name"])
 		buildingNameToID[building["name"]] = building["id"]
@@ -39,7 +38,6 @@ func _on_BuildingSelectList_item_activated(index):
 	# close the menu and tell thing placer to use the blueprint
 	self.visible = false
 	Events.emit_signal("place_blueprint", buildingNameToID[selected_building])
-	pass # Replace with function body
 
 
 func _on_BuildingSelectList_item_selected(index):

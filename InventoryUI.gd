@@ -2,7 +2,7 @@ extends Control
 
 onready var playerInventoryGrid = $PlayerInventoryGrid
 onready var worldInventoryGrid = $WorldInventoryGrid
-onready var playerCtrlInventoryGrid = $PlayerInventoryGrid
+onready var playerCtrlInventoryGrid = $InventoryPanelWindow/VBoxContainer/CenterContainer2/PlayerCtrlInventoryGrid
 onready var pickupItemUI = $PickupItemUI
 onready var inventoryPanelWindow = $InventoryPanelWindow
 signal item_dropped_to_floor(item)
@@ -18,14 +18,9 @@ func load_inventory(savedInventory):
 
 func save_inventory():
 	return playerInventoryGrid.serialize()
-# this only toggles the grid not the actual ui visibility
-# gotta figure out how to lay it on top
-# IDK why its laid on top now prolly should look into that
-# and put a background behind it...
-# watch UI tutorials
+
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_inv_toggle"):
-#		InventoryGrid.draw_grid = not InventoryGrid.draw_grid
 		inventoryPanelWindow.visible = not inventoryPanelWindow.visible
 
 func create_new_dropped_item(new_item, stack_size):
@@ -106,7 +101,7 @@ func transfer_item_to_player_inv(itemToTransfer):
 		else:
 			if not itemToTransfer.get_inventory().transfer_to(itemToTransfer, playerInventoryGrid, free_spot):
 				# didnt work so put it back on the ground
-				print("error: was not able to add to inventory! Item:" + str(itemToTransfer))
+				print("error: was not able to add to inventory! Item:" + itemToTransfer.prototype_id)
 				emit_signal("item_dropped_to_floor", itemToTransfer)
 	else:
 		worldInventory.remove_item(itemToTransfer)
@@ -121,6 +116,16 @@ func _on_SpawnHandler_create_and_add_item_to_world_inv(spawn_area, itemID, stack
 	else:
 		printerr("item could not be created!")
 	
+# returns true if able to pay the cost
+# and returns false if unable to afford the cost.
+func deduct_cost_from_player_inv(recipe: Dictionary) -> bool:
+	return playerInventoryGrid.deduct_cost(recipe["component_ids"], recipe["component_amts"])
 
-
-
+# For now just returns true if everything is refunded and false otherwise
+func refund_cost_to_player_inv(recipe: Dictionary) -> bool:
+	var remaining_refund = playerInventoryGrid.refund_cost(recipe["component_ids"], recipe["component_amts"])
+	for amt in remaining_refund:
+		if amt > 0:
+			# add to world inv
+			return false
+	return true

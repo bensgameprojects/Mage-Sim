@@ -15,6 +15,8 @@ func get_recipe_by_id(recipe_id):
 func get_all_recipes_for_item(item_id) -> Array:
 	return recipe_protoset.get_all_items_containing_property("product_item_id", item_id)
 
+# Make a function to build a list of recipes for each producing_thing
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

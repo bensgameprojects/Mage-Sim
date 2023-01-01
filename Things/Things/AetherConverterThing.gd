@@ -14,3 +14,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+func get_info() -> String:
+	return "%.1f E/s" % power.get_effective_power()

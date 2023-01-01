@@ -41,6 +41,7 @@ func rotate_blueprint() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Set z_index so the blueprint is drawn above everything
 	z_index = 9
 
 

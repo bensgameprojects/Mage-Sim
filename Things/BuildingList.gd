@@ -115,6 +115,16 @@ func _find_things_in(path: String) -> void:
 				)
 		filename = directory.get_next()
 
+func get_recipe_by_id(building_id) -> Dictionary:
+	var result = {}
+	var building_info = get_building_by_id(building_id)
+	if building_info != null:
+		result["component_ids"] = building_info["component_ids"]
+		result["component_amts"] = building_info["component_amts"]
+	else: # this case shouldn't happen but its a failsafe
+		result["component_ids"] = Array()
+		result["component_amts"] = Array()
+	return result
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_find_things_in(BASE_PATH)

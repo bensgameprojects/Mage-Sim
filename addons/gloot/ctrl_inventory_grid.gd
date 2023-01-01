@@ -342,7 +342,7 @@ func _input(event: InputEvent) -> void:
 	var global_grabbed_item_pos = _get_grabbed_item_global_pos()
 	if _is_hovering(global_grabbed_item_pos):
 		var field_coords = get_field_coords(global_grabbed_item_pos)
-		print("moving item to field coords" + str(field_coords))
+#		print("moving item to field coords" + str(field_coords))
 		_move_item(inventory.get_item_index(item), field_coords)
 	else:
 		emit_signal("item_dropped", item, global_grabbed_item_pos)

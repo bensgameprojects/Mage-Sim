@@ -56,9 +56,14 @@ func _set_stored_power(value: float) -> void:
 	source.efficiency = (0.0 if stored_power <= 0 else min(stored_power/source.power_amount, 1.0))
 	charge_label.text = str(stored_power) + " / " + str(max_storage)
 
+func get_info() -> String:
+	return "Storing %-4.1f / %s energy" % [stored_power, max_storage]
+
 func _on_PowerSource_power_updated(power_draw, delta):
 	self.stored_power = stored_power - min(power_draw, source.get_effective_power()) * delta
+	Events.emit_signal("info_updated", self)
 
 
 func _on_PowerReceiver_received_power(amount, delta):
 	self.stored_power = stored_power + amount * delta
+	Events.emit_signal("info_updated", self)

@@ -142,6 +142,15 @@ func create_and_add_item(prototype_id: String) -> InventoryItem:
 		item.free()
 		return null
 
+func create_and_add_item_amount(prototype_id: String, amount: int) -> InventoryItem:
+	var item: InventoryItem = InventoryItem.new()
+	item.prototype_id = prototype_id
+	if add_item(item):
+		item.set_property("stack_size", amount)
+		return item
+	else:
+		item.free()
+		return null
 
 func remove_item(item: InventoryItem) -> bool:
 	if item == null || !has_item(item):
@@ -164,6 +173,36 @@ func get_item_by_id(prototype_id: String) -> InventoryItem:
 			
 	return null
 
+# Will get all the item stacks that match the given prototype_id
+func get_all_items_by_id(prototype_id: String) -> Array:
+	var item_stacks = []
+	for item in get_items():
+		if item.prototype_id == prototype_id:
+			item_stacks.append(item)
+	return item_stacks
+
+# Will get the total number of an item in an inventory
+# adding together all the stacks of that item if any.
+func get_item_count_by_id(prototype_id: String) -> int:
+	var count = 0
+	for item in get_items():
+		if item.prototype_id == prototype_id:
+			count += item.get_property("stack_size")
+	return count
+
+# given an array of ids, get_item_counts_by_ids returns a dictionary
+# where the prototype_ids are the keys and the value is the total
+# amount of that item in the inventory across all stacks.
+# This method is more efficient than repeatedly calling
+# get_item_count_by_id for each item.
+func get_item_counts_by_ids(prototype_ids: Array) -> Dictionary:
+	var result = {}
+	for prototype_id in prototype_ids:
+		result[prototype_id] = 0
+	for item in get_items():
+		if prototype_ids.has(item.prototype_id):
+			result[item.prototype_id] += 1
+	return result
 
 # this function will iterate through all the items in your inventory
 # and return the first item that matches the prototype id with some free
@@ -178,6 +217,123 @@ func get_first_item_unmaxed_stack(prototype_id: String) -> InventoryItem:
 func has_item_by_id(prototype_id: String) -> bool:
 	return get_item_by_id(prototype_id) != null
 
+# can_afford_recipe(component_ids: Array, component_amts: Array)
+# Will check that the inventory has all of the required items and amounts
+# given by the arrays. Returns true if can, false if not.
+func can_afford_recipe(component_ids: Array, component_amts: Array) -> bool:
+	# crash program if these arent the same size
+	assert(component_ids.size() == component_amts.size())
+	# get the amts of each item in the inventory by their ids
+	var result = get_item_counts_by_ids(component_ids)
+	for i in range(component_ids.size()):
+		if result[component_ids[i]] < component_amts[i]:
+			return false
+	return true
+
+# This function will remove the amounts and ids specified in the
+# given arrays. Will refund the items if it can't complete
+# returns true if the cost was deducted and false otherwise.
+func deduct_cost(component_ids: Array, component_amts: Array) -> bool:
+	var component_debt = component_amts.duplicate(true)
+	# first check if we can afford the recipe:
+	if can_afford_recipe(component_ids, component_amts):
+		#if so, remove all the items and specified amounts:
+		for item in get_items():
+			var index = component_ids.find(item.prototype_id)
+			if index != -1 and component_debt[index] > 0:
+				var stack_size = item.get_property("stack_size")
+				if component_debt[index] < stack_size:
+					stack_size -= component_debt[index]
+					component_debt[index] = 0
+					item.set_property("stack_size", stack_size)
+				else: # the stack is smaller than or equal to the amount needed
+					# pay off the recipe debt
+					component_debt[index] -= stack_size
+					remove_item(item)
+		# Ensure that we were able to take everything
+		var debt_count = 0
+		for debt in component_debt:
+			debt_count += debt
+		if debt_count == 0:
+			# success!
+			return true
+		# else something went wrong and we cant afford the recipe after all
+		else: 
+			# refund
+			# calculate the amount of each we need to refund:
+			for i in range(component_debt.size()):
+				component_debt[i] = component_amts[i] - component_debt[i]
+			# give back the items to any existing stacks
+			for item in get_items():
+				# check if this item is one we're looking for
+				var index = component_ids.find(item.prototype_id)
+				# if so and we still have some to refund then add to the stack
+				# if able
+				if (index != -1 and component_debt[index] > 0):
+					var stack_size = item.get_property("stack_size")
+					var max_stack_size = item.get_property("max_stack_size")
+					var available_space = max_stack_size - stack_size
+					if available_space >= component_debt[index]:
+						stack_size += component_debt[index]
+						item.set_property("stack_size", stack_size)
+						component_debt[index] = 0
+					elif available_space > 0:
+						component_debt[index] -= available_space
+						item.set_property("stack_size", max_stack_size)
+			# any remaining debt should be added as new items if space permits
+			for i in range(component_debt.size()):
+				if component_debt[i] > 0:
+					var item = create_and_add_item_amount(component_ids[i], component_debt[i])
+					var max_stack_size = item.get_property("max_stack_size")
+					# make new full stacks of the item until you make one not full stack
+					# or you fail to add item to inventory
+					# which we could improve to drop them on the floor
+					while item != null and component_debt[i] > max_stack_size:
+						component_debt[i] = component_debt[i] - max_stack_size
+						item.set_property("stack_size", max_stack_size)
+						item = create_and_add_item_amount(component_ids[i], component_debt[i])
+		emit_signal("contents_changed")
+	return false
+
+# This function will add the cost of the given recipe
+# to the inventory it is called on.
+# It will return a new array containing the amounts of each component
+# that could not be refunded. (If everything was refunded the array will 
+# be all zeroes.
+# This is useful for adding anything that can't be refunded to player inv
+# to the world inventory.
+func refund_cost(component_ids: Array, component_amts: Array) -> Array:
+	var component_debt : Array = component_amts.duplicate(true)
+# give back the items to any existing stacks
+	for item in get_items():
+		# check if this item is one we're looking for
+		var index = component_ids.find(item.prototype_id)
+		# if so and we still have some to refund then add to the stack
+		# if able
+		if (index != -1 and component_debt[index] > 0):
+			var stack_size = item.get_property("stack_size")
+			var max_stack_size = item.get_property("max_stack_size")
+			var available_space = max_stack_size - stack_size
+			if available_space >= component_debt[index]:
+				stack_size += component_debt[index]
+				item.set_property("stack_size", stack_size)
+				component_debt[index] = 0
+			elif available_space > 0:
+				component_debt[index] -= available_space
+				item.set_property("stack_size", max_stack_size)
+	# any remaining debt should be added as new items if space permits
+	for i in range(component_debt.size()):
+		if component_debt[i] > 0:
+			var item = create_and_add_item_amount(component_ids[i], component_debt[i])
+			var max_stack_size = item.get_property("max_stack_size")
+			# make new full stacks of the item until you make one not full stack
+			# or you fail to add item to inventory
+			while item != null and component_debt[i] > max_stack_size:
+				component_debt[i] = component_debt[i] - max_stack_size
+				item.set_property("stack_size", max_stack_size)
+				item = create_and_add_item_amount(component_ids[i], component_debt[i])
+	emit_signal("contents_changed")
+	return component_debt
 
 func transfer(item: InventoryItem, destination: Inventory) -> bool:
 	if remove_item(item):
@@ -228,4 +384,3 @@ func deserialize(source: Dictionary) -> bool:
 			assert(add_item(item), "Failed to add item '%s'. Inventory full?" % item.prototype_id)
 
 	return true
-

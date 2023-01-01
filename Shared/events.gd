@@ -25,3 +25,12 @@ signal assign_quickwheel(slot_name, selected_spell)
 
 # signal to place a blueprint, given the blueprint packed scene
 signal place_blueprint(thing_id)
+
+# emitted when cell is hovered over sends the thing in that cell
+signal hovered_over_thing(thing)
+
+# emitted when player is facing a thing
+signal player_facing_thing(thing)
+
+# emitted by things when they are updated for tracking/display
+signal info_updated(thing)

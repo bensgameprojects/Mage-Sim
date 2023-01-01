@@ -105,7 +105,7 @@ func _update_stack_size_label():
 	# you must set rect_min_size for rich text labels to display properly
 	stack_size_label.rect_min_size = rect_size
 	var item_stack_size = item.get_property("stack_size")
-	if item.get_property("is_stackable") and item_stack_size > 1:
+	if item.get_property("is_stackable"):
 		stack_size_label.text = str(item_stack_size)
 		stack_size_label.visible = true
 	else:
