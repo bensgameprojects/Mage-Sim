@@ -19,7 +19,7 @@ __meta__ = {
 	{
 		\"id\":\"potato\",
 		\"name\":\"Potato\",
-		\"producing_thing\":\"Farm\",
+		\"producing_things\":[\"Farm\"],
 		\"componentIDs\":[],
 		\"componentAmts\":[],
 		\"product_item_id\":\"potato\",
@@ -29,7 +29,7 @@ __meta__ = {
 	{
 		\"id\":\"lumber\",
 		\"name\":\"Lumber\",
-		\"producing_thing\":\"Farm\",
+		\"producing_things\":[\"Farm\"],
 		\"componentIDs\":[],
 		\"componentAmts\":[],
 		\"product_item_id\":\"Lumber\",
