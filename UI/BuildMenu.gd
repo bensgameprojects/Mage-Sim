@@ -9,17 +9,18 @@ onready var building_name_label = $BuildingInfoVBoxContainer/HBoxContainer/Build
 onready var building_category_label = $BuildingInfoVBoxContainer/BuildingCategory
 onready var building_description_label = $BuildingInfoVBoxContainer/BuildingDescription
 onready var building_icon_rect = $BuildingInfoVBoxContainer/HBoxContainer/Icon
-# A dictionary that uses the name of the building as the key and the value is 
-# the id. Basically a helper to get the id of a building from its name in the
-# building_select_list
-var buildingNameToID = {}
+# An array of building_ids corresponding to the order they are listed in the
+# BuildingSelectList
+var building_list_index = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.visible = false
 	var unlocked_buildings = BuildingList.get_unlocked_buildings()
 	for building in unlocked_buildings:
 		building_select_list.add_item(building["name"])
-		buildingNameToID[building["name"]] = building["id"]
+		# add to the building list index in the same order we add the items
+		building_list_index.append(building["id"])
+		
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -34,15 +35,14 @@ func _on_BuildMenuToggle_pressed():
 	self.visible = not self.visible
 
 func _on_BuildingSelectList_item_activated(index):
-	var selected_building = building_select_list.get_item_text(index)
+	var selected_building = building_list_index[index]
 	# close the menu and tell thing placer to use the blueprint
 	self.visible = false
-	Events.emit_signal("place_blueprint", buildingNameToID[selected_building])
+	Events.emit_signal("place_blueprint", selected_building)
 
 
 func _on_BuildingSelectList_item_selected(index):
-	var selected_building = building_select_list.get_item_text(index)
-	var building_id = buildingNameToID[selected_building]
+	var building_id = building_list_index[index]
 	var building_info = BuildingList.get_building_by_id(building_id)
 	populate_building_info(building_info)
 

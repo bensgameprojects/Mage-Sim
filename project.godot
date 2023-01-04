@@ -133,6 +133,11 @@ _global_script_classes=[ {
 "class": "WorkComponent",
 "language": "GDScript",
 "path": "res://Systems/Work/WorkComponent.gd"
+}, {
+"base": "Node",
+"class": "WorkSystem",
+"language": "GDScript",
+"path": "res://Systems/Work/WorkSystem.gd"
 } ]
 _global_script_class_icons={
 "BlueprintThing": "",
@@ -159,7 +164,8 @@ _global_script_class_icons={
 "PowerSystem": "",
 "Thing": "",
 "ThingTracker": "",
-"WorkComponent": ""
+"WorkComponent": "",
+"WorkSystem": ""
 }
 
 [application]
@@ -176,6 +182,7 @@ config/icon="res://icon.png"
 
 PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
+ItemsList="*res://Items/ItemList.tscn"
 RecipeList="*res://Recipes/RecipeList.tscn"
 BuildingList="*res://Things/BuildingList.tscn"
 Events="*res://Shared/events.gd"

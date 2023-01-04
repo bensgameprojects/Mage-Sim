@@ -17,6 +17,7 @@ var _thing_placer : TileMap
 var _player : Player
 var _flat_things : YSort
 var _power_system : PowerSystem
+var _work_system : WorkSystem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# NOTE: the tutorial says to set the entity_placer setup here
@@ -50,10 +51,11 @@ func get_tracker() -> ThingTracker:
 
 
 func setup(
-	scene_name: String, thing_tracker: ThingTracker, power_system : PowerSystem, ground_tiles, thing_placer, flat_things, player
+	scene_name: String, thing_tracker: ThingTracker, power_system : PowerSystem, work_system : WorkSystem, ground_tiles, thing_placer, flat_things, player
 	) -> void:
 	_scene_name = scene_name
 	_thing_tracker = thing_tracker
+	
 	_ground = ground_tiles
 	_thing_placer = thing_placer
 	_flat_things = flat_things
@@ -63,7 +65,10 @@ func setup(
 	if _power_system != null:
 		_power_system.disconnect_signals()
 		_power_system.queue_free()
+	if _work_system != null:
+		_work_system.queue_free()
 	_power_system = power_system
+	_work_system = work_system
 	simulation_timer.start(simulation_speed)
 
 func _on_SimulationTimer_timeout():

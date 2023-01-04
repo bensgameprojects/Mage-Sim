@@ -6,36 +6,6 @@
 [node name="RecipeList" type="Node"]
 script = ExtResource( 1 )
 __meta__ = {
-"_editor_description_": "[
-	{
-		\"id\": \"blueberrycherry\",
-		\"name\":\"Blerry\",
-		\"componentIDs\": [\"Blueberry\", \"Cherry\"],
-		\"componentAmts\":[1,1],
-		\"product_item_id\":\"blerry\"
-		\"amount_produced\":1,
-		\"base_craft_time\":1
-	},
-	{
-		\"id\":\"potato\",
-		\"name\":\"Potato\",
-		\"producing_things\":[\"Farm\"],
-		\"componentIDs\":[],
-		\"componentAmts\":[],
-		\"product_item_id\":\"potato\",
-		\"amount_produced\":1,
-		\"base_craft_time\":1
-	},
-	{
-		\"id\":\"lumber\",
-		\"name\":\"Lumber\",
-		\"producing_things\":[\"Farm\"],
-		\"componentIDs\":[],
-		\"componentAmts\":[],
-		\"product_item_id\":\"Lumber\",
-		\"amount_produced\":1,
-		\"base_craft_time\":1
-	},
-]"
+"_editor_description_": ""
 }
 recipe_protoset = ExtResource( 2 )

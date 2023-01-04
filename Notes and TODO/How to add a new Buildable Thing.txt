@@ -1,8 +1,13 @@
 First make the scene under Things/Things and a blueprint scene under Things/Blueprints.
 
-The Thing scene should be named BuildingIDThing.tscn where BuildingID is the building id of the thing you are adding.
-Similarly, the Blueprint scene should be named BuildingIDBlueprint.tscn.
+The Thing scene should be named BuildingIDThing.tscn where BuildingID is the building id of the thing you are adding. The root node should be a Thing node. If the Thing has world collision, then change the root node's type to be a StaticBody2D and add a collision body 2d and shape. It should always have a sprite attached. 
+Similarly, the Blueprint scene should be named BuildingIDBlueprint.tscn and the root node should be a BlueprintThing scene instance with a sprite for the blueprint as a child.
 Place the assets you need for the thing and the blueprint in Things/Assets and a 32x32 icon under Things/Assets/Icons/ in .png format.
 Then add an entry for your new Thing in the BuildingList protoset attached to the global BuildingList node.
 
-I think that is all you need to do.
+You can add components as children of the building and add the building to those component
+groups:
+
+power_receivers
+power_sources
+workers

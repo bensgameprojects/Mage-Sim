@@ -25,3 +25,4 @@ enum Element { AIR = 1, FIRE = 2, WATER = 4, EARTH = 8}
 const POWER_MOVERS := "power_movers"
 const POWER_RECEIVERS := "power_receivers"
 const POWER_SOURCES := "power_sources"
+const WORKERS := "workers"

@@ -72,4 +72,6 @@ func get_all_items_containing_property(property_name: String, property_value = n
 			for value in prototype[property_name]:
 				if(property_value == value):
 					return_value.append(prototype)
+					# no need to check the rest for potential duplicates
+					break
 	return return_value

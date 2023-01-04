@@ -31,5 +31,14 @@ json_data = "[
 		\"component_ids\": [\"cherry\"],
 		\"component_amts\":[1],
 		\"default_unlock_status\": true,
-	}
+	},
+	{
+		\"id\": \"Farm\",
+		\"name\": \"Farm\",
+		\"description\": \"Grows things.\",
+		\"category\": \"worker\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
 ]"

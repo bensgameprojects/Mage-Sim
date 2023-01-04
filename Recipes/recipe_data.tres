@@ -4,4 +4,34 @@
 
 [resource]
 script = ExtResource( 1 )
-json_data = ""
+json_data = "[
+	{
+		\"id\": \"blueberrycherry\",
+		\"name\":\"Blerry\",
+		\"componentIDs\": [\"Blueberry\", \"Cherry\"],
+		\"componentAmts\":[1,1],
+		\"product_item_id\":\"blerry\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+	{
+		\"id\":\"blueberry\",
+		\"name\":\"Blueberry\",
+		\"producing_things\":[\"Farm\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"blueberry\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+	{
+		\"id\":\"cherry\",
+		\"name\":\"Cherry\",
+		\"producing_things\":[\"Farm\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"cherry\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+]"

@@ -48,6 +48,6 @@ func get_all_recipes_for_thing(thing_id) -> Array:
 	return recipe_protoset.get_all_items_containing_property("producing_things", thing_id)
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+#func _ready():
+#	pass # Replace with function body.
 

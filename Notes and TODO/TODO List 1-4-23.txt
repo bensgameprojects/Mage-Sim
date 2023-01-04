@@ -1,0 +1,42 @@
+TODO:
+1 ECS for abilities and redo player as extending character entity -- DONE
+2 Attach Camera to player instead of using a remote transform or try moving the zoom code
+to use the remote transform so the player script can handle the input or map the input controls to the UI layer and call the functions on the camera from there
+2 COMPLETE! Just had to set the UI nodes' mouse filter to ignore.
+3 add cliff tileset and collision and bound the home world. DONE
+
+4 Why is the placer not respecting the world collisions? Look into that
+	Update: It's because the ground_tiles for the thing_placer should have placeholder
+	tiles on any tile that the player shouldn't be able to build on. See 6
+
+5 Integrate dropped items as an entity that can be deconstructed with a button Make a thing that drops gatherable items on deconstruct?
+
+6 The ThingPlacer needs tiles around the map boundary to stop the player from building outside the map on every buildable map. Also needs tiles placed wherever we dont want the 
+player to be able to build. The the first tutorial or two discuss how to make a tileset
+and have it swap from a visible tile to an invisible one so we can draw it on the map.
+It also needs some tiles at or beyond the map boundary to form a rectangle around the map
+in order to draw the grid tiles.
+
+7 Save and load (make group for all persisting items, serialize then deserialize)
+	a. inventory saving/loading
+	b. level/location saving/loading
+	c. buildings/objects
+
+8. Main menu UI
+
+9. Work System for Things(Buildings) and the Building Config menu to configure it.
+9. UPDATE: Work system is implemented.
+
+10. Building Config _set_power_info(thing) needs to be written to display data about the power system that the thing is connected to.
+
+11. Building Config _set_worker_info(thing) needs a button and label to toggle the building's is_enabled bool on or off. Currently is_enabled is set to true when the setup_work() happens if it meets the requirements for the recipe. Certain checks will set is_enabled to off like if the input_inventory or output_inventory are changed so that the recipe is no longer producible etc. So when this value is changed it needs to update
+the config as well.
+
+12. bug: GLoot's drag system seems to get disrupted when the item is changed while its being held. Set a farm to make cherries then pick up the stack and hold it until another cherry is made. You'll see that the stack is now back in the output_inventory slot and still shown as being held by the mouse except that it cant be moved (the action gets reset but the cherry is still shown by the mouse). It doesn't crash but the mouse should get priority for whatever stack it picks up.
+
+13. Add some new worker buildings that can craft
+14. Add some new items to craft with
+15. Add some new recipes to craft the new items with.
+16. Improve farm assets/animations.
+17. Migrate the UI controls to the parent UILayer canvas layer
+18. Add functionality to move the UI elements around (adjust position of the root when mouse left_click and drags on the UI's background
