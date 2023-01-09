@@ -1,7 +1,8 @@
 extends Area2D
 
 export(String) var item_ID = ""
-export(String) var item_texture_path = ""
+#export(String) var item_texture_path = ""
+var item_texture_path := ""
 # time in seconds
 export var respawn_time = 3
 export var max_stack = 3
@@ -12,6 +13,7 @@ onready var spawnRegion = $CollisionShape2D
 var spawnTimer
 onready var itemScene = preload("res://Items/Item.tscn")
 
+var item_reference : Dictionary
 # You can use these functions to move a spawn area or change it's radius
 # while the game is running. They work but have no use atm.
 # To change the radius of a spawn area you can make a SpawnArea and
@@ -33,10 +35,13 @@ func getYSortNode():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	item_reference = ItemsList.get_item_data_by_id(item_ID)
+	item_texture_path = item_reference["image"]
 	spawnTimer = Timer.new()
 	spawnTimer.connect("timeout", self, "_on_SpawnTimer_timeout")
 	add_child(spawnTimer)
 	spawnTimer.start(respawn_time)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -81,12 +86,14 @@ func _on_SpawnTimer_timeout():
 	
 
 
-func _on_SpawnArea_body_exited(_body):
-	#called when the gatherable item that spawned is leaves the area
-	# spawn timer should be started and unpaused
-	spawnTimer.set_paused(false)
-	spawnTimer.start(respawn_time)
+func _on_SpawnArea_body_exited(body):
+	if body is GatherableItem and body.has_method("get_item_id") and body.get_item_id() == item_ID:
+		#called when the gatherable item that spawned is leaves the area
+		# spawn timer should be started and unpaused
+		spawnTimer.set_paused(false)
+		spawnTimer.start(respawn_time)
 
 # if there is an item then the spawn timer should be paused
-func _on_SpawnArea_body_entered(_body):
-	spawnTimer.set_paused(true)
+func _on_SpawnArea_body_entered(body):
+	if body is GatherableItem and body.has_method("get_item_id") and body.get_item_id() == item_ID:
+		spawnTimer.set_paused(true)

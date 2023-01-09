@@ -148,8 +148,10 @@ func get_work_component(thing: Thing) -> WorkComponent:
 	return null
 
 func connect_work_signals(work_component: WorkComponent) -> void:
-	work_component.connect("work_accomplished", self, "_on_work_accomplished")
-	work_component.connect("work_done", self, "_on_work_done")
+	if not work_component.is_connected("work_accomplished", self, "_on_work_accomplished"):
+		work_component.connect("work_accomplished", self, "_on_work_accomplished")
+	if not work_component.is_connected("work_done", self, "_on_work_done"):
+		work_component.connect("work_done", self, "_on_work_done")
 
 func disconnect_work_signals(work_component: WorkComponent) -> void:
 	if work_component.is_connected("work_accomplished", self, "_on_work_accomplished"):

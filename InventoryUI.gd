@@ -43,13 +43,14 @@ func remove_from_pickup_stack(item):
 # item is dropped and the drop_position is outside the UI bounds
 #item is type InventoryItem, drop_position is a Vector2 position vector
 func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
+	return
 	if(drop_position.x < self.rect_position.x || drop_position.x > self.rect_position.x + self.rect_size.x || drop_position.y < self.rect_position.y || drop_position.y > self.rect_position.y + self.rect_size.y):
 #		var item_properties = [item.protoset, item.prototype_id, item.properties]
 		#transfer the item to the world inventory
 		var succeeded = playerInventoryGrid.transfer_to(item, worldInventoryGrid, worldInventoryGrid.find_free_place(item))
 #		var succeeded = playerInventoryGrid.transfer(item, worldInventoryGrid)
 		# if you fail to move item from player to world, leave item in player inv
-		if(succeeded):
+		if(succeeded and item.get_inventory() == worldInventoryGrid):
 			var new_dropped_item = itemScene.instance()
 			#this needs to add the child to the world
 			# under some common ysort node SpawnHandler?

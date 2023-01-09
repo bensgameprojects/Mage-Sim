@@ -69,6 +69,8 @@ func setup_work(recipe: Dictionary):
 		is_enabled = true
 
 func work(delta: float) -> void:
+	# For now auto-enable if can afford and produce:
+	is_enabled = can_afford_recipe and can_produce_recipe
 	if is_enabled and can_afford_recipe and can_produce_recipe and available_work > 0.0:
 		var work_done := delta * work_speed
 		available_work -= work_done
