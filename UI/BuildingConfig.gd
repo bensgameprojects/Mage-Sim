@@ -37,6 +37,8 @@ func _unhandled_input(event):
 		if not self.visible and current_thing:
 			_set_info(current_thing)
 			show()
+			# Hide the recipe panel on open.
+			recipe_info_panel.hide()
 		else:
 			_clear_info(current_thing)
 			hide()
