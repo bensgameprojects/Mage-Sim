@@ -50,4 +50,13 @@ json_data = "[
 		\"component_amts\":[1],
 		\"default_unlock_status\": true,
 	},
+	{
+		\"id\": \"Smelter\",
+		\"name\": \"Smelter\",
+		\"description\": \"Smelts things.\",
+		\"category\": \"worker\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
 ]"

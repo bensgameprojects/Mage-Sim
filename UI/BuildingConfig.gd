@@ -13,7 +13,7 @@ onready var output_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/H
 onready var recipe_info_panel = $RecipeInfoPanel
 onready var recipe_name = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeName
 onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeRequirements
-onready var product_item_texture_rect = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/ProductItemTexture
+onready var recipe_product_item_texture_rect = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/ProductItemTexture
 
 # Other variables for keeping track
 var current_thing : Thing
@@ -42,6 +42,9 @@ func _unhandled_input(event):
 		else:
 			_clear_info(current_thing)
 			hide()
+	elif event.is_action_pressed("ui_cancel"):
+		if self.visible:
+			hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -50,6 +53,7 @@ func _unhandled_input(event):
 # only update the thing if the config is NOT open.
 func _on_player_facing_thing(thing: Thing) -> void:
 	if(current_thing != thing and not self.visible):
+		_clear_info(current_thing)
 		current_thing = thing
 
 # only update the display if the config is OPEN
@@ -130,6 +134,7 @@ func _clear_info(thing: Thing) -> void:
 		input_inventory_ctrl.inventory = null
 		output_inventory_ctrl.hide()
 		output_inventory_ctrl.inventory = null
+		product_texture_rect
 		disconnect_work_signals(get_work_component(thing))
 		recipe_item_list.clear()
 		recipe_list_index.clear()
@@ -147,8 +152,10 @@ func connect_work_signals(work_component: WorkComponent) -> void:
 	work_component.connect("work_done", self, "_on_work_done")
 
 func disconnect_work_signals(work_component: WorkComponent) -> void:
-	work_component.disconnect("work_accomplished", self, "_on_work_accomplished")
-	work_component.disconnect("work_done", self, "_on_work_done")
+	if work_component.is_connected("work_accomplished", self, "_on_work_accomplished"):
+		work_component.disconnect("work_accomplished", self, "_on_work_accomplished")
+	if work_component.is_connected("work_done", self, "_on_work_done"):
+		work_component.disconnect("work_done", self, "_on_work_done")
 
 func _on_work_accomplished(work_done) -> void:
 	work_progress_bar.value += work_done
@@ -162,8 +169,8 @@ func _on_RecipeItemList_item_selected(index):
 	current_recipe_info_recipe = RecipeList.get_recipe_by_id(recipe_id)
 	# Show the RecipeInfo panel and fill
 	recipe_name.text = current_recipe_info_recipe["name"]
-	product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
-	product_item_texture_rect.rect_size = Vector2(16,16)
+	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
+	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
 	recipe_requirements.text = build_requirements_string()
 	recipe_info_panel.show()
 
@@ -176,7 +183,7 @@ func build_requirements_string() -> String:
 		for i in range(num_components):
 			var item_data = ItemsList.get_item_data_by_id(current_recipe_info_recipe["componentIDs"][i])
 			# Add the item name and amount
-			requirements_string += str(current_recipe_info_recipe["componentAmts"][i] + " " + item_data["name"])
+			requirements_string += str(current_recipe_info_recipe["componentAmts"][i]) + " " + item_data["name"]
 			if current_recipe_info_recipe["componentAmts"][i] > 1:
 				# pluralize
 				requirements_string += "s"

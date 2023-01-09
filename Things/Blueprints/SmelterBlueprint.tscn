@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Things/Assets/Things/SmelterThing.png" type="Texture" id=1]
+[ext_resource path="res://Things/Blueprints/BlueprintThing.tscn" type="PackedScene" id=2]
+
+[node name="BlueprintThing" instance=ExtResource( 2 )]
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+modulate = Color( 0.3479, 0.592032, 0.9375, 1 )
+texture = ExtResource( 1 )

@@ -554,3 +554,5 @@ position = Vector2( 225, 146 )
 position = Vector2( 286, 106 )
 item_ID = "cherry"
 item_texture_path = "res://Items/Fruits Asset/03.png"
+max_stack = 100
+min_stack = 50
