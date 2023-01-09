@@ -34,4 +34,34 @@ json_data = "[
 		\"amount_produced\":1,
 		\"base_craft_time\":1
 	},
+		{
+		\"id\":\"potato\",
+		\"name\":\"Potato\",
+		\"producing_things\":[\"Farm\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"potato\",
+		\"amount_produced\":1,
+		\"base_craft_time\":5
+	},
+			{
+		\"id\":\"eggplant\",
+		\"name\":\"Eggplant\",
+		\"producing_things\":[\"Farm\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"eggplant\",
+		\"amount_produced\":1,
+		\"base_craft_time\":10
+	},
+				{
+		\"id\":\"lumber\",
+		\"name\":\"Lumber\",
+		\"producing_things\":[\"Farm\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"lumber\",
+		\"amount_produced\":1,
+		\"base_craft_time\":10
+	},
 ]"

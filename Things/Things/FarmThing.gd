@@ -35,7 +35,7 @@ func change_recipe(recipe: Dictionary):
 	work.setup_work(recipe)
 
 
-func _on_WorkComponent_work_accomplished(amount):
+func _on_WorkComponent_work_accomplished(_amount):
 	Events.emit_signal("info_updated", self)
 
 
