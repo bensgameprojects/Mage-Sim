@@ -71,9 +71,7 @@ func _on_WorkComponent_work_done(current_recipe : Dictionary):
 
 func _on_WorkComponent_work_enabled_changed(enabled : bool) -> void:
 	# Set animation state here
-	print("IM HERE")
 	if enabled:
 		animated_sprite.playing = true
-		print(animated_sprite.playing)
 	else:
 		animated_sprite.playing = false
