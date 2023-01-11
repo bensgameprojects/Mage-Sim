@@ -15,6 +15,8 @@ var last_input_direction = Vector2.ZERO
 
 var left_click_ability
 var right_click_ability
+var left_click_ability_id
+var right_click_ability_id
 var ability_1 = load_ability("FireAttack1")
 var ability_2 = load_ability("WindAttack1")
 var ability_3 = load_ability("StunAttack")
@@ -28,6 +30,7 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var selectedItemOnGround = $SelectedItemOnGround
 onready var cameraHandler = $CameraHandler
+var inventory_ui
 # Called when the node enters the scene tree for the first time. (init)
 func _ready():
 	# activate the animation tree.
@@ -36,6 +39,7 @@ func _ready():
 	# add the player to the player group
 	add_to_group(GroupConstants.PLAYER_GROUP)
 	Events.connect("update_action", self, "_update_action")
+	inventory_ui = get_tree().get_nodes_in_group("InventoryUI")[0]
 
 func _unhandled_input(event):
 	if event.is_action_pressed("sprint"):
@@ -180,8 +184,23 @@ func _on_no_health():
 	enemyDeathEffect.global_position = global_position
 	Events.emit_signal("player_died", self)
 
-func _update_action(action, ability):
+func _update_action(action: String, ability: String):
 	if action == "left_click":
 		left_click_ability = load_ability(ability)
+		left_click_ability_id = ability
+		print(ability)
 	elif action == "right_click":
 		right_click_ability = load_ability(ability)
+		right_click_ability_id = ability
+
+# This function will check if we are on cooldown
+# if not, then use the spell and return true
+# else return false (no spell cast)
+# overwrites the parents version to deduct recipe cost
+func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vector2) -> bool:
+	if not is_on_cooldown() and not is_stunned:
+		# Deduct the cost of the recipe if there is one
+		if inventory_ui.deduct_cost_from_player_inv(RecipeList.get_recipe_by_id(left_click_ability_id)):
+			use_ability(spell, initial_position, initial_direction)
+			return true
+	return false

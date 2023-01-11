@@ -45,7 +45,7 @@ json_data = "[
 		\"amount_produced\":1,
 		\"base_craft_time\":5
 	},
-			{
+	{
 		\"id\":\"eggplant\",
 		\"name\":\"Eggplant\",
 		\"producing_things\":[\"Farm\"],
@@ -55,7 +55,7 @@ json_data = "[
 		\"amount_produced\":1,
 		\"base_craft_time\":10
 	},
-				{
+	{
 		\"id\":\"lumber\",
 		\"name\":\"Lumber\",
 		\"producing_things\":[\"Farm\"],
@@ -65,7 +65,7 @@ json_data = "[
 		\"amount_produced\":1,
 		\"base_craft_time\":10
 	},
-					{
+	{
 		\"id\":\"scroll\",
 		\"name\":\"Scroll\",
 		\"producing_things\":[\"Desk\"],
@@ -75,7 +75,7 @@ json_data = "[
 		\"amount_produced\":1,
 		\"base_craft_time\":15
 	},
-						{
+	{
 		\"id\":\"paper\",
 		\"name\":\"Paper\",
 		\"producing_things\":[\"PaperMill\"],
@@ -84,5 +84,50 @@ json_data = "[
 		\"product_item_id\":\"paper\",
 		\"amount_produced\":1,
 		\"base_craft_time\":30
+	},
+	{
+		\"id\":\"coal\",
+		\"name\":\"Coal\",
+		\"producing_things\":[\"Miner\"],
+		\"componentIDs\":[],
+		\"componentAmts\":[],
+		\"product_item_id\":\"coal\",
+		\"amount_produced\":1,
+		\"base_craft_time\":1
+	},
+	{
+	\"id\":\"Firebolt\",
+	\"componentIDs\":[\"coal\"],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"FireAttack1\",
+	\"componentIDs\":[\"coal\"],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"Blink\",
+	\"componentIDs\":[\"scroll\"],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"HomingAttack\",
+	\"componentIDs\":[\"scroll\",],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"StunAttack\",
+	\"componentIDs\":[\"eggplant\",],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"WindAttack1\",
+	\"componentIDs\":[\"cherry\",],
+	\"componentAmts\":[1],
+	},
+	{
+	\"id\":\"DoTAttack\",
+	\"componentIDs\":[\"cherry\",],
+	\"componentAmts\":[1],
 	},
 ]"

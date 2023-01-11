@@ -15,6 +15,7 @@ export var max_hits_per_entity := 1
 export var max_hits_before_destruct := 1
 var destruct_timer = Timer.new()
 export var bullet_duration := 3.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group(GroupConstants.BULLET_GROUP)

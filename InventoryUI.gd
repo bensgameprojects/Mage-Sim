@@ -126,12 +126,15 @@ func _on_SpawnHandler_create_and_add_item_to_world_inv(spawn_area, itemID, stack
 	
 # returns true if able to pay the cost
 # and returns false if unable to afford the cost.
-func deduct_cost_from_player_inv(recipe: Dictionary) -> bool:
-	return playerInventoryGrid.deduct_cost(recipe["component_ids"], recipe["component_amts"])
+# returns true if the recipe is empty/null or doesnt have the required keys.
+func deduct_cost_from_player_inv(recipe) -> bool:
+	if recipe == null or recipe.empty() or not recipe.has_all(["componentIDs", "componentAmts"]):
+		return true
+	return playerInventoryGrid.deduct_cost(recipe["componentIDs"], recipe["componentAmts"])
 
 # For now just returns true if everything is refunded and false otherwise
 func refund_cost_to_player_inv(recipe: Dictionary) -> bool:
-	var remaining_refund = playerInventoryGrid.refund_cost(recipe["component_ids"], recipe["component_amts"])
+	var remaining_refund = playerInventoryGrid.refund_cost(recipe["componentIDs"], recipe["componentAmts"])
 	for amt in remaining_refund:
 		if amt > 0:
 			# add to world inv
