@@ -6,6 +6,46 @@
 script = ExtResource( 1 )
 json_data = "[
 	{
+		\"id\": \"coal\",
+		\"name\":\"Coal\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\": 999,
+		\"is_stackable\":true,
+		\"image\": \"res://Items/coal.png\"
+	},
+	{
+		\"id\": \"paper\",
+		\"name\":\"Paper\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\": 999,
+		\"is_stackable\":true,
+		\"image\": \"res://Items/paper.png\"
+	},
+	{
+		\"id\": \"brick\",
+		\"name\":\"Brick\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\": 999,
+		\"is_stackable\":true,
+		\"image\": \"res://Items/brickpng\"
+	},
+	{
+		\"id\": \"shield\",
+		\"name\":\"Shield\",
+		\"width\": 1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\": 999,
+		\"is_stackable\":true,
+		\"image\": \"res://Items/shield.png\"
+	},
+	{
 		\"id\": \"blueberry\",
 		\"name\":\"Blueberry\",
 		\"width\": 1,
@@ -114,5 +154,115 @@ json_data = "[
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
 		\"image\":\"res://Items/lumber.png\"
+	},
+								{
+		\"id\":\"mushroom\",
+		\"name\":\"Mushroom\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/lpc-food-v2/mushroom.png\"
+	},
+									{
+		\"id\":\"rock\",
+		\"name\":\"Rock\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Sprout Lands - Sprites - Basic pack/rock.png\"
+	},
+										{
+		\"id\":\"diamond\",
+		\"name\":\"Diamond\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01e.png\"
+	},
+											{
+		\"id\":\"ruby\",
+		\"name\":\"Ruby\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01d.png\"
+	},
+											{
+		\"id\":\"sapphire\",
+		\"name\":\"Sapphire\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01c.png\"
+	},
+											{
+		\"id\":\"emerald\",
+		\"name\":\"Emerald\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01a.png\"
+	},
+												{
+		\"id\":\"scroll\",
+		\"name\":\"Scroll\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/scroll_01a.png\"
+	},
+												{
+		\"id\":\"ironore\",
+		\"name\":\"Iron Ore\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Tools Asset 16x16/33.png\"
+	},
+													{
+		\"id\":\"copperore\",
+		\"name\":\"Copper Ore\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/Tools Asset 16x16/37.png\"
+	},
+														{
+		\"id\":\"bottle\",
+		\"name\":\"Bottle\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/bottle.png\"
+	},
+															{
+		\"id\":\"water\",
+		\"name\":\"Water\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Items/water.png\"
 	},
 ]"

@@ -8,7 +8,7 @@ json_data = "[
 	{
 		\"id\": \"blueberrycherry\",
 		\"name\":\"Blerry\",
-		\"componentIDs\": [\"Blueberry\", \"Cherry\"],
+		\"componentIDs\": [\"blueberry\", \"cherry\"],
 		\"componentAmts\":[1,1],
 		\"product_item_id\":\"blerry\",
 		\"amount_produced\":1,
@@ -63,5 +63,25 @@ json_data = "[
 		\"product_item_id\":\"lumber\",
 		\"amount_produced\":1,
 		\"base_craft_time\":10
+	},
+					{
+		\"id\":\"scroll\",
+		\"name\":\"Scroll\",
+		\"producing_things\":[\"Desk\"],
+		\"componentIDs\":[\"paper\"],
+		\"componentAmts\":[1],
+		\"product_item_id\":\"scroll\",
+		\"amount_produced\":1,
+		\"base_craft_time\":15
+	},
+						{
+		\"id\":\"paper\",
+		\"name\":\"Paper\",
+		\"producing_things\":[\"PaperMill\"],
+		\"componentIDs\":[\"lumber\"],
+		\"componentAmts\":[1],
+		\"product_item_id\":\"paper\",
+		\"amount_produced\":1,
+		\"base_craft_time\":30
 	},
 ]"

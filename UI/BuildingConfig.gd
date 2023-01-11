@@ -174,7 +174,7 @@ func build_requirements_string() -> String:
 		for i in range(num_components):
 			var item_data = ItemsList.get_item_data_by_id(current_recipe_info_recipe["componentIDs"][i])
 			# Add the item name and amount
-			requirements_string += str(current_recipe_info_recipe["componentAmts"][i] + " " + item_data["name"])
+			requirements_string += str(current_recipe_info_recipe["componentAmts"][i]) + " " + item_data["name"]
 			if current_recipe_info_recipe["componentAmts"][i] > 1:
 				# pluralize
 				requirements_string += "s"

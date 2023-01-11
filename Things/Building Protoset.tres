@@ -41,4 +41,22 @@ json_data = "[
 		\"component_amts\":[1],
 		\"default_unlock_status\": true,
 	},
+		{
+		\"id\": \"Desk\",
+		\"name\": \"Desk\",
+		\"description\": \"Makes scrolls.\",
+		\"category\": \"worker\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
+		{
+		\"id\": \"PaperMill\",
+		\"name\": \"Paper Mill\",
+		\"description\": \"Makes paper.\",
+		\"category\": \"worker\",
+		\"component_ids\": [\"cherry\"],
+		\"component_amts\":[1],
+		\"default_unlock_status\": true,
+	},
 ]"
