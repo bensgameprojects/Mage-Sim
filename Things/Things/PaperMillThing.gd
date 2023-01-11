@@ -1,13 +1,13 @@
 extends Thing
 
 """
-The smelter takes 2 inputs and creates an output based on a recipe supplied to it.
+The paper mill takes up to 2 inputs and creates an output based on a recipe supplied to it.
 """
 
 onready var work = $WorkComponent
 onready var output_inventory = $OutputInventoryGrid
 onready var input_inventory = $InputInventoryGrid
-onready var sprite = $Sprite
+onready var animated_sprite = $AnimatedSprite
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 func get_info() -> String:
 	if work.is_enabled:
 		return (
-			"Smelting: %s\nTime left: %ss"
+			"Making: %s\nTime left: %ss"
 			% [
 				work.current_output["name"],
 				stepify(work.available_work, 0.1)
@@ -70,8 +70,10 @@ func _on_WorkComponent_work_done(current_recipe : Dictionary):
 
 
 func _on_WorkComponent_work_enabled_changed(enabled : bool) -> void:
-	# Set Farm animation state here
+	# Set animation state here
+	print("IM HERE")
 	if enabled:
-		sprite.modulate = Color.red
+		animated_sprite.playing = true
+		print(animated_sprite.playing)
 	else:
-		sprite.modulate = Color.white
+		animated_sprite.playing = false

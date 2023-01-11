@@ -1,34 +1,39 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Things/Assets/Things/potatobuilding.res" type="SpriteFrames" id=1]
-[ext_resource path="res://addons/gloot/inventory_grid.gd" type="Script" id=2]
-[ext_resource path="res://Things/Things/FarmThing.gd" type="Script" id=3]
-[ext_resource path="res://Systems/Work/WorkComponent.gd" type="Script" id=4]
-[ext_resource path="res://Items/ItemProtoset.tres" type="Resource" id=5]
+[ext_resource path="res://addons/gloot/inventory_grid.gd" type="Script" id=1]
+[ext_resource path="res://Systems/Work/WorkComponent.gd" type="Script" id=2]
+[ext_resource path="res://Items/ItemProtoset.tres" type="Resource" id=3]
+[ext_resource path="res://Systems/Power/PowerReceiver.gd" type="Script" id=4]
+[ext_resource path="res://Things/Things/PaperMillThing.gd" type="Script" id=5]
+[ext_resource path="res://Things/Assets/Things/potatobuilding.res" type="SpriteFrames" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 14.5, 6.5 )
+extents = Vector2( 14, 6 )
 
-[node name="FarmThing" type="StaticBody2D" groups=["workers"]]
-script = ExtResource( 3 )
+[node name="PaperMillThing" type="StaticBody2D" groups=["power_receivers", "workers"]]
+script = ExtResource( 5 )
 
-[node name="WorkComponent" type="Node" parent="."]
+[node name="PowerReceiver" type="Node" parent="."]
 script = ExtResource( 4 )
 
-[node name="InputInventoryGrid" type="Node" parent="."]
+[node name="WorkComponent" type="Node" parent="."]
 script = ExtResource( 2 )
 
+[node name="InputInventoryGrid" type="Node" parent="."]
+script = ExtResource( 1 )
+item_protoset = ExtResource( 3 )
+size = Vector2( 2, 1 )
+
 [node name="OutputInventoryGrid" type="Node" parent="."]
-script = ExtResource( 2 )
-item_protoset = ExtResource( 5 )
+script = ExtResource( 1 )
+item_protoset = ExtResource( 3 )
 size = Vector2( 1, 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = ExtResource( 1 )
-playing = true
+frames = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.5, 6.5 )
+position = Vector2( 0, 6 )
 shape = SubResource( 1 )
 
 [connection signal="work_accomplished" from="WorkComponent" to="." method="_on_WorkComponent_work_accomplished"]

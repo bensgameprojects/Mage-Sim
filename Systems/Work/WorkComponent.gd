@@ -8,7 +8,7 @@ signal work_accomplished(amount)
 # Emitted when all the work has been accomplished
 signal work_done(output)
 
-# Emitted when something causes the worker to stop working
+# Emitted when something causes the worker to stop/start working
 signal work_enabled_changed(enabled)
 
 # The recipe we are currently using to do the automated crafting with.
@@ -66,11 +66,11 @@ func setup_work(recipe: Dictionary):
 	can_afford_recipe = check_afford_recipe(recipe)
 	can_produce_recipe = check_produce_recipe(recipe)
 	if can_afford_recipe and can_produce_recipe:
-		is_enabled = true
+		self.is_enabled = true
 
 func work(delta: float) -> void:
 	# For now auto-enable if can afford and produce:
-	is_enabled = can_afford_recipe and can_produce_recipe
+	self.is_enabled = can_afford_recipe and can_produce_recipe
 	if is_enabled and can_afford_recipe and can_produce_recipe and available_work > 0.0:
 		var work_done := delta * work_speed
 		available_work -= work_done

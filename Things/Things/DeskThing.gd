@@ -19,7 +19,7 @@ func _ready():
 func get_info() -> String:
 	if work.is_enabled:
 		return (
-			"Smelting: %s\nTime left: %ss"
+			"Making: %s\nTime left: %ss"
 			% [
 				work.current_output["name"],
 				stepify(work.available_work, 0.1)

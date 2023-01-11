@@ -3,7 +3,7 @@
 [ext_resource path="res://addons/gloot/inventory_grid.gd" type="Script" id=1]
 [ext_resource path="res://Things/Assets/Things/MinerThing.png" type="Texture" id=2]
 [ext_resource path="res://Systems/Work/WorkComponent.gd" type="Script" id=3]
-[ext_resource path="res://Things/Things/FarmThing.gd" type="Script" id=4]
+[ext_resource path="res://Things/Things/MinerThing.gd" type="Script" id=4]
 [ext_resource path="res://Items/ItemProtoset.tres" type="Resource" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
