@@ -4,7 +4,7 @@
 [ext_resource path="res://Shadows/SmallShadow.png" type="Texture" id=2]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hitbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hurtbox.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Enemies/Bat.gd" type="Script" id=5]
+[ext_resource path="res://Enemies/Snake.gd" type="Script" id=5]
 [ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Enemies/PlayerDetectionZone.tscn" type="PackedScene" id=7]
 
@@ -43,7 +43,7 @@ height = 6.0
 radius = 5.0
 
 [sub_resource type="CircleShape2D" id=10]
-radius = 64.0
+radius = 126.063
 
 [node name="Snake" type="KinematicBody2D"]
 collision_layer = 32
@@ -56,6 +56,7 @@ max_health = 3
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -7 )
 frames = SubResource( 6 )
+frame = 3
 playing = true
 
 [node name="ShadowSprite" type="Sprite" parent="."]
@@ -79,7 +80,6 @@ position = Vector2( 0, -5 )
 shape = SubResource( 9 )
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 7 )]
-visible = false
 
 [node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
 modulate = Color( 1, 1, 1, 0.278431 )
