@@ -11,7 +11,8 @@ onready var itemScene = preload("res://Items/Item.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	inventoryPanelWindow.visible = false
+	inventoryPanelWindow.hide()
+	playerCtrlInventoryGrid.inventory = null
 
 func load_inventory(savedInventory):
 	playerInventoryGrid.deserialize(savedInventory)
@@ -21,7 +22,13 @@ func save_inventory():
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_inv_toggle"):
-		inventoryPanelWindow.visible = not inventoryPanelWindow.visible
+		if inventoryPanelWindow.visible:
+			inventoryPanelWindow.hide()
+			# unhook the inventory ctrl on close.
+			playerCtrlInventoryGrid.inventory = null
+		else:
+			playerCtrlInventoryGrid.inventory = playerInventoryGrid
+			inventoryPanelWindow.show()
 
 func create_new_dropped_item(new_item, stack_size):
 	# create a new item in the world inventory and set its item reference i guess

@@ -68,13 +68,17 @@ mouse_filter = 2
 mouse_default_cursor_shape = 2
 
 [node name="QuickWheels" parent="UILayer" instance=ExtResource( 5 )]
+visible = false
 
 [node name="Spellbook" parent="UILayer" instance=ExtResource( 6 )]
+visible = false
 
 [node name="BuildMenu" parent="UILayer" instance=ExtResource( 7 )]
+visible = false
 mouse_filter = 2
 
 [node name="InfoGUI" parent="UILayer" instance=ExtResource( 9 )]
+visible = false
 
 [node name="SpellbookToggle" type="Button" parent="UILayer"]
 margin_left = 290.0

@@ -8,12 +8,13 @@ onready var product_item_name_label = $WorkerPanel/MarginContainer/VBoxContainer
 onready var work_progress_bar = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/WorkProgressBar
 onready var input_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/InputInventoryCtrl
 onready var output_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/OutputInventoryCtrl
+onready var worker_panel = $WorkerPanel
 
 # Onready vars for RecipePanel stuff
 onready var recipe_info_panel = $RecipeInfoPanel
-onready var recipe_name = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeName
-onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeRequirements
-onready var recipe_product_item_texture_rect = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/ProductItemTexture
+onready var recipe_name = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeName
+onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeRequirements
+onready var recipe_product_item_texture_rect = $RecipeInfoPanel/MarginContainer/VBoxContainer/ProductItemTexture
 
 # Other variables for keeping track
 var current_thing : Thing
@@ -121,6 +122,7 @@ func _update_thing(thing: Thing) -> void:
 			product_texture_rect.texture = load(thing_expected_output["image"])
 		else:
 			product_item_name_label.text = "No recipe set!"
+		worker_panel.set_deferred("rect_size", Vector2.ZERO)
 
 func _set_power_info(thing: Thing):
 	# This will show some data about the power system
@@ -139,6 +141,7 @@ func _clear_info(thing: Thing) -> void:
 		recipe_item_list.clear()
 		recipe_list_index.clear()
 		recipe_info_panel.hide()
+		product_texture_rect.texture = null
 	
 
 func get_work_component(thing: Thing) -> WorkComponent:
@@ -174,10 +177,12 @@ func _on_RecipeItemList_item_selected(index):
 	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
 	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
 	recipe_requirements.text = build_requirements_string()
+	recipe_info_panel.set_deferred("rect_size", Vector2.ZERO)
+	recipe_info_panel.show_on_top = true
 	recipe_info_panel.show()
 
 func build_requirements_string() -> String:
-	var requirements_string = "Requirements: "
+	var requirements_string = "Requirements:\n"
 	var num_components = current_recipe_info_recipe["componentIDs"].size()
 	if num_components == 0:
 		requirements_string += "None."
@@ -191,11 +196,12 @@ func build_requirements_string() -> String:
 				requirements_string += "s"
 			# if we still have more requirements to append, add a comma
 			if i < num_components - 1:
-				requirements_string += ", "
+				requirements_string += "\n"
 	return requirements_string
 
 
 func _on_RecipeItemList_nothing_selected():
+	recipe_item_list.unselect_all()
 	recipe_info_panel.hide()
 
 # this should tell the current_thing to setup the work for this recipe

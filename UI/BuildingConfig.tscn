@@ -6,115 +6,111 @@
 [node name="BuildingConfig" type="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -88.0
-margin_right = 89.0
+margin_left = -32.0
+margin_right = 80.0
 margin_bottom = 181.0
 script = ExtResource( 2 )
 
-[node name="RecipeInfoPanel" type="Panel" parent="."]
-anchor_left = 1.0
-anchor_top = 0.055
-anchor_right = 1.401
-anchor_bottom = 0.934
-margin_left = 2.0
-margin_top = 0.0449991
-margin_right = -2.97701
-margin_bottom = -0.0540009
+[node name="RecipeInfoPanel" type="PanelContainer" parent="."]
+anchor_left = 1.214
+anchor_right = 1.714
+anchor_bottom = 0.619
+margin_left = 0.0319824
+margin_right = 0.0319824
+margin_bottom = -0.0390015
+grow_horizontal = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="RecipeInfoPanel"]
-margin_left = 6.0
-margin_top = 6.0
-margin_right = 60.0
-margin_bottom = 6.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 49.0
+margin_bottom = 105.0
 
-[node name="CenterContainer" type="CenterContainer" parent="RecipeInfoPanel/MarginContainer"]
-margin_right = 54.0
-margin_bottom = 50.0
+[node name="VBoxContainer" type="VBoxContainer" parent="RecipeInfoPanel/MarginContainer"]
+margin_right = 42.0
+margin_bottom = 98.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RecipeInfoPanel/MarginContainer/CenterContainer"]
-margin_left = 10.0
-margin_right = 43.0
-margin_bottom = 50.0
-
-[node name="PanelTitle" type="Label" parent="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer"]
-margin_right = 33.0
+[node name="PanelTitle" type="Label" parent="RecipeInfoPanel/MarginContainer/VBoxContainer"]
+margin_right = 42.0
 margin_bottom = 7.0
 text = "Recipe Info"
+align = 1
 
-[node name="RecipeName" type="Label" parent="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="RecipeName" type="Label" parent="RecipeInfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 11.0
-margin_right = 33.0
+margin_right = 42.0
 margin_bottom = 18.0
+align = 1
 
-[node name="ProductItemTexture" type="TextureRect" parent="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="ProductItemTexture" type="TextureRect" parent="RecipeInfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 22.0
-margin_right = 33.0
+margin_right = 42.0
 margin_bottom = 22.0
 stretch_mode = 3
 
-[node name="RecipeRequirements" type="Label" parent="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="RecipeRequirements" type="Label" parent="RecipeInfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 26.0
-margin_right = 33.0
+margin_right = 42.0
 margin_bottom = 33.0
-autowrap = true
 
-[node name="MakeRecipeButton" type="Button" parent="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="MakeRecipeButton" type="Button" parent="RecipeInfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 37.0
-margin_right = 33.0
+margin_right = 42.0
 margin_bottom = 50.0
 text = "Assign"
 
-[node name="WorkerPanel" type="Panel" parent="."]
+[node name="WorkerPanel" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.0
-margin_bottom = -1.0
+margin_bottom = -2.0
 
 [node name="MarginContainer" type="MarginContainer" parent="WorkerPanel"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 166.0
-margin_bottom = 169.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 105.0
+margin_bottom = 172.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="WorkerPanel/MarginContainer"]
-margin_right = 156.0
-margin_bottom = 159.0
+margin_right = 98.0
+margin_bottom = 165.0
 
 [node name="TitleLabel" type="Label" parent="WorkerPanel/MarginContainer/VBoxContainer"]
-margin_right = 156.0
+margin_right = 98.0
 margin_bottom = 7.0
 text = "Building Config"
 align = 1
 
 [node name="HSplitContainer" type="HSplitContainer" parent="WorkerPanel/MarginContainer/VBoxContainer"]
 margin_top = 11.0
-margin_right = 156.0
+margin_right = 98.0
 margin_bottom = 41.0
+split_offset = 16
+dragger_visibility = 2
 
 [node name="RecipeHBox" type="VBoxContainer" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer"]
-margin_right = 21.0
+margin_right = 37.0
 margin_bottom = 30.0
 
 [node name="Label" type="Label" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/RecipeHBox"]
-margin_right = 21.0
+margin_right = 37.0
 margin_bottom = 7.0
 text = "Recipes"
 align = 1
 
 [node name="RecipeItemList" type="ItemList" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/RecipeHBox"]
 margin_top = 11.0
-margin_right = 21.0
+margin_right = 37.0
 margin_bottom = 20.0
 auto_height = true
 
 [node name="CenterContainer" type="CenterContainer" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer"]
-margin_left = 33.0
-margin_right = 156.0
+margin_left = 37.0
+margin_right = 98.0
 margin_bottom = 30.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer"]
-margin_left = 35.0
-margin_right = 88.0
+margin_left = 4.0
+margin_right = 57.0
 margin_bottom = 30.0
 
 [node name="ProductItemInfo" type="HBoxContainer" parent="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer"]
@@ -160,6 +156,6 @@ margin_bottom = 30.0
 script = ExtResource( 3 )
 field_dimensions = Vector2( 16, 16 )
 
-[connection signal="pressed" from="RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/MakeRecipeButton" to="." method="_on_MakeRecipeButton_pressed"]
+[connection signal="pressed" from="RecipeInfoPanel/MarginContainer/VBoxContainer/MakeRecipeButton" to="." method="_on_MakeRecipeButton_pressed"]
 [connection signal="item_selected" from="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/RecipeHBox/RecipeItemList" to="." method="_on_RecipeItemList_item_selected"]
 [connection signal="nothing_selected" from="WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/RecipeHBox/RecipeItemList" to="." method="_on_RecipeItemList_nothing_selected"]
