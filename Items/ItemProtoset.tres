@@ -76,16 +76,6 @@ json_data = "[
 		\"image\": \"res://Items/Fruits Asset/Black Outline/03.png\"
 	},
 	{
-		\"id\":\"blerry\",
-		\"name\":\"Blerry\",
-		\"width\":1,
-		\"height\":1,
-		\"stack_size\":1,
-		\"max_stack_size\":999,
-		\"is_stackable\":true,
-		\"image\":\"res://Items/Fruits Asset/Black Outline/05.png\"
-	},
-	{
 		\"id\":\"potato\",
 		\"name\":\"Potato\",
 		\"width\":1,

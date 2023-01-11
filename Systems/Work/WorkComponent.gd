@@ -51,8 +51,8 @@ func setup_work(recipe: Dictionary):
 		"id":"lumber",
 		"name":"Lumber",
 		"producing_thing":"Farm",
-		"componentIDs":[],
-		"componentAmts":[],
+		"component_ids":[],
+		"component_amts":[],
 		"product_item_id":"Lumber",
 		"amount_produced":1,
 		"base_craft_time":1
@@ -111,14 +111,14 @@ func _set_can_afford_recipe(value: bool) -> void:
 # If the recipe is null then it returns false
 func check_afford_recipe(recipe: Dictionary) -> bool:
 	if not recipe.empty() and input_inventory != null:
-		return input_inventory.can_afford_recipe(recipe["componentIDs"], recipe["componentAmts"])
+		return input_inventory.can_afford_recipe(recipe["component_ids"], recipe["component_amts"])
 	elif recipe ==  null or recipe.empty():
 		return false
 	return true
 
 func deduct_cost(recipe: Dictionary) -> bool:
 	if not recipe.empty() and input_inventory != null:
-		return input_inventory.deduct_cost(recipe["componentIDs"], recipe["componentAmts"])
+		return input_inventory.deduct_cost(recipe["component_ids"], recipe["component_amts"])
 	else: # the recipe was empty or no input inventory so we deducted nothing from nothing.
 		return true
 

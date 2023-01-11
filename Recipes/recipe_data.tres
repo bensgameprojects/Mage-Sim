@@ -93,7 +93,17 @@ json_data = "[
 		\"component_amts\":[],
 		\"product_item_id\":\"coal\",
 		\"amount_produced\":1,
-		\"base_craft_time\":1
+		\"base_craft_time\":10
+	},
+	{
+		\"id\":\"rock\",
+		\"name\":\"Rock\",
+		\"producing_things\":[\"Miner\"],
+		\"component_ids\":[],
+		\"component_amts\":[],
+		\"product_item_id\":\"rock\",
+		\"amount_produced\":1,
+		\"base_craft_time\":5
 	},
 	{
 	\"id\":\"Firebolt\",
