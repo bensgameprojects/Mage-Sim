@@ -9,6 +9,7 @@ onready var building_name_label = $BuildingInfoVBoxContainer/HBoxContainer/Build
 onready var building_category_label = $BuildingInfoVBoxContainer/BuildingCategory
 onready var building_description_label = $BuildingInfoVBoxContainer/BuildingDescription
 onready var building_icon_rect = $BuildingInfoVBoxContainer/HBoxContainer/Icon
+onready var building_requirements_label = $BuildingInfoVBoxContainer/BuildingRequirements
 # An array of building_ids corresponding to the order they are listed in the
 # BuildingSelectList
 var building_list_index = []
@@ -51,8 +52,25 @@ func populate_building_info(building_info):
 	building_category_label.text = "Category: " + building_info["category"]
 	building_description_label.text = building_info["description"]
 	building_icon_rect.set_texture(load_icon(building_info["id"]))
+	building_requirements_label.text = build_requirements_string(building_info)
 
-
+func build_requirements_string(building_info) -> String:
+	var requirements_string = "Requirements to Build:\n"
+	var num_components = building_info["component_ids"].size()
+	if num_components == 0:
+		requirements_string += "None."
+	else: # at least 1 item
+		for i in range(num_components):
+			var item_data = ItemsList.get_item_data_by_id(building_info["component_ids"][i])
+			# Add the item name and amount
+			requirements_string += str(building_info["component_amts"][i]) + " " + item_data["name"]
+			if building_info["component_amts"][i] > 1:
+				# pluralize
+				requirements_string += "s"
+			# if we still have more requirements to append, add a comma
+			if i < num_components - 1:
+				requirements_string += "\n"
+	return requirements_string
 # For now just make sure all icons are 32 x 32 so they are the same size 
 # in the build menu.
 func load_icon(building_id):

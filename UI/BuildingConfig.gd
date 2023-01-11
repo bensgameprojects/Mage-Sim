@@ -183,15 +183,15 @@ func _on_RecipeItemList_item_selected(index):
 
 func build_requirements_string() -> String:
 	var requirements_string = "Requirements:\n"
-	var num_components = current_recipe_info_recipe["componentIDs"].size()
+	var num_components = current_recipe_info_recipe["component_ids"].size()
 	if num_components == 0:
 		requirements_string += "None."
 	else: # at least 1 item
 		for i in range(num_components):
-			var item_data = ItemsList.get_item_data_by_id(current_recipe_info_recipe["componentIDs"][i])
+			var item_data = ItemsList.get_item_data_by_id(current_recipe_info_recipe["component_ids"][i])
 			# Add the item name and amount
-			requirements_string += str(current_recipe_info_recipe["componentAmts"][i]) + " " + item_data["name"]
-			if current_recipe_info_recipe["componentAmts"][i] > 1:
+			requirements_string += str(current_recipe_info_recipe["component_amts"][i]) + " " + item_data["name"]
+			if current_recipe_info_recipe["component_amts"][i] > 1:
 				# pluralize
 				requirements_string += "s"
 			# if we still have more requirements to append, add a comma

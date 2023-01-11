@@ -55,5 +55,10 @@ margin_right = 112.0
 margin_bottom = 29.0
 autowrap = true
 
+[node name="BuildingRequirements" type="Label" parent="BuildingInfoVBoxContainer"]
+margin_top = 33.0
+margin_right = 112.0
+margin_bottom = 40.0
+
 [connection signal="item_activated" from="BuildingSelectList" to="." method="_on_BuildingSelectList_item_activated"]
 [connection signal="item_selected" from="BuildingSelectList" to="." method="_on_BuildingSelectList_item_selected"]

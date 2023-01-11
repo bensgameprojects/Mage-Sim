@@ -10,8 +10,8 @@ extends Node
 		"id":"lumber",
 		"name":"Lumber",
 		"producing_things":["Farm"],
-		"componentIDs":[],
-		"componentAmts":[],
+		"component_ids":[],
+		"component_amts":[],
 		"product_item_id":"Lumber",
 		"amount_produced":1,
 		"base_craft_time":1
@@ -19,8 +19,8 @@ extends Node
 	id: this is the key used to identify the recipe uniquely
 	name: name of the recipe for display
 	producing_things : An array of strings of keys for things that can make this recipe
-	componentIDs: Array of strings of item.prototype_id 's that this recipe requires
-	componentAmts: Array of corresponding amounts for each item key in componentIDs each n > 0
+	component_ids: Array of strings of item.prototype_id 's that this recipe requires
+	component_amts: Array of corresponding amounts for each item key in component_ids each n > 0
 	product_item_id : A string item.prototype_id that this recipe produces
 	amount_product : The amount of product item that this recipe produces
 	base_craft_time : The time in seconds it takes to complete this recipe.
