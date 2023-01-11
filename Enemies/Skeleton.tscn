@@ -335,7 +335,7 @@ max_health = 3
 position = Vector2( 4, -19 )
 frames = SubResource( 6 )
 animation = "cast"
-frame = 19
+frame = 14
 playing = true
 
 [node name="ShadowSprite" type="Sprite" parent="."]
