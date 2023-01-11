@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=70 format=2]
 
 [ext_resource path="res://World/Grass.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Items/SpawnArea.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://World/DirtTileset.png" type="Texture" id=13]
 [ext_resource path="res://Systems/ThingPlacer.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Enemies/Skeleton.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Enemies/Snake.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -687,6 +688,12 @@ position = Vector2( 200, -16 )
 
 [node name="Skeleton" parent="SpawnHandler/Enemies" instance=ExtResource( 15 )]
 position = Vector2( 16, 16 )
+
+[node name="Snake" parent="SpawnHandler/Enemies" instance=ExtResource( 16 )]
+position = Vector2( 16, 120 )
+
+[node name="Snake2" parent="SpawnHandler/Enemies" instance=ExtResource( 16 )]
+position = Vector2( 24, 96 )
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
 [editable path="SpawnHandler/DroppedItems/SpawnArea"]

@@ -58,7 +58,7 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	var flat_things = new_scene.get_flat_things()
 	var new_thing_tracker = ThingTracker.new()
 	var new_power_system = PowerSystem.new()
-	simulation.setsup(current_scene_name, new_thing_tracker, new_power_system, ground_tiles, thing_placer, flat_things, player)
+	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, ground_tiles, thing_placer, flat_things, player)
 	# setup the entity_placer on the scene
 	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 	# remove the old scene
