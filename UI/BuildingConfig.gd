@@ -8,12 +8,13 @@ onready var product_item_name_label = $WorkerPanel/MarginContainer/VBoxContainer
 onready var work_progress_bar = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/WorkProgressBar
 onready var input_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/InputInventoryCtrl
 onready var output_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/OutputInventoryCtrl
+onready var worker_panel = $WorkerPanel
 
 # Onready vars for RecipePanel stuff
 onready var recipe_info_panel = $RecipeInfoPanel
-onready var recipe_name = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeName
-onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/RecipeRequirements
-onready var product_item_texture_rect = $RecipeInfoPanel/MarginContainer/CenterContainer/VBoxContainer/ProductItemTexture
+onready var recipe_name = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeName
+onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeRequirements
+onready var recipe_product_item_texture_rect = $RecipeInfoPanel/MarginContainer/VBoxContainer/ProductItemTexture
 
 # Other variables for keeping track
 var current_thing : Thing
@@ -37,8 +38,13 @@ func _unhandled_input(event):
 		if not self.visible and current_thing:
 			_set_info(current_thing)
 			show()
+			# Hide the recipe panel on open.
+			recipe_info_panel.hide()
 		else:
 			_clear_info(current_thing)
+			hide()
+	elif event.is_action_pressed("ui_cancel"):
+		if self.visible:
 			hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,6 +54,7 @@ func _unhandled_input(event):
 # only update the thing if the config is NOT open.
 func _on_player_facing_thing(thing: Thing) -> void:
 	if(current_thing != thing and not self.visible):
+		_clear_info(current_thing)
 		current_thing = thing
 
 # only update the display if the config is OPEN
@@ -115,6 +122,7 @@ func _update_thing(thing: Thing) -> void:
 			product_texture_rect.texture = load(thing_expected_output["image"])
 		else:
 			product_item_name_label.text = "No recipe set!"
+		worker_panel.set_deferred("rect_size", Vector2.ZERO)
 
 func _set_power_info(thing: Thing):
 	# This will show some data about the power system
@@ -128,10 +136,12 @@ func _clear_info(thing: Thing) -> void:
 		input_inventory_ctrl.inventory = null
 		output_inventory_ctrl.hide()
 		output_inventory_ctrl.inventory = null
+		product_texture_rect
 		disconnect_work_signals(get_work_component(thing))
 		recipe_item_list.clear()
 		recipe_list_index.clear()
 		recipe_info_panel.hide()
+		product_texture_rect.texture = null
 	
 
 func get_work_component(thing: Thing) -> WorkComponent:
@@ -141,12 +151,16 @@ func get_work_component(thing: Thing) -> WorkComponent:
 	return null
 
 func connect_work_signals(work_component: WorkComponent) -> void:
-	work_component.connect("work_accomplished", self, "_on_work_accomplished")
-	work_component.connect("work_done", self, "_on_work_done")
+	if not work_component.is_connected("work_accomplished", self, "_on_work_accomplished"):
+		work_component.connect("work_accomplished", self, "_on_work_accomplished")
+	if not work_component.is_connected("work_done", self, "_on_work_done"):
+		work_component.connect("work_done", self, "_on_work_done")
 
 func disconnect_work_signals(work_component: WorkComponent) -> void:
-	work_component.disconnect("work_accomplished", self, "_on_work_accomplished")
-	work_component.disconnect("work_done", self, "_on_work_done")
+	if work_component.is_connected("work_accomplished", self, "_on_work_accomplished"):
+		work_component.disconnect("work_accomplished", self, "_on_work_accomplished")
+	if work_component.is_connected("work_done", self, "_on_work_done"):
+		work_component.disconnect("work_done", self, "_on_work_done")
 
 func _on_work_accomplished(work_done) -> void:
 	work_progress_bar.value += work_done
@@ -160,13 +174,15 @@ func _on_RecipeItemList_item_selected(index):
 	current_recipe_info_recipe = RecipeList.get_recipe_by_id(recipe_id)
 	# Show the RecipeInfo panel and fill
 	recipe_name.text = current_recipe_info_recipe["name"]
-	product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
-	product_item_texture_rect.rect_size = Vector2(16,16)
+	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
+	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
 	recipe_requirements.text = build_requirements_string()
+	recipe_info_panel.set_deferred("rect_size", Vector2.ZERO)
+	recipe_info_panel.show_on_top = true
 	recipe_info_panel.show()
 
 func build_requirements_string() -> String:
-	var requirements_string = "Requirements: "
+	var requirements_string = "Requirements:\n"
 	var num_components = current_recipe_info_recipe["componentIDs"].size()
 	if num_components == 0:
 		requirements_string += "None."
@@ -180,11 +196,12 @@ func build_requirements_string() -> String:
 				requirements_string += "s"
 			# if we still have more requirements to append, add a comma
 			if i < num_components - 1:
-				requirements_string += ", "
+				requirements_string += "\n"
 	return requirements_string
 
 
 func _on_RecipeItemList_nothing_selected():
+	recipe_item_list.unselect_all()
 	recipe_info_panel.hide()
 
 # this should tell the current_thing to setup the work for this recipe

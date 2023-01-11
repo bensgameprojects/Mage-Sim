@@ -1,3 +1,4 @@
+class_name GatherableItem
 extends KinematicBody2D
 
 export(int) var COLLISION_SPEED = 2

@@ -217,6 +217,29 @@ func transfer_to(item: InventoryItem, destination: InventoryGrid, position: Vect
 		if .transfer(item, destination):
 			destination.move_item_to(item, position)
 			return true
+	else:
+		var existing_item = destination.get_item_at(position)
+		if (
+			existing_item.prototype_id == item.prototype_id
+			and item.get_property("is_stackable")
+			and existing_item.get_property("stack_size") < existing_item.get_property("max_stack_size")
+			):
+			var existing_stack_size = existing_item.get_property("stack_size")
+			var max_stack_size = existing_item.get_property("max_stack_size")
+			var available_space = max_stack_size - existing_stack_size
+			var amount_to_add = min(item.get_property("stack_size"), available_space)
+			if amount_to_add > 0:
+				existing_item.set_property("stack_size", existing_stack_size+amount_to_add)
+				destination.emit_signal("contents_changed")
+				item.set_property("stack_size", max(0, item.get_property("stack_size") - amount_to_add))
+				if item.get_property("stack_size") == 0:
+					remove_item(item)
+					item.queue_free()
+					emit_signal("contents_changed")
+					return true
+				emit_signal("contents_changed")
+				# Wasn't able to transfer it so put it back, although merged as much as possible
+				return false
 
 	return false
 

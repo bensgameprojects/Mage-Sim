@@ -201,7 +201,7 @@ func get_item_counts_by_ids(prototype_ids: Array) -> Dictionary:
 		result[prototype_id] = 0
 	for item in get_items():
 		if prototype_ids.has(item.prototype_id):
-			result[item.prototype_id] += 1
+			result[item.prototype_id] += item.get_property("stack_size")
 	return result
 
 # this function will iterate through all the items in your inventory
@@ -235,27 +235,49 @@ func can_afford_recipe(component_ids: Array, component_amts: Array) -> bool:
 # returns true if the cost was deducted and false otherwise.
 func deduct_cost(component_ids: Array, component_amts: Array) -> bool:
 	var component_debt = component_amts.duplicate(true)
+	var items_to_remove = []
+#	print("component_debt", component_debt)
 	# first check if we can afford the recipe:
 	if can_afford_recipe(component_ids, component_amts):
 		#if so, remove all the items and specified amounts:
 		for item in get_items():
 			var index = component_ids.find(item.prototype_id)
+#			if index == -1:
+#				print("Couldn't find " + item.prototype_id + " in", component_ids)
+#			else:
+#				print("Found " + item.prototype_id + " in %s at index %s", component_ids,index)
 			if index != -1 and component_debt[index] > 0:
 				var stack_size = item.get_property("stack_size")
 				if component_debt[index] < stack_size:
 					stack_size -= component_debt[index]
+#					print("Removed " + str(component_debt[index]) + " of " + item.get_property("name") + " from stack of " + str(stack_size + component_debt[index]))
 					component_debt[index] = 0
 					item.set_property("stack_size", stack_size)
+					emit_signal("contents_changed")
 				else: # the stack is smaller than or equal to the amount needed
 					# pay off the recipe debt
+#					print("Removing the rest(" + str(stack_size) + ") of the stack for item " + item.get_property("name"))
 					component_debt[index] -= stack_size
-					remove_item(item)
+					item.set_property("stack_size", 0)
+					# add to an array to remove after this for loop
+					# otherwise the get_items array gets changed while this loop
+					# is running and it causes logical errors.
+					items_to_remove.append(item)
+					emit_signal("contents_changed")
+#		print("component debt is now ", component_debt)
+#		print("")
 		# Ensure that we were able to take everything
 		var debt_count = 0
 		for debt in component_debt:
 			debt_count += debt
 		if debt_count == 0:
 			# success!
+			# Remove any items that now have a stack size of 0
+			for item in items_to_remove:
+				if is_instance_valid(item):
+					remove_item(item)
+					item.queue_free()
+					emit_signal("contents_changed")
 			return true
 		# else something went wrong and we cant afford the recipe after all
 		else: 

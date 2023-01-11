@@ -69,6 +69,8 @@ func setup_work(recipe: Dictionary):
 		is_enabled = true
 
 func work(delta: float) -> void:
+	# For now auto-enable if can afford and produce:
+	is_enabled = can_afford_recipe and can_produce_recipe
 	if is_enabled and can_afford_recipe and can_produce_recipe and available_work > 0.0:
 		var work_done := delta * work_speed
 		available_work -= work_done
@@ -108,11 +110,17 @@ func _set_can_afford_recipe(value: bool) -> void:
 # If there is no input_inventory then it returns true
 # If the recipe is null then it returns false
 func check_afford_recipe(recipe: Dictionary) -> bool:
-	if recipe != null and input_inventory != null:
+	if not recipe.empty() and input_inventory != null:
 		return input_inventory.can_afford_recipe(recipe["componentIDs"], recipe["componentAmts"])
-	elif recipe ==  null:
+	elif recipe ==  null or recipe.empty():
 		return false
 	return true
+
+func deduct_cost(recipe: Dictionary) -> bool:
+	if not recipe.empty() and input_inventory != null:
+		return input_inventory.deduct_cost(recipe["componentIDs"], recipe["componentAmts"])
+	else: # the recipe was empty or no input inventory so we deducted nothing from nothing.
+		return true
 
 # Returns true or false if making a product would fit in the output_inventory
 # If the output_inventory or the recipe is null then it returns false.
