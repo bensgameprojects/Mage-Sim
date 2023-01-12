@@ -34,3 +34,5 @@ signal player_facing_thing(thing)
 
 # emitted by things when they are updated for tracking/display
 signal info_updated(thing)
+
+signal notify_player(notification)
