@@ -47,6 +47,24 @@ func get_all_recipes_for_item(item_id) -> Array:
 func get_all_recipes_for_thing(thing_id) -> Array:
 	return recipe_protoset.get_all_items_containing_property("producing_things", thing_id)
 
+# Returns a string listing the requirements of the recipe
+# from the given recipe dictionary or recipe_id
+# Output looks like: "1 Coal, 1 Scroll, 3 Mushroom" or "None." for no requirements.
+func build_requirements_string(recipe_or_id) -> String:
+	if recipe_or_id == null:
+		return "None."
+	var requirements_string = ""
+	# If it is a string then its an id so replace it to make a dictionary
+	if recipe_or_id is String:
+		recipe_or_id = recipe_protoset.get(recipe_or_id)
+	if recipe_or_id is Dictionary and recipe_or_id.has_all(["component_ids","component_amts"]):
+		for i in range(recipe_or_id["component_ids"].size()):
+			requirements_string += str(recipe_or_id["component_amts"][i]) + " " +  ItemsList.get_item_name_by_id(recipe_or_id["component_ids"][i])
+			if i < recipe_or_id["component_ids"].size() - 1:
+				requirements_string += ", "
+	else:
+		requirements_string = "None."
+	return requirements_string
 # Called when the node enters the scene tree for the first time.
 #func _ready():
 #	pass # Replace with function body.

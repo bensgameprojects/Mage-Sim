@@ -1,21 +1,23 @@
 extends Control
 
-# Onready vars for WorkerPanel stuff
-onready var title_label = $WorkerPanel/MarginContainer/VBoxContainer/TitleLabel
-onready var recipe_item_list = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/RecipeHBox/RecipeItemList
-onready var product_texture_rect = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductTextureRect
-onready var product_item_name_label = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductItemName
-onready var work_progress_bar = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/WorkProgressBar
-onready var input_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/InputInventoryCtrl
-onready var output_inventory_ctrl = $WorkerPanel/MarginContainer/VBoxContainer/HSplitContainer/CenterContainer/VBoxContainer/OutputInventoryCtrl
-onready var worker_panel = $WorkerPanel
+# Onready vars for Status stuff
+onready var title_label = $Status/MarginContainer/VBoxContainer/TitleLabel
+onready var recipe_item_list = $Recipes/RecipeItem
+onready var product_texture_rect = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductTextureRect
+onready var product_item_name_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductItemName
+onready var work_progress_bar = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/WorkProgressBar
+onready var input_inventory_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/InputinventoryLabel
+onready var input_inventory_ctrl = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/CenterContainer2/InputInventoryCtrl
+onready var output_inventory_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/OutputInventoryLabel
+onready var output_inventory_ctrl = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/CenterContainer/OutputInventoryCtrl
+onready var worker_panel = $Status
 
 # Onready vars for RecipePanel stuff
-onready var recipe_info_panel = $RecipeInfoPanel
-onready var recipe_name = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeName
-onready var recipe_requirements = $RecipeInfoPanel/MarginContainer/VBoxContainer/RecipeRequirements
-onready var recipe_product_item_texture_rect = $RecipeInfoPanel/MarginContainer/VBoxContainer/ProductItemTexture
-
+onready var recipe_info_panel = $Recipes
+onready var recipe_name = $Recipes/MarginContainer/VBoxContainer/RecipeName
+onready var recipe_requirements = $Recipes/MarginContainer/VBoxContainer/RecipeRequirements
+onready var recipe_product_item_texture_rect = $Recipes/MarginContainer/VBoxContainer/ProductItemTexture
+onready var assign_recipe_button = $Recipes/MarginContainer/VBoxContainer/MakeRecipeButton
 # Other variables for keeping track
 var current_thing : Thing
 const title_string = "Building Config"
@@ -31,6 +33,9 @@ func _ready():
 	Events.connect("player_facing_thing", self, "_on_player_facing_thing")
 #	Events.connect("info_updated", self, "_on_info_updated")
 	hide()
+	clear_recipe_panel()
+	input_inventory_label.hide()
+	output_inventory_label.hide()
 
 func _unhandled_input(event):
 	if event.is_action_pressed("building_config"):
@@ -39,7 +44,7 @@ func _unhandled_input(event):
 			_set_info(current_thing)
 			show()
 			# Hide the recipe panel on open.
-			recipe_info_panel.hide()
+#			recipe_info_panel.hide()
 		else:
 			_clear_info(current_thing)
 			hide()
@@ -94,13 +99,17 @@ func _set_worker_info(thing: Thing):
 	if work_component.input_inventory is InventoryGrid:
 		input_inventory_ctrl.inventory = work_component.input_inventory
 		input_inventory_ctrl.show()
+		input_inventory_label.show()
 	if work_component.output_inventory is InventoryGrid:
 		output_inventory_ctrl.inventory = work_component.output_inventory
 		output_inventory_ctrl.show()
+		output_inventory_label.show()
 	# Connect to the signals
 	connect_work_signals(work_component)
 	# This should get the rest of recipe window stuff that we need set up
 	_update_thing(thing)
+	if not thing_assigned_recipe.empty():
+		set_recipe_panel(thing_assigned_recipe)
 
 # Updates the display to the current information for the thing
 # If it's a worker, then it gets the current recipe and fills the fields
@@ -134,15 +143,38 @@ func _clear_info(thing: Thing) -> void:
 	if thing is Thing and current_thing.is_in_group(Types.WORKERS):
 		input_inventory_ctrl.hide()
 		input_inventory_ctrl.inventory = null
+		input_inventory_label.hide()
+		output_inventory_label.hide()
 		output_inventory_ctrl.hide()
 		output_inventory_ctrl.inventory = null
-		product_texture_rect
-		disconnect_work_signals(get_work_component(thing))
-		recipe_item_list.clear()
-		recipe_list_index.clear()
-		recipe_info_panel.hide()
 		product_texture_rect.texture = null
-	
+		product_item_name_label.text = ""
+		title_label.text = title_string
+		work_progress_bar.value = work_progress_bar.min_value
+		disconnect_work_signals(get_work_component(thing))
+		clear_recipe_panel()
+
+func set_recipe_panel(recipe: Dictionary):
+	current_recipe_info_recipe = recipe
+	recipe_name.text = recipe["name"]
+	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(recipe["product_item_id"])["image"])
+	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
+	recipe_requirements.text = build_requirements_string(recipe)
+	if thing_assigned_recipe == recipe:
+		assign_recipe_button.disabled = true
+		recipe_name.text += " (Assigned)"
+	else:
+		assign_recipe_button.disabled = false
+	assign_recipe_button.show()
+
+func clear_recipe_panel():
+	recipe_item_list.clear()
+	recipe_list_index.clear()
+	recipe_product_item_texture_rect.texture = null
+	recipe_name.text = ""
+	recipe_requirements.text = ""
+	product_texture_rect.texture = null
+	assign_recipe_button.hide()
 
 func get_work_component(thing: Thing) -> WorkComponent:
 	for child in thing.get_children():
@@ -169,29 +201,19 @@ func _on_work_accomplished(work_done) -> void:
 func _on_work_done(_current_output) -> void:
 	work_progress_bar.value = work_progress_bar.min_value
 
-func _on_RecipeItemList_item_selected(index):
-	var recipe_id = recipe_list_index[index]
-	current_recipe_info_recipe = RecipeList.get_recipe_by_id(recipe_id)
-	# Show the RecipeInfo panel and fill
-	recipe_name.text = current_recipe_info_recipe["name"]
-	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(current_recipe_info_recipe["product_item_id"])["image"])
-	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
-	recipe_requirements.text = build_requirements_string()
-	recipe_info_panel.set_deferred("rect_size", Vector2.ZERO)
-	recipe_info_panel.show_on_top = true
-	recipe_info_panel.show()
 
-func build_requirements_string() -> String:
+
+func build_requirements_string(recipe: Dictionary) -> String:
 	var requirements_string = "Requirements:\n"
-	var num_components = current_recipe_info_recipe["component_ids"].size()
+	var num_components = recipe["component_ids"].size()
 	if num_components == 0:
 		requirements_string += "None."
 	else: # at least 1 item
 		for i in range(num_components):
-			var item_data = ItemsList.get_item_data_by_id(current_recipe_info_recipe["component_ids"][i])
+			var item_data = ItemsList.get_item_data_by_id(recipe["component_ids"][i])
 			# Add the item name and amount
-			requirements_string += str(current_recipe_info_recipe["component_amts"][i]) + " " + item_data["name"]
-			if current_recipe_info_recipe["component_amts"][i] > 1:
+			requirements_string += str(recipe["component_amts"][i]) + " " + item_data["name"]
+			if recipe["component_amts"][i] > 1:
 				# pluralize
 				requirements_string += "s"
 			# if we still have more requirements to append, add a comma
@@ -199,13 +221,29 @@ func build_requirements_string() -> String:
 				requirements_string += "\n"
 	return requirements_string
 
-
-func _on_RecipeItemList_nothing_selected():
-	recipe_item_list.unselect_all()
-	recipe_info_panel.hide()
-
 # this should tell the current_thing to setup the work for this recipe
 func _on_MakeRecipeButton_pressed():
 	if current_thing is Thing and current_thing.has_method("change_recipe"):
+		assign_recipe_button.disabled = true
+		recipe_name.text += " (Assigned)"
 		current_thing.change_recipe(current_recipe_info_recipe)
 		_update_thing(current_thing)
+
+
+func _on_RecipeItem_item_selected(index):
+	var recipe_id = recipe_list_index[index]
+	# Show the RecipeInfo panel and fill
+	set_recipe_panel(RecipeList.get_recipe_by_id(recipe_id))
+
+
+func _on_RecipeItem_nothing_selected():
+	recipe_item_list.unselect_all()
+	if thing_assigned_recipe != null and not thing_assigned_recipe.empty():
+		set_recipe_panel(thing_assigned_recipe)
+	else:
+		current_recipe_info_recipe = {}
+		recipe_product_item_texture_rect.texture = null
+		recipe_name.text = ""
+		recipe_requirements.text = ""
+		product_texture_rect.texture = null
+		assign_recipe_button.hide()

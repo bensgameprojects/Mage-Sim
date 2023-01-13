@@ -255,14 +255,4 @@ json_data = "[
 		\"is_stackable\":true,
 		\"image\":\"res://Items/water.png\"
 	},
-																{
-		\"id\":\"mushroom\",
-		\"name\":\"Mushroom\",
-		\"width\":1,
-		\"height\":1,
-		\"stack_size\":1,
-		\"max_stack_size\":999,
-		\"is_stackable\":true,
-		\"image\":\"res://Items/lpc-food-v2/mushroom.png\"
-	},
 ]"

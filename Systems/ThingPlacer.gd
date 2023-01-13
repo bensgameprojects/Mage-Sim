@@ -112,10 +112,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not cell_is_occupied and is_close_to_player and is_on_ground:
 				# This line needs to get the building_id from somewhere and
 				# pass it rather than the name of the building.
-				if get_tree().get_nodes_in_group("InventoryUI")[0].deduct_cost_from_player_inv(BuildingList.get_recipe_by_id(BuildingList.get_thing_name_from(_blueprint))):
+				var building_id = BuildingList.get_thing_name_from(_blueprint)
+				
+				if get_tree().get_nodes_in_group("InventoryUI")[0].deduct_cost_from_player_inv(BuildingList.get_recipe_by_id(building_id)):
 					_place_thing(cellv)
 					_update_neighboring_flat_things(cellv)
 				else: # Unable to afford building
+					var building_info = BuildingList.get_building_by_id(building_id)
+					Events.emit_signal("notify_player", "Can't afford " + building_info["name"] + "! Costs " + RecipeList.build_requirements_string(building_info) + ".")
 					print("Can't afford building!")
 				# deduct cost from inventory here perhaps?
 	# press and hold "deconstruct" action (or G rn) to deconstruct an item

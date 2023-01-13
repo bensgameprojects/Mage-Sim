@@ -16,6 +16,8 @@ func _set_item_protoset(new_item_protoset: Resource) -> void:
 func get_item_data_by_id(item_id) -> Dictionary:
 	return item_protoset.get(item_id)
 
+func get_item_name_by_id(item_id) -> String:
+	return item_protoset.get(item_id)["name"]
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

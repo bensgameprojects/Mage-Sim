@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://UI/toriko_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://UI/InfoGUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://UI/BuildingConfig.tscn" type="PackedScene" id=10]
+[ext_resource path="res://UI/NotificationUI.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -98,6 +99,11 @@ custom_fonts/font = ExtResource( 8 )
 text = "Build"
 
 [node name="BuildingConfig" parent="UILayer" instance=ExtResource( 10 )]
+margin_left = -168.0
+margin_right = -8.0
+
+[node name="NotificationUI" parent="UILayer" instance=ExtResource( 11 )]
+margin_bottom = 20.0
 
 [node name="Simulation" type="Node" parent="." groups=["Simulation"]]
 script = ExtResource( 4 )

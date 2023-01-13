@@ -198,9 +198,18 @@ func _update_action(action: String, ability: String):
 # else return false (no spell cast)
 # overwrites the parents version to deduct recipe cost
 func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vector2) -> bool:
-	if not is_on_cooldown() and not is_stunned:
+	if is_stunned:
+		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Reason: Stunned")
+		return false
+	elif is_on_cooldown():
+		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Spell on cooldown for %.2f more seconds." % cooldown_timer.time_left)
+		return false
+	else: # We can try to cast if we have the stuff
 		# Deduct the cost of the recipe if there is one
-		if inventory_ui.deduct_cost_from_player_inv(RecipeList.get_recipe_by_id(left_click_ability_id)):
+		var recipe = RecipeList.get_recipe_by_id(left_click_ability_id)
+		if inventory_ui.deduct_cost_from_player_inv(recipe):
 			use_ability(spell, initial_position, initial_direction)
 			return true
+		else:
+			Events.emit_signal("notify_player", "Unable to afford " + left_click_ability_id + "! Costs " + RecipeList.build_requirements_string(left_click_ability_id) + ".")
 	return false

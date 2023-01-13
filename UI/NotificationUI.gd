@@ -42,7 +42,7 @@ func update_matching_notification(notification: String) -> bool:
 	for notification_label in notification_vbox.get_children():
 		if notification_label is Label and notification_label.text == notification:
 			remove_notification(notification_label)
-			add_notification(notification_label)
+			add_notification(notification)
 			return true
 	return false
 
@@ -50,8 +50,9 @@ func update_matching_notification(notification: String) -> bool:
 func add_notification(notification: String):
 	# make a new notification, assign the label and start the timer.
 	var new_notification = notification_scene.instance()
-	new_notification.text = notification
 	notification_vbox.add_child(new_notification)
+	new_notification.text = notification
+	new_notification.show()
 	var timer = new_notification.get_timer()
 	timer.connect("timeout", self, "_on_display_timer_timeout", [new_notification], CONNECT_ONESHOT)
 	timer.start(DISPLAY_TIME)
