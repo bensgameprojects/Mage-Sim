@@ -77,41 +77,47 @@ func _on_PlayerCtrlInventoryGrid_item_dropped(item, drop_position):
 
 func transfer_item_to_player_inv(itemToTransfer):
 	# try to merge the item with existing stack(s) of items
+	var prototype_id = itemToTransfer.prototype_id
 	var worldInventory = itemToTransfer.get_inventory()
 	var transferItemStackSize = itemToTransfer.get_property("stack_size")
 	var maxStackSize = itemToTransfer.get_property("max_stack_size")
-	var itemToStack = playerInventoryGrid.get_first_item_unmaxed_stack(itemToTransfer.prototype_id)
-	
-	while itemToStack != null and transferItemStackSize != 0:
+	var itemToStack = playerInventoryGrid.get_first_item_unmaxed_stack(prototype_id)
+	var amount_left = transferItemStackSize
+	while itemToStack != null and amount_left != 0:
 		var receivingItemStackSize = itemToStack.get_property("stack_size")
-		receivingItemStackSize = receivingItemStackSize + transferItemStackSize
+		receivingItemStackSize = receivingItemStackSize + amount_left
 		if(receivingItemStackSize > maxStackSize):
 #			transferItemStackSize = receivingItemStackSize % maxStackSize
-			transferItemStackSize = receivingItemStackSize - maxStackSize
+			amount_left = receivingItemStackSize - maxStackSize
 			itemToStack.set_property("stack_size", maxStackSize)
 		else:
-			transferItemStackSize = 0
+			amount_left = 0
 			itemToStack.set_property("stack_size", receivingItemStackSize)
 		
-		itemToStack = playerInventoryGrid.get_first_item_unmaxed_stack(itemToTransfer.prototype_id)
+		itemToStack = playerInventoryGrid.get_first_item_unmaxed_stack(prototype_id)
 	
 	# ok so itemToStack is null but we still have items left to add
-	if(transferItemStackSize != 0):
+	if(amount_left != 0):
 		# need to update the transfer item stack size to the itemToTransfer 
 		# in case that it changed above
-		itemToTransfer.set_property("stack_size", transferItemStackSize)
+		itemToTransfer.set_property("stack_size", amount_left)
 		# attempts to move the item to the player inventory
 		var free_spot = playerInventoryGrid.find_free_place(itemToTransfer)
 		# returns -1 -1 if no free place can be found
 		
 		if free_spot == Vector2(-1,-1):
+			Events.emit_signal("notify_player", NotificationTypes.Notifications.ITEM_PICKUP, {"item_id": prototype_id, "amount": (transferItemStackSize - amount_left)})
 			emit_signal("item_dropped_to_floor", itemToTransfer)
 		else:
 			if not itemToTransfer.get_inventory().transfer_to(itemToTransfer, playerInventoryGrid, free_spot):
 				# didnt work so put it back on the ground
+				Events.emit_signal("notify_player", NotificationTypes.Notifications.ITEM_PICKUP, {"item_id": prototype_id, "amount": (transferItemStackSize - amount_left)})
 				print("error: was not able to add to inventory! Item:" + itemToTransfer.prototype_id)
 				emit_signal("item_dropped_to_floor", itemToTransfer)
-	else:
+			else: # succeeded in adding the full amount to the inv
+				Events.emit_signal("notify_player", NotificationTypes.Notifications.ITEM_PICKUP, {"item_id": prototype_id, "amount": transferItemStackSize})
+	else: # succeeded in merging the ful amount to the inv
+		Events.emit_signal("notify_player", NotificationTypes.Notifications.ITEM_PICKUP, {"item_id": prototype_id, "amount": transferItemStackSize})
 		worldInventory.remove_item(itemToTransfer)
 		itemToTransfer.queue_free()
 

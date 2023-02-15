@@ -119,8 +119,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					_update_neighboring_flat_things(cellv)
 				else: # Unable to afford building
 					var building_info = BuildingList.get_building_by_id(building_id)
-					Events.emit_signal("notify_player", "Can't afford " + building_info["name"] + "! Costs " + RecipeList.build_requirements_string(building_info) + ".")
-					print("Can't afford building!")
+					Events.emit_signal("notify_player", NotificationTypes.Notifications.CANT_AFFORD_BUILDING, {"building_id": building_id})
+#					Events.emit_signal("notify_player", "Can't afford " + building_info["name"] + "! Costs " + RecipeList.build_requirements_string(building_info) + ".")
 				# deduct cost from inventory here perhaps?
 	# press and hold "deconstruct" action (or G rn) to deconstruct an item
 	elif event.is_action_pressed("deconstruct") and not has_placeable_blueprint:

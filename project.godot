@@ -195,6 +195,7 @@ Events="*res://Shared/events.gd"
 GroupConstants="*res://Shared/group_constants.gd"
 LayerConstants="*res://Shared/layer_constants.gd"
 Types="*res://Shared/Types.gd"
+NotificationTypes="*res://Shared/notification_types.gd"
 
 [debug]
 

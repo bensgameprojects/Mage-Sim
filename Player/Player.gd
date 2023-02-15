@@ -199,10 +199,12 @@ func _update_action(action: String, ability: String):
 # overwrites the parents version to deduct recipe cost
 func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vector2) -> bool:
 	if is_stunned:
-		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Reason: Stunned")
+		Events.emit_signal("notify_player", NotificationTypes.Notifications.IS_STUNNED, {"spell_id" : left_click_ability_id, "time_left" : stun_timer.time_left})
+#		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Reason: Stunned")
 		return false
 	elif is_on_cooldown():
-		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Spell on cooldown for %.2f more seconds." % cooldown_timer.time_left)
+		Events.emit_signal("notify_player", NotificationTypes.Notifications.ON_GCD_COOLDOWN, {"spell_id" : left_click_ability_id,"time_left" : cooldown_timer.time_left})
+#		Events.emit_signal("notify_player", "Unable to cast " + left_click_ability_id + "! Spell on cooldown for %.2f more seconds." % cooldown_timer.time_left)
 		return false
 	else: # We can try to cast if we have the stuff
 		# Deduct the cost of the recipe if there is one
@@ -211,5 +213,6 @@ func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vec
 			use_ability(spell, initial_position, initial_direction)
 			return true
 		else:
-			Events.emit_signal("notify_player", "Unable to afford " + left_click_ability_id + "! Costs " + RecipeList.build_requirements_string(left_click_ability_id) + ".")
+			Events.emit_signal("notify_player", NotificationTypes.Notifications.CANT_AFFORD_SPELL, {"spell_id" : left_click_ability_id})
+#			Events.emit_signal("notify_player", "Unable to afford " + left_click_ability_id + "! Costs " + RecipeList.build_requirements_string(left_click_ability_id) + ".")
 	return false
