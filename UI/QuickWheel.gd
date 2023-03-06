@@ -12,6 +12,7 @@ var offset = Vector2(64,64)
 func _ready():
 	Events.connect("assign_quickwheel", self, "_on_assign_quickwheel")
 	self.visible = false
+	offset = offset * self.rect_scale
 	get_node(selected_node).self_modulate = Color.red
 	get_node(selected_node).assign_ability("FireAttack1")
 	yield(get_tree(), "idle_frame") # wait for a second so player can be ready to get this signal
