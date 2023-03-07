@@ -59,9 +59,11 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	var new_thing_tracker = ThingTracker.new()
 	var new_power_system = PowerSystem.new()
 	var new_work_system = WorkSystem.new()
-	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	# setup the entity_placer on the scene
+	# this is going to also add all the Things spawned under the thingplacer to the trackers
 	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
+	# then the trackers and systems are given to the simulation.
+	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	# remove the old scene
 	remove_child(current_scene)
 	# call the queue free on the old scene

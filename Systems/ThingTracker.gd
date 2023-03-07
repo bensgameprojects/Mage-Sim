@@ -45,3 +45,18 @@ func get_thing_at(cellv: Vector2) -> Node2D:
 		return things[cellv]
 	else:
 		return null
+
+# This function generates the save state dictionary for all of the things
+# keyed by their grid position in the world.
+# The corresponding load function for this save_dict is in the ThingPlacer
+# which will place all the things back into their spots and call load on each one
+# with the values stored here.
+func save() -> Dictionary:
+	if things.empty():
+		return {}
+	else:
+		var save_dict = {}
+		for key in things.keys():
+			save_dict[key] = things[key].save()
+		return save_dict
+

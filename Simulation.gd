@@ -8,9 +8,11 @@ export var simulation_speed := 1.0 / 30.0
 
 onready var simulation_timer = $SimulationTimer
 
+var keys = ["scene_name", "ground", "thing_tracker", "thing_placer", "player", "flat_things", "power_system", "work_system"]
+
 var _thing_tracker: ThingTracker
 
-# this needs to be set by the SceneSwitcher
+# this needs to be set by the SceneSwitcher by calling setup
 var _scene_name : String
 var _ground : TileMap
 var _thing_placer : TileMap
@@ -69,7 +71,16 @@ func setup(
 		_work_system.queue_free()
 	_power_system = power_system
 	_work_system = work_system
-	simulation_timer.start(simulation_speed)
+	self.resume()
 
 func _on_SimulationTimer_timeout():
 	Events.emit_signal("systems_ticked", simulation_speed)
+
+func save() -> Dictionary:
+	return _thing_tracker.save()
+
+func pause():
+	simulation_timer.stop()
+
+func resume():
+	simulation_timer.start(simulation_speed)

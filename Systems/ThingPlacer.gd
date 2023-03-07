@@ -43,14 +43,14 @@ var _current_deconstruct_location := Vector2.ZERO
 
 onready var _deconstruct_timer := $DeconstructTimer
 
-
 func _ready() -> void:
 	# Use the existing blueprint to act as a key for the thing scene, so we can instance
 	# things given their blueprint
 	Events.connect("place_blueprint", self, "_place_blueprint")
 
 ## Setup function sets the placer up with the data that it needs to function
-## and adds any preplaced things to the tracker
+## and adds any preplaced things to the tracker which causes auto updates to work/power system by signals
+# in the thing tracker.
 func setup(scene_name: String, tracker: ThingTracker, ground: TileMap, flat_things: YSort, player: KinematicBody2D) -> void:
 	# Use the function to initialize our private references
 	# this makes refactoring easier because the ThingPlacer doesn't need
@@ -120,8 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				else: # Unable to afford building
 					var building_info = BuildingList.get_building_by_id(building_id)
 					Events.emit_signal("notify_player", NotificationTypes.Notifications.CANT_AFFORD_BUILDING, {"building_id": building_id})
-#					Events.emit_signal("notify_player", "Can't afford " + building_info["name"] + "! Costs " + RecipeList.build_requirements_string(building_info) + ".")
-				# deduct cost from inventory here perhaps?
+
 	# press and hold "deconstruct" action (or G rn) to deconstruct an item
 	elif event.is_action_pressed("deconstruct") and not has_placeable_blueprint:
 		if cell_is_occupied and is_close_to_player:
@@ -135,9 +134,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			_move_blueprint_in_world(cellv)
 		else:
 			_update_hover(cellv)
-	# If user wants to cancel the placement we should remove the blueprint
-	# note that the blueprint instances are shared in a library so we dont
-	# want to free them
 	elif event.is_action_pressed("ui_cancel") and _blueprint:
 		_blueprint.queue_free()
 		_blueprint = null
@@ -197,7 +193,7 @@ func _move_blueprint_in_world(cellv: Vector2) -> void:
 		
 func _place_thing(cellv: Vector2) -> void:
 	var thing_name := BuildingList.get_thing_name_from(_blueprint)
-	# Use the blueprint prepared in _ready to instance a new thing
+	# Use the blueprint from the buildinglist list
 	var new_thing: Node2D = BuildingList.things[thing_name].instance()
 	# check if pipe to get the required direction and sprite stuff
 	# place it under the _flat_things ysort so its sorted correctly
@@ -207,7 +203,6 @@ func _place_thing(cellv: Vector2) -> void:
 		PipeBlueprint.set_sprite_for_direction(new_thing.sprite, directions)
 	else:
 		add_child(new_thing)
-	
 	# snap its position to the map, adding POSITION_OFFSET to thet the center of the grid cell
 	new_thing.global_position = map_to_world(cellv) + POSITION_OFFSET
 	

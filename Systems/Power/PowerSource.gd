@@ -21,7 +21,7 @@ export (Types.Element, FLAGS) var element_type := 15
 export (Types.Direction, FLAGS) var output_direction := 15
 
 # How efficient the machine currently is. For instance, a machine that has no work
-# to do has an efficiency of 0' where one that has a job has an efficiency of '1'
+# to do has an efficiency of '0' where one that has a job has an efficiency of '1'
 var efficiency := 1.0
 
 # Returns a float indicating the possible power multiplied by the current efficiency
