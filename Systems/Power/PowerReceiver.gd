@@ -29,3 +29,25 @@ var efficiency := 0.0
 # Returns a float indicating the possible power multiplied by the current efficiency
 func get_effective_power() -> float:
 	return power_required * efficiency
+
+func save() -> Dictionary:
+	var save_dict = {
+		"component_id" : "PowerReceiver",
+		"power_required" : power_required,
+		"element_type" : element_type,
+		"input_direction" : input_direction,
+		"efficiency" : efficiency,
+	}
+	return save_dict
+
+func load_state(save_dict: Dictionary) -> bool:
+	if (
+		save_dict.has_all(["component_id", "power_required", "element_type", "input_direction", "efficiency"])
+		and save_dict["component_id"] == "PowerReceiver"
+		):
+		power_required = save_dict["power_required"]
+		element_type = save_dict["element_type"]
+		input_direction = save_dict["input_direction"]
+		efficiency = save_dict["efficiency"]
+		return true
+	return false

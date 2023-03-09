@@ -18,4 +18,20 @@ export var pickup_count := 1
 ## We haven't created the blueprint's type yet, so for now we leave it out.
 func _setup(_blueprint: BlueprintThing) -> void:
 	pass
-	
+
+func save() -> Dictionary:
+	var save_dict = {
+		"deconstruct_filter": deconstruct_filter,
+		"pickup_count": pickup_count,
+		}
+	return save_dict
+
+func load_state(save_dict: Dictionary) -> bool:
+	if save_dict.has_all(["deconstruct_filter", "pickup_count"]):
+		deconstruct_filter = save_dict["deconstruct_filter"]
+		pickup_count = save_dict["pickup_count"]
+	elif save_dict.has("deconstruct_filter"):
+		deconstruct_filter = save_dict["deconstruct_filter"]
+	elif save_dict.has("pickup_count"):
+		pickup_count = save_dict["pickup_count"]
+	return true

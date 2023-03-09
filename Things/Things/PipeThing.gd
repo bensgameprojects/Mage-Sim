@@ -20,17 +20,20 @@ func _ready():
 # type of thing to place when it loads.
 # The system will handle the rest.
 func save() -> Dictionary:
+	# use the parent save function to get the parent class vars
+	var save_dict = .save()
+	# save the thing_id
+	save_dict["thing_id"] = "Pipe"
 	# get the sprite region which is the direction of the pipe
-	var region = sprite.region_rect
-	var save_dict = {
-		"thing_id": "Pipe",
-		"region_rect": sprite.region_rect,
-	}
+	save_dict["region_rect"] = sprite.region_rect
 	return save_dict
 
 
 func load_state(save_dict) -> bool:
-	if save_dict.has_all("thing_id", "region_rect") and save_dict["thing_id"] == "Pipe":
+	# use the parent func to laod the Thing stuff
+	if not .load_state(save_dict):
+		return false
+	if save_dict.has_all(["thing_id", "region_rect"]) and save_dict["thing_id"] == "Pipe":
 		sprite.region_rect = save_dict["region_rect"]
 		return true
 	return false

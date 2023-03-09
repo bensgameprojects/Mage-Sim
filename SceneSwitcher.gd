@@ -14,10 +14,11 @@ var player_scene = preload("res://Player/Player.tscn")
 # (note player inventory will be a child of the player)
 var current_scene
 var player
-onready var levelTransitionAnimation = $SceneTransition/LevelTransitionAnimation
-onready var simulation = $Simulation
-var current_scene_name
-onready var health_ui = $UILayer/HealthUI
+onready var levelTransitionAnimation := $SceneTransition/LevelTransitionAnimation
+onready var simulation := $Simulation
+var current_scene_name : String
+onready var health_ui := $UILayer/HealthUI
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_scene_name = "Home"
@@ -35,6 +36,8 @@ func _ready():
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 	health_ui.setup(player)
+	
+
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
@@ -75,4 +78,17 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 func _build_scene_path(scene_name):
 	var path = "res://Levels/" + scene_name + ".tscn"
 	return path
+
+func pause_game():
+	# This flag should pause all the process functions
+	# https://docs.godotengine.org/en/4.0/tutorials/scripting/pausing_games.html
+	get_tree().paused = true
+	# This function should pause all the things in the simulation (buildings)
+	simulation.pause()
+	# Might want a signal for pausing/resuming.
+	# probably will need another function to set a pause state in the menus?
+	# for now it will be ok.
 	
+func resume_game():
+	get_tree().paused = false
+	simulation.resume()
