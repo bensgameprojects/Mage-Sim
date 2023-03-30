@@ -18,6 +18,7 @@ onready var levelTransitionAnimation := $SceneTransition/LevelTransitionAnimatio
 onready var simulation := $Simulation
 var current_scene_name : String
 onready var health_ui := $UILayer/HealthUI
+var home_scene_state : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,11 +45,13 @@ func _ready():
 func _on_SceneSwitcher_change_level(destination_scene_name):
 	levelTransitionAnimation.play("fade_in")
 	# stop the simulation timer while the level switches
-	$Simulation/SimulationTimer.stop()
+	pause_game()
 	# load an instance of the destination scene
 	var new_scene = load(_build_scene_path(destination_scene_name)).instance()
 	# get the player node from the current scene
 	player = current_scene.remove_player()
+	if current_scene_name == "Home":
+		home_scene_state = save_scene()
 	# set the new scene name
 	current_scene_name = destination_scene_name
 	# add the new scene
@@ -65,6 +68,8 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	# setup the entity_placer on the scene
 	# this is going to also add all the Things spawned under the thingplacer to the trackers
 	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
+	if destination_scene_name == "Home":
+		new_scene.load_things(home_scene_state["simulation"])
 	# then the trackers and systems are given to the simulation.
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	# remove the old scene
@@ -74,6 +79,7 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	# reassign current scene var for next time
 	current_scene = new_scene
 	levelTransitionAnimation.play("fade_out")
+	resume_game()
 
 func _build_scene_path(scene_name):
 	var path = "res://Levels/" + scene_name + ".tscn"
@@ -92,3 +98,8 @@ func pause_game():
 func resume_game():
 	get_tree().paused = false
 	simulation.resume()
+
+func save_scene() -> Dictionary:
+	var save_dict = {"current_scene_name": current_scene_name}
+	save_dict["simulation"] = simulation.save()
+	return save_dict

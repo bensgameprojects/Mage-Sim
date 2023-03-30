@@ -72,8 +72,8 @@ func save() -> Dictionary:
 	# call save on the parent
 	var save_dict = .save()
 	save_dict["thing_id"] = "Battery"
-	save_dict["stored_power"] = stored_power
-	save_dict["max_storage"] = max_storage
+	save_dict["stored_power"] = var2str(stored_power)
+	save_dict["max_storage"] = var2str(max_storage)
 	save_dict["power_source"] = source.save()
 	save_dict["power_receiver"] = receiver.save()
 	return save_dict
@@ -82,8 +82,10 @@ func load_state(save_dict) -> bool:
 	if not .load_state(save_dict):
 		return false
 	if save_dict.has_all(["thing_id", "stored_power", "max_storage", "power_source", "power_receiver"]) and save_dict["thing_id"] == "Battery":
-		stored_power = save_dict["stored_power"]
-		max_storage = save_dict["max_storage"]
+		var load_value : float = str2var(save_dict["stored_power"])
+		stored_power = load_value
+		load_value = str2var(save_dict["max_storage"])
+		max_storage = load_value
 		var success = source.load_state(save_dict["power_source"])
 		success = success and receiver.load_state(save_dict["power_receiver"])
 		return success

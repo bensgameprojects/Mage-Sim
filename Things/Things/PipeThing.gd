@@ -25,7 +25,9 @@ func save() -> Dictionary:
 	# save the thing_id
 	save_dict["thing_id"] = "Pipe"
 	# get the sprite region which is the direction of the pipe
-	save_dict["region_rect"] = sprite.region_rect
+	# position and size, but size will always be 32,32
+	var rect_position = sprite.region_rect.position
+	save_dict["region_rect_position"] = var2str(sprite.region_rect.position)
 	return save_dict
 
 
@@ -33,7 +35,9 @@ func load_state(save_dict) -> bool:
 	# use the parent func to laod the Thing stuff
 	if not .load_state(save_dict):
 		return false
-	if save_dict.has_all(["thing_id", "region_rect"]) and save_dict["thing_id"] == "Pipe":
-		sprite.region_rect = save_dict["region_rect"]
+	if save_dict.has_all(["thing_id", "region_rect_position"]) and save_dict["thing_id"] == "Pipe":
+		var rect_position: Vector2 = str2var(save_dict["region_rect_position"])
+		sprite.region_rect = Rect2(rect_position, Vector2(32,32))
 		return true
 	return false
+ 

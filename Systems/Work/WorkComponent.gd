@@ -173,3 +173,29 @@ func disconnect_signals() -> void:
 		input_inventory.disconnect("contents_changed", self, "_input_inventory_contents_changed")
 	if output_inventory != null:
 		output_inventory.disconnect("contents_changed", self, "_output_inventory_contents_changed")
+
+# saves the work related stuff. Just need the id of the recipe and everything
+# else can be sorted out by loading the recipe and setting up the work
+# also going to store the speed and available work if there was a job in progress.
+func save() -> Dictionary:
+	var save_dict = {}
+	if current_recipe.has("id"):
+		save_dict["current_recipe"] = current_recipe["id"]
+		if available_work != 0.0:
+			save_dict["available_work"] = var2str(available_work)
+		if work_speed != 0.0:
+			save_dict["work_speed"] = var2str(work_speed)
+	return save_dict
+
+func load_state(save_dict: Dictionary) -> bool:
+	if save_dict.has("current_recipe"):
+		var loaded_recipe = RecipeList.get_recipe_by_id(save_dict["current_recipe"])
+		setup_work(loaded_recipe)
+		if save_dict.has("available_work"):
+			# enforce float typing when loading the str to the var again
+			var load_value: float = str2var(save_dict["available_work"])
+			available_work = load_value
+		if save_dict.has("work_speed"):
+			var load_value: float = str2var(save_dict["work_speed"])
+			work_speed = load_value
+	return true

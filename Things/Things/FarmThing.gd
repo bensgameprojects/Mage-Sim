@@ -68,3 +68,16 @@ func _on_WorkComponent_work_enabled_changed(enabled : bool) -> void:
 	else:
 		$Sprite.modulate = Color.white
 
+func save() -> Dictionary:
+	var save_dict = .save()
+	save_dict["thing_id"] = "Farm"
+	save_dict["work"] = work.save()
+	save_dict["output_inventory"] = output_inventory.serialize()
+	return save_dict
+
+func load_state(save_dict: Dictionary) -> bool:
+	if save_dict.has_all(["thing_id", "work", "output_inventory"]) and save_dict["thing_id"] == "Farm":
+		var success = output_inventory.deserialize(save_dict["output_inventory"])
+		success = success and work.load_state(save_dict["work"])
+		return success
+	return false

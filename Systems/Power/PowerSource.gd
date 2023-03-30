@@ -31,10 +31,10 @@ func get_effective_power() -> float:
 func save() -> Dictionary:
 	var save_dict = {
 		"component_id" : "PowerSource",
-		"power_amount" : power_amount,
-		"element_type" : element_type,
-		"output_direction" : output_direction,
-		"efficiency" : efficiency,
+		"power_amount" : var2str(power_amount),
+		"element_type" : var2str(element_type),
+		"output_direction" : var2str(output_direction),
+		"efficiency" : var2str(efficiency),
 	}
 	return save_dict
 
@@ -43,9 +43,14 @@ func load_state(save_dict: Dictionary) -> bool:
 		save_dict.has_all(["component_id","power_amount", "element_type", "output_direction", "efficiency"])
 		and save_dict["component_id"] == "PowerSource"
 		):
-		power_amount = save_dict["power_amount"]
-		element_type = save_dict["element_type"]
-		output_direction = save_dict["output_direction"]
-		efficiency = save_dict["efficiency"]
+		# enforcing typing on the load.
+		var load_power_amount: float = str2var(save_dict["power_amount"])
+		var load_element_type: int = str2var(save_dict["element_type"])
+		var load_output_direction: int = str2var(save_dict["output_direction"])
+		var load_efficiency: float = str2var(save_dict["efficiency"])
+		power_amount = load_power_amount
+		element_type = load_element_type
+		output_direction = load_output_direction
+		efficiency = load_efficiency
 		return true
 	return false

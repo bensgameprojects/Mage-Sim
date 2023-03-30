@@ -56,7 +56,14 @@ func save() -> Dictionary:
 		return {}
 	else:
 		var save_dict = {}
+		# each key gets a unique index for the save
+		# its grid position is saved as a string in the thing's dict.
+		var index = 1
 		for key in things.keys():
-			save_dict[key] = things[key].save()
+			if things[key].has_method("save"):
+				var thing_dict = things[key].save()
+				thing_dict["grid_position"] = var2str(key)
+				save_dict[var2str(index)] = thing_dict
+				index += 1
 		return save_dict
 

@@ -38,3 +38,5 @@ func setup_thing_placer(scene_name, tracker, ground, flat_things, player) -> voi
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+func load_things(thing_save_dict: Dictionary):
+	_thing_placer.load_state(thing_save_dict)

@@ -8,7 +8,7 @@ onready var work = $WorkComponent
 onready var output_inventory = $OutputInventoryGrid
 onready var input_inventory = $InputInventoryGrid
 onready var animated_sprite = $AnimatedSprite
-
+onready var power_receiver = $PowerReceiver
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	work.work_speed = 1.0
@@ -75,3 +75,21 @@ func _on_WorkComponent_work_enabled_changed(enabled : bool) -> void:
 		animated_sprite.playing = true
 	else:
 		animated_sprite.playing = false
+
+func save() -> Dictionary:
+	var save_dict = .save()
+	save_dict["thing_id"] = "PaperMill"
+	save_dict["power_receiver"] = power_receiver.save()
+	save_dict["work"] = work.save()
+	save_dict["input_inventory"] = input_inventory.serialize()
+	save_dict["output_inventory"] = output_inventory.serialize()
+	return save_dict
+
+func load_state(save_dict: Dictionary) -> bool:
+	if save_dict.has_all(["thing_id", "power_receiver", "work", "input_inventory", "output_inventory"]) and save_dict["thing_id"] == "PaperMill":
+		var success = power_receiver.load_state(save_dict["power_receiver"])
+		success = success and input_inventory.deserialize(save_dict["input_inventory"])
+		success = success and output_inventory.deserialize(save_dict["output_inventory"])
+		success = success and work.load_state(save_dict["work"])
+		return success
+	return false
