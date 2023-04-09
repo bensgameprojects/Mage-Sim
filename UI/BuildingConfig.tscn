@@ -11,7 +11,6 @@ margin_left = -160.0
 script = ExtResource( 2 )
 
 [node name="Recipes" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -73,6 +72,7 @@ margin_right = 52.0
 margin_bottom = 143.0
 
 [node name="Status" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

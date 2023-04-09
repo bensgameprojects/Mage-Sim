@@ -309,4 +309,3 @@ func get_active_tile() -> Vector2:
 	var offset = Vector2(16,16)
 	# returns cellv in front of the player in the direction they are facing.
 	return world_to_map(_player.global_position + _player.direction_vector * offset)
-

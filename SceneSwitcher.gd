@@ -74,7 +74,7 @@ func _on_SceneSwitcher_change_level(destination_scene_name):
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	# remove the old scene
 	remove_child(current_scene)
-	# call the queue free on the old scene
+	# call the free on the old scene since everything is handled
 	current_scene.queue_free()
 	# reassign current scene var for next time
 	current_scene = new_scene

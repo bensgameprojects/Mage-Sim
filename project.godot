@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/gloot/item_slot.gd"
 }, {
+"base": "Node",
+"class": "MobGenerator",
+"language": "GDScript",
+"path": "res://Systems/MobGenerator.gd"
+}, {
 "base": "BlueprintThing",
 "class": "PipeBlueprint",
 "language": "GDScript",
@@ -162,6 +167,7 @@ _global_script_class_icons={
 "InventoryStacked": "",
 "ItemProtoset": "",
 "ItemSlot": "",
+"MobGenerator": "",
 "PipeBlueprint": "",
 "PipeThing": "",
 "Player": "",

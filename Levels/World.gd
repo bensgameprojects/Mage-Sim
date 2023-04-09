@@ -35,8 +35,8 @@ func setup_thing_placer(scene_name, tracker, ground, flat_things, player) -> voi
 	# give the world script a copy of the scene name just so it has it for later
 	_scene_name = scene_name
 	_thing_placer.setup(scene_name, tracker, ground, flat_things, player)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+# Scene switcher will call this function so the world can 
+# have things loaded in it.
 func load_things(thing_save_dict: Dictionary):
 	_thing_placer.load_state(thing_save_dict)

@@ -35,6 +35,8 @@ func getYSortNode():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# This is a dictionary metadata reference for the
+	# item corresponding to the item_id
 	item_reference = ItemsList.get_item_data_by_id(item_ID)
 	item_texture_path = item_reference["image"]
 	spawnTimer = Timer.new()
@@ -79,7 +81,7 @@ func _on_SpawnTimer_timeout():
 	# only one thing babyy
 	var inventoryUI = get_tree().get_nodes_in_group("InventoryUI")[0]
 	inventoryUI.create_new_dropped_item(new_item, stack_size)
-	# ok now these hm... i think i need to hook it up in the UI probably
+	# connect to the pickup stack stuff:
 	new_item.connect("ItemEnteredPickupRange", inventoryUI, "add_to_pickup_stack")
 	new_item.connect("ItemExitedPickupRange", inventoryUI, "remove_from_pickup_stack")
 #	print("made the item!")

@@ -41,6 +41,8 @@ func _unhandled_input(event):
 	if event.is_action_pressed("building_config"):
 		# only show if there is some thing to configure
 		if not self.visible and current_thing:
+			# get the current thing we're looking at
+			
 			_set_info(current_thing)
 			show()
 			# Hide the recipe panel on open.

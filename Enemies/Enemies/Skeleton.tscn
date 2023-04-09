@@ -7,9 +7,10 @@
 [ext_resource path="res://Enemies/Fantasy Skeleton Enemies/Skeleton Mage_idle.png" type="Texture" id=5]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hitbox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hurtbox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Enemies/Skeleton.gd" type="Script" id=8]
+[ext_resource path="res://Enemies/Enemies/Skeleton.gd" type="Script" id=8]
 [ext_resource path="res://Enemies/Fantasy Skeleton Enemies/Skeleton Mage_death.png" type="Texture" id=9]
 [ext_resource path="res://Enemies/Fantasy Skeleton Enemies/Skeleton Mage_cast.png" type="Texture" id=10]
+
 
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 10 )

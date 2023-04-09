@@ -26,7 +26,6 @@ func save() -> Dictionary:
 	save_dict["thing_id"] = "Pipe"
 	# get the sprite region which is the direction of the pipe
 	# position and size, but size will always be 32,32
-	var rect_position = sprite.region_rect.position
 	save_dict["region_rect_position"] = var2str(sprite.region_rect.position)
 	return save_dict
 

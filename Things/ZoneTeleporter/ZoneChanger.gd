@@ -15,6 +15,9 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func set_destination(scene_name: String) -> void:
+	destination_scene_name = scene_name
+
 # if a body enters then we start the timer
 func _on_ZoneChanger_body_entered(body):
 	# check if the body is player
