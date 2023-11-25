@@ -11,9 +11,14 @@ signal thing_removed(thing, cellv)
 # Signal emitted when the simulation triggers the systems for updates
 signal systems_ticked(delta)
 
+#Signal emitted when a level change is needed
+signal change_level(destination_scene_name)
+
 #Signal emitted when the player dies so systems can update
 #TODO: on_death/respawn_ui and respawn function in player.gd
-signal player_died(player)
+signal player_died
+
+signal respawn_player
 
 # Signal emitted by the quickwheels whenever a new ability
 # is selected. Will send the action button and the
@@ -28,6 +33,10 @@ signal place_blueprint(thing_id)
 
 # emitted when cell is hovered over sends the thing in that cell
 signal hovered_over_thing(thing)
+
+#building config sends this signal when opened to request the thing that 
+# the player is facing (if any)
+signal get_player_facing_thing
 
 # emitted when player is facing a thing
 signal player_facing_thing(thing)

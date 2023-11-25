@@ -37,12 +37,15 @@ func _ready():
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
 	health_ui.setup(player)
+	Events.connect("change_level", self, "_on_SceneSwitcher_change_level")
+	Events.connect("respawn_player", self, "_on_SceneSwitcher_change_level", ["Home"])
+	Events.connect("player_died", self, "pause_game")
 	
 
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)
 # ZoneChanger emits a level_change signal with the path to the destination scene
 # This is resolved here.
-func _on_SceneSwitcher_change_level(destination_scene_name):
+func _on_SceneSwitcher_change_level(destination_scene_name: String):
 	levelTransitionAnimation.play("fade_in")
 	# stop the simulation timer while the level switches
 	pause_game()

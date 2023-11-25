@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://UI/BuildingConfig.tscn" type="PackedScene" id=10]
 [ext_resource path="res://UI/NotificationUI.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Pauser.gd" type="Script" id=12]
+[ext_resource path="res://UI/RespawnMenu.tscn" type="PackedScene" id=13]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -109,6 +110,8 @@ margin_right = -8.0
 
 [node name="NotificationUI" parent="UILayer" instance=ExtResource( 11 )]
 margin_bottom = 20.0
+
+[node name="RespawnMenu" parent="UILayer" instance=ExtResource( 13 )]
 
 [node name="Simulation" type="Node" parent="." groups=["Simulation"]]
 script = ExtResource( 4 )

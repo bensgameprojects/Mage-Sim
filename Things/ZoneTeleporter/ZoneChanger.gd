@@ -1,14 +1,11 @@
 extends Node2D
 
-signal change_level
-
 export(String) var destination_scene_name = "Home"
 onready var teleportWait = $TeleportWait
 onready var baseSprite = $BaseSprite
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	baseSprite.playing = true
-	connect("change_level", get_tree().get_nodes_in_group("SceneSwitcher")[0], "_on_SceneSwitcher_change_level")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,5 +33,5 @@ func _on_TeleportWait_timeout():
 	# emit level changed
 	# if you decide where levels go you can build the path here
 	# and make destination_scene the name of the scene instead
-	emit_signal("change_level", destination_scene_name)
+	Events.emit_signal("change_level", destination_scene_name)
 

@@ -2,7 +2,7 @@ extends TileMap
 
 
 ## Distance from the player when the mouse stops being able to interacty
-const MAXIMUM_WORK_DISTANCE := 275.0
+const MAXIMUM_WORK_DISTANCE := 100.0
 
 ## When using `world_to_map()` or `map_to_world()`, `TileMap` reports values from the
 ## top-left corner of the tile.
@@ -47,6 +47,7 @@ func _ready() -> void:
 	# Use the existing blueprint to act as a key for the thing scene, so we can instance
 	# things given their blueprint
 	Events.connect("place_blueprint", self, "_place_blueprint")
+	Events.connect("get_player_facing_thing", self, "_player_facing_thing")
 
 ## Setup function sets the placer up with the data that it needs to function
 ## and adds any preplaced things to the tracker which causes auto updates to work/power system by signals
@@ -77,7 +78,7 @@ func _process(_delta: float) -> void:
 	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
 	if has_placeable_blueprint:
 		_move_blueprint_in_world(world_to_map(get_global_mouse_position()))
-	# get the tile the player is looking at
+	"""# get the tile the player is looking at
 	var new_active_tile = get_active_tile()
 	# if it changed since last time then update
 	if(_player_facing_tile != new_active_tile):
@@ -87,7 +88,7 @@ func _process(_delta: float) -> void:
 		_player_facing_tile = new_active_tile
 		# get thing at the new tile and update display etc
 		_player_facing_thing(_player_facing_tile)
-
+		"""
 func _unhandled_input(event: InputEvent) -> void:
 	var global_mouse_position := get_global_mouse_position()
 	# check whether we have a blueprint in hand (selected from ui) that can be placed
@@ -157,12 +158,9 @@ func _hover_thing(cellv: Vector2) -> void:
 func _clear_hover_thing(cellv: Vector2) -> void:
 	Events.emit_signal("hovered_over_thing", null)
 
-func _player_facing_thing(cellv: Vector2) -> void:
-	var thing = _thing_tracker.get_thing_at(cellv)
+func _player_facing_thing() -> void:
+	var thing = _thing_tracker.get_thing_at(get_active_tile())
 	Events.emit_signal("player_facing_thing", thing)
-
-func _clear_player_facing_thing(cellv: Vector2) -> void:
-	Events.emit_signal("player_facing_thing", null)
 
 func _place_blueprint(thing_id) -> void:
 	var cellv := world_to_map(get_global_mouse_position())

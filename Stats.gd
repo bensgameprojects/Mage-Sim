@@ -40,4 +40,7 @@ func set_health(value):
 #func _process(delta):
 #	pass
 func _ready():
+	spawn()
+
+func spawn():
 	self.health = max_health

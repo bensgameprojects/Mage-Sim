@@ -39,6 +39,7 @@ func _ready():
 
 func _unhandled_input(event):
 	if event.is_action_pressed("building_config"):
+		Events.emit_signal("get_player_facing_thing")
 		# only show if there is some thing to configure
 		if not self.visible and current_thing:
 			# get the current thing we're looking at

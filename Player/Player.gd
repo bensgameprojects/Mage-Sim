@@ -17,11 +17,6 @@ var left_click_ability
 var right_click_ability
 var left_click_ability_id
 var right_click_ability_id
-var ability_1 = load_ability("FireAttack1")
-var ability_2 = load_ability("WindAttack1")
-var ability_3 = load_ability("StunAttack")
-var ability_4 = load_ability("HomingAttack")
-var ability_5 = load_ability("Blink")
 
 # inits when the ready function is ready
 onready var animationPlayer = $AnimationPlayer
@@ -39,6 +34,7 @@ func _ready():
 	# add the player to the player group
 	add_to_group(GroupConstants.PLAYER_GROUP)
 	Events.connect("update_action", self, "_update_action")
+	Events.connect("respawn_player", self, "_on_player_respawn")
 	inventory_ui = get_tree().get_nodes_in_group("InventoryUI")[0]
 
 func _unhandled_input(event):
@@ -50,18 +46,9 @@ func _unhandled_input(event):
 		state = ATTACK
 	elif event.is_action_pressed("spinny attack"):
 		state = SPINNYATTACK
-	elif event.is_action_pressed("ability_1"):
-		use_ability_if_able(ability_1, global_position, direction_vector)
-	elif event.is_action_pressed("ability_2"):
-		use_ability_if_able(ability_2, global_position, direction_vector)
-	elif event.is_action_pressed("ability_3"):
-		use_ability_if_able(ability_3, global_position, direction_vector)
-	elif event.is_action_pressed("ability_4"):
-		use_ability_if_able(ability_4, global_position, direction_vector)
-	elif event.is_action_pressed("ability_5"):
-		use_ability_if_able(ability_5, global_position, direction_vector)
 	elif event.is_action_pressed("left_click"):
 		use_ability_if_able(left_click_ability, global_position, global_position.direction_to(get_global_mouse_position()))
+
 func _get_direction():
 	var direction_vector : Vector2 = Vector2.ZERO
 	direction_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -182,7 +169,14 @@ func _on_no_health():
 	var enemyDeathEffect = EnemyDeathEffect.instance()
 	get_parent().add_child(enemyDeathEffect)
 	enemyDeathEffect.global_position = global_position
-	Events.emit_signal("player_died", self)
+	Events.emit_signal("player_died")
+	
+func _on_player_respawn():
+	# spawn sets the player's health to max (Superclass function)
+	self.spawn()
+	self.visible = true
+	self.is_stunned = false
+	$Hurtbox.set_invincibility(false)
 
 func _update_action(action: String, ability: String):
 	if action == "left_click":

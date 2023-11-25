@@ -27,6 +27,7 @@ func _ready():
 		# first set up the mobs
 		for spawn_area in enemy_spawn_areas:
 			# the call to the mob generator here will make mob dicts/waves for each spawn area.
+			# generate_mod_dict(waves, mobs per wave)
 			spawn_area.setup(mob_generator.generate_mob_dict(1,1), enemy_scenes, enemy_ysort)
 			spawn_area.connect("all_waves_defeated", self, "_on_all_waves_defeated")
 		

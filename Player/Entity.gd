@@ -59,7 +59,7 @@ signal health_changed(value)
 signal max_health_changed(value)
 
 func _ready():
-	self.health = max_health
+	spawn()
 	cooldown_timer = Timer.new()
 	add_child(cooldown_timer)
 	cooldown_timer.connect("timeout", self, "_on_cooldown_timer_timeout")
@@ -68,6 +68,9 @@ func _ready():
 	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
 	self.connect("no_health", self, "_on_no_health")
 	hurtbox = get_hurtbox()
+
+func spawn():
+	self.health = max_health
 
 func get_hurtbox():
 	for child in get_children():

@@ -192,7 +192,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-PlayerStats="*res://Player/PlayerStats.tscn"
 GLoot="*res://addons/gloot/gloot_autoload.gd"
 ItemsList="*res://Items/ItemList.tscn"
 RecipeList="*res://Recipes/RecipeList.tscn"

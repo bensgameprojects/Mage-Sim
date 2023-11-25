@@ -43,7 +43,7 @@ func spawn_next_wave() -> void:
 	# each key is the name of a mob
 	for key in mob_dict.keys():
 		# spawn the number of mobs
-		for i in range(mob_dict[key]):
+		for _i in range(mob_dict[key]):
 			# instance a scene
 			var new_enemy = enemy_scenes[key].instance()
 			# get the position to spawn it to
