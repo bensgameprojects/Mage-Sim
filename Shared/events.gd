@@ -15,7 +15,6 @@ signal systems_ticked(delta)
 signal change_level(destination_scene_name)
 
 #Signal emitted when the player dies so systems can update
-#TODO: on_death/respawn_ui and respawn function in player.gd
 signal player_died
 
 signal respawn_player
@@ -45,3 +44,16 @@ signal player_facing_thing(thing)
 signal info_updated(thing)
 
 signal notify_player(notification)
+
+#emitted when an item is to be spawned.
+# requestor_node is the node who called the emit_signal so it can
+# receive the created item's reference if it wants. null otherwise
+signal spawn_item(item_id, item_count, position, requestor_node)
+
+signal spawn_item_on_player(item_id, item_count)
+
+signal item_entered_pickup_range(item_scene)
+
+signal item_exited_pickup_range(item_scene)
+
+signal player_pickup_item(item_id, item_count)

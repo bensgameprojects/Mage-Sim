@@ -9,9 +9,11 @@ onready var _ground = $GroundLayer1
 onready var _thing_placer = $SpawnHandler/ThingPlacer
 onready var _flat_things = $FlatThings
 var _scene_name
+
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+#func _ready():
+#	pass
 
 func add_player(player_instance):
 	spawnHandler.add_player(player_instance)

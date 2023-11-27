@@ -16,7 +16,7 @@ func _ready():
 	get_node(selected_node).self_modulate = Color.red
 	get_node(selected_node).assign_ability("FireAttack1")
 	yield(get_tree(), "idle_frame") # wait for a second so player can be ready to get this signal
-	Events.emit_signal("update_action",assigned_action, get_node(selected_node).get_ability())
+	Events.emit_signal("update_action", assigned_action, get_node(selected_node).get_ability())
 
 func _unhandled_input(event):
 	if event.is_action_pressed("quickwheel_1"):
@@ -34,7 +34,7 @@ func _unhandled_input(event):
 				get_node(selected_node).self_modulate = Color.white
 				get_node(new_selected_node).self_modulate = Color.red
 				selected_node = new_selected_node
-				Events.emit_signal("update_action",assigned_action, ability_name)
+				Events.emit_signal("update_action", assigned_action, ability_name)
 			else:
 				get_node(new_selected_node).self_modulate = Color.white
 

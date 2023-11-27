@@ -22,7 +22,7 @@ VBoxContainer/colors/backgroundcolor = Color( 0.572549, 0.164706, 0.164706, 1 )
 [node name="InventoryUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -168.0
+margin_right = -192.0
 margin_bottom = -60.0
 theme = SubResource( 2 )
 script = ExtResource( 1 )
@@ -39,11 +39,6 @@ prototype_id = "coal"
 properties = {
 "stack_size": 999.0
 }
-
-[node name="WorldInventoryGrid" type="Node" parent="."]
-script = ExtResource( 4 )
-item_protoset = ExtResource( 2 )
-size = Vector2( 50, 20 )
 
 [node name="InventoryPanelWindow" type="PanelContainer" parent="."]
 margin_right = 128.0
@@ -117,4 +112,3 @@ custom_fonts/font = ExtResource( 8 )
 align = 2
 
 [connection signal="item_dropped" from="InventoryPanelWindow/VBoxContainer/CenterContainer2/PlayerCtrlInventoryGrid" to="." method="_on_PlayerCtrlInventoryGrid_item_dropped"]
-[connection signal="transfer_item_to_player_inv" from="PickupItemUI" to="." method="transfer_item_to_player_inv"]

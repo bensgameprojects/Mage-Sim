@@ -35,6 +35,7 @@ func _ready():
 	add_to_group(GroupConstants.PLAYER_GROUP)
 	Events.connect("update_action", self, "_update_action")
 	Events.connect("respawn_player", self, "_on_player_respawn")
+	Events.connect("spawn_item_on_player", self, "_spawn_item_on_player")
 	inventory_ui = get_tree().get_nodes_in_group("InventoryUI")[0]
 
 func _unhandled_input(event):
@@ -42,10 +43,6 @@ func _unhandled_input(event):
 		is_sprint = true
 	elif event.is_action_released("sprint"):
 		is_sprint = false
-	elif event.is_action_pressed("attack"):
-		state = ATTACK
-	elif event.is_action_pressed("spinny attack"):
-		state = SPINNYATTACK
 	elif event.is_action_pressed("left_click"):
 		use_ability_if_able(left_click_ability, global_position, global_position.direction_to(get_global_mouse_position()))
 
@@ -78,6 +75,8 @@ func _physics_process(delta):
 	# move_and_collide(velocity * delta)
 	# using move and slide so we can slide against walls, doesnt multiply by delta
 	# move and slide will handle it for us
+	knockback_vector = move_and_slide(knockback_vector)
+	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION)
 	velocity = move_and_slide(velocity)
 
 func move_state(_delta):
@@ -210,3 +209,6 @@ func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vec
 			Events.emit_signal("notify_player", NotificationTypes.Notifications.CANT_AFFORD_SPELL, {"spell_id" : left_click_ability_id})
 #			Events.emit_signal("notify_player", "Unable to afford " + left_click_ability_id + "! Costs " + RecipeList.build_requirements_string(left_click_ability_id) + ".")
 	return false
+
+func _spawn_item_on_player(item_id: String, item_count: int):
+	Events.emit_signal("spawn_item", item_id, item_count, self.position, null)

@@ -2,15 +2,9 @@ extends Bullet
 
 # Input stats here:
 func _ready():
-	speed = 2
-	knockback_speed = 400
-	damage = 1
 	element = "FIRE"
-	max_hits_per_entity = 2
-	max_hits_before_destruct = 1
-	bullet_duration = 5.0
-	# Called every frame. 'delta' is the elapsed time since the previous frame.
 
+# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
 	position += velocity
 #	knockback_vector = velocity.normalized() * knockback

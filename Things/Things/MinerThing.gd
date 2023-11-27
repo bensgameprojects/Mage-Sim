@@ -40,24 +40,12 @@ func _on_WorkComponent_work_accomplished(_amount):
 
 
 func _on_WorkComponent_work_done(current_recipe : Dictionary):
-	# Farm output_inventory is size (1,1)
-	# Get the item if there is one
-	var item = output_inventory.get_item_at(Vector2(0,0))
-	# No item, so add the recipe product.
-	if item == null:
-		output_inventory.create_and_add_item_amount(current_recipe["product_item_id"], current_recipe["amount_produced"])
-	# There is an item see if it matches and is stackable to add to the current stack
-	elif item is InventoryItem and item.prototype_id == current_recipe["product_item_id"] and item.get_property("is_stackable"):
-		var current_amount = item.get_property("stack_size")
-		var max_stack_size = item.get_property("max_stack_size")
-		if current_amount < max_stack_size:
-			current_amount = min(max_stack_size, current_amount + current_recipe["amount_produced"])
-			item.set_property("stack_size", current_amount)
-			output_inventory.emit_signal("contents_changed")
-		if current_amount == max_stack_size:
-			# The output inventory is full, setting this to false will halt the system
+	if work.deduct_cost(current_recipe):
+		# returns true meaning we successfully consumed the items.
+		var result_item = output_inventory.add_or_merge(current_recipe["product_item_id"], current_recipe["amount_produced"])
+		if (result_item == null or result_item.get_property("stack_size") == result_item.get_property("max_stack_size")):
 			work.can_produce_recipe = false
-	# We made the item now setup work again.
+	# We made the item or failed somehow, so setup work again. and check requirements for production.
 	work.setup_work(work.current_recipe)
 
 

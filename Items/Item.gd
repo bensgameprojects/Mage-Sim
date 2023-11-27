@@ -4,16 +4,25 @@ extends KinematicBody2D
 export(int) var COLLISION_SPEED = 2
 export(int) var COLLISION_FRICTION = 10
 export(int) var MAX_COLLISION_SPEED = 2
-onready var itemSprite = $ItemSprite
+onready var item_sprite = $ItemSprite
 onready var softCollision = $SoftCollision
 onready var pickupDetection = $PickupDetection
 var velocity = Vector2.ZERO
 var collisionCounter = 0
-var item
-var item_ID
 
-signal ItemEnteredPickupRange
-signal ItemExitedPickupRange
+# necessary item info
+var item_ID
+var item_count
+
+func setup(item_id: String, item_count: int, spawn_position, texture):
+	set_item_id(item_id)
+	set_item_count(item_count)
+	set_sprite_texture(texture)
+	set_collision_layer_bit(LayerConstants.GATHERABLE_ITEM_LAYER_BIT, true)
+	spawn_sprite(spawn_position)
+
+func set_item_count(item_cnt: int):
+	item_count = item_cnt
 
 func set_item_id(item_id):
 	item_ID = item_id
@@ -21,16 +30,12 @@ func set_item_id(item_id):
 func get_item_id():
 	return item_ID
 
-func set_item_reference(inventoryItem):
-	item = inventoryItem
-
-func get_item_reference():
-	return item
+func get_item_count():
+	return item_count
 
 func set_sprite_texture(texture):
-	itemSprite.set_texture(texture)
+	item_sprite.set_texture(load(texture))
 
-#maybe you want an offset for this as well depending on the item idk
 # spawn location is a position
 func spawn_sprite(spawn_location):
 	self.position = spawn_location
@@ -75,9 +80,9 @@ func _on_SoftCollision_area_exited(_area):
 # player has entered the pickup range
 func _on_PickupDetection_area_entered(_area):
 	# someone to deal with this
-	emit_signal("ItemEnteredPickupRange", self)
+	Events.emit_signal("item_entered_pickup_range", self)
 
 
 func _on_PickupDetection_area_exited(_area):
 	# someone to deal with this
-	emit_signal("ItemExitedPickupRange", self)
+	Events.emit_signal("item_exited_pickup_range", self)

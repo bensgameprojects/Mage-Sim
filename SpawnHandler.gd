@@ -12,9 +12,17 @@ var waves_defeated : int = 0
 const mob_generator_scene = preload("res://Systems/MobGenerator.tscn")
 var mob_generator : MobGenerator
 var player : Player
+
+#Generic item scene to instance
+var item_scene = preload("res://Items/Item.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group(GroupConstants.SPAWNHANDLER_GROUP)
+	
+	# CONNECT to the spawn item event to carry out those requests
+	Events.connect("spawn_item", self, "_spawn_item")
+	
 	# gets the enemy spawn areas on the map and then fills them up
 	enemy_spawn_areas = get_tree().get_nodes_in_group("enemy_spawn_areas")
 	num_spawn_areas = enemy_spawn_areas.size()
@@ -69,3 +77,13 @@ func unlock_next_level():
 			child.show()
 		elif child.name == "NextFloorTeleporter":
 			child.show()
+
+#this function makes an item given the parent node to spawn it under.
+func _spawn_item(item_id : String, item_count: int, spawn_position, requestor_node):
+	var item_texture = ItemsList.get_item_data_by_id(item_id)["image"]
+	var new_item = item_scene.instance()
+	add_child(new_item)
+	new_item.setup(item_id, item_count, spawn_position, item_texture)
+	# give back to the node who requested the spawn.
+	if requestor_node != null and requestor_node.has_method("receive_item"):
+		requestor_node.receive_item(new_item)

@@ -19,9 +19,10 @@ export var bullet_duration := 3.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group(GroupConstants.BULLET_GROUP)
-	destruct_timer.connect("timeout", self, "_on_destruct_timer_timeout")
-	add_child(destruct_timer)
-	destruct_timer.start(bullet_duration)
+	if bullet_duration > 0:
+		destruct_timer.connect("timeout", self, "_on_destruct_timer_timeout")
+		add_child(destruct_timer)
+		destruct_timer.start(bullet_duration)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

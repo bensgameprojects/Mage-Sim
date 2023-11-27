@@ -561,7 +561,7 @@ max_stack = 5
 min_stack = 5
 
 [node name="SpawnArea2" parent="SpawnHandler" instance=ExtResource( 10 )]
-position = Vector2( 292, 41 )
+position = Vector2( 391, 105 )
 item_ID = "blueberry"
 max_stack = 5
 min_stack = 5

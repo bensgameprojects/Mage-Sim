@@ -1,69 +1,82 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://Enemies/Snake_walk.png" type="Texture" id=1]
+[ext_resource path="res://Enemies/slime_spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Shadows/SmallShadow.png" type="Texture" id=2]
-[ext_resource path="res://Hurtboxes + Hitboxes/Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Abilities/Bullets/Hitbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hurtbox.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Enemies/Enemies/Snake.gd" type="Script" id=5]
+[ext_resource path="res://Enemies/Enemies/Slime.gd" type="Script" id=5]
 [ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Enemies/PlayerDetectionZone.tscn" type="PackedScene" id=7]
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 16, 16 )
+region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 1 )
-region = Rect2( 16, 0, 16, 16 )
+region = Rect2( 66, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 0, 16, 16 )
+region = Rect2( 132, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 1 )
-region = Rect2( 48, 0, 16, 16 )
+region = Rect2( 198, 0, 64, 64 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 1 )
+region = Rect2( 264, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 1 )
+region = Rect2( 330, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 1 )
+region = Rect2( 396, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=18]
 animations = [ {
-"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
 "loop": true,
 "name": "default",
-"speed": 8.0
+"speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=7]
-radius = 4.0
+[sub_resource type="CapsuleShape2D" id=19]
+radius = 7.0
+height = 4.0
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 8.0
 height = 6.0
 
-[sub_resource type="CircleShape2D" id=9]
-radius = 5.0
-
 [sub_resource type="CircleShape2D" id=10]
 radius = 126.063
 
-[node name="Snake" type="KinematicBody2D"]
+[node name="Slime" type="KinematicBody2D"]
 collision_layer = 32
 collision_mask = 33
 script = ExtResource( 5 )
-MOVE_MAX_SPEED = 50
-COOLDOWN_TIME = 5.0
 max_health = 3
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -7 )
-frames = SubResource( 6 )
-frame = 3
-playing = true
-
 [node name="ShadowSprite" type="Sprite" parent="."]
+position = Vector2( 1, 2 )
+scale = Vector2( 1.4, 1.3125 )
 texture = ExtResource( 2 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 1, -10 )
+scale = Vector2( 0.46875, 0.515625 )
+frames = SubResource( 18 )
+frame = 6
+playing = true
+
 [node name="MovementCollision" type="CollisionShape2D" parent="."]
-shape = SubResource( 7 )
+position = Vector2( 1, -2 )
+rotation = 1.5708
+shape = SubResource( 19 )
 
 [node name="Hurtbox" parent="." instance=ExtResource( 4 )]
 collision_layer = 8
@@ -71,13 +84,6 @@ collision_layer = 8
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2( 0, -6 )
 shape = SubResource( 8 )
-
-[node name="Hitbox" parent="." instance=ExtResource( 3 )]
-collision_mask = 4
-
-[node name="CollisionShape2D" parent="Hitbox" index="0"]
-position = Vector2( 0, -5 )
-shape = SubResource( 9 )
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 7 )]
 
@@ -89,6 +95,14 @@ shape = SubResource( 10 )
 
 [node name="CooldownTimer" type="Timer" parent="."]
 
+[node name="Hitbox" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, -4 )
+collision_layer = 1024
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( 0, -2 )
+
 [editable path="Hurtbox"]
-[editable path="Hitbox"]
 [editable path="PlayerDetectionZone"]
+[editable path="Hitbox"]
