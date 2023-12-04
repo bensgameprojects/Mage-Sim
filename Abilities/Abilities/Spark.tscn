@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Abilities/Abilities/StunAttack.gd" type="Script" id=1]
+[ext_resource path="res://Abilities/Abilities/Spark.gd" type="Script" id=1]
 [ext_resource path="res://Effects/Projectiles/Thunder Effect 01/Thunder Projectile 1/Thunder projectile1 wo blur.png" type="Texture" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -39,12 +39,11 @@ height = 6.0
 collision_layer = 1024
 script = ExtResource( 1 )
 bullet_duration = 5.0
-stun_duration = 2.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 6 )
 animation = "animate"
-frame = 3
+frame = 4
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -54,5 +53,4 @@ root_node = NodePath("../AnimatedSprite")
 rotation = 1.5708
 shape = SubResource( 7 )
 
-[connection signal="area_entered" from="." to="." method="_on_BulletNode_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]

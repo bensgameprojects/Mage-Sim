@@ -146,26 +146,31 @@ func add_item_at(item: InventoryItem, position: Vector2) -> bool:
 	return false
 
 # tries to merge or add and returns the last stack that was added to
-# or the item that was made or null if the item cant be made (ie inventory is full)
-func add_or_merge(prototype_id: String, item_count: int) -> InventoryItem:
+# returns the remaining amount of items to be added, 0 if none.
+func add_or_merge(prototype_id: String, item_count: int) -> int:
 	var item_deficit = item_count
-	var item_reference = ItemsList.get_item_data_by_id(prototype_id)
-	if item_reference["is_stackable"]:
+	#var item_reference = ItemsList.get_item_data_by_id(prototype_id)
+	if item_protoset.get_item_property(prototype_id, "is_stackable", false):
 		for item in get_items():
 			var stack_size = item.get_property("stack_size")
-			if item.prototype_id == prototype_id && stack_size < item_reference["max_stack_size"]:
-				var available_space = item_reference["max_stack_size"] - stack_size
+			var max_stack_size = item.get_property("max_stack_size")
+			if item.prototype_id == prototype_id && stack_size < max_stack_size:
+				var available_space = max_stack_size - stack_size
 				if available_space >= item_deficit:
 					item.set_property("stack_size", stack_size + item_deficit)
 					#done
-					return item
+					return 0
 				else:
-					item.set_property("stack_size", item_reference["max_stack_size"])
+					item.set_property("stack_size", max_stack_size)
 					item_deficit = item_deficit - available_space
+	# try to make a new stack and add it
 	var item = create_and_add_item_amount(prototype_id, item_deficit)
 	if item:
 		move_item_to(item, find_free_place(item))
-	return item
+		return 0
+	# failed to add
+	print(item_deficit)
+	return item_deficit
 
 func create_and_add_item_at(prototype_id: String, position: Vector2) -> InventoryItem:
 	var item = create_and_add_item(prototype_id)

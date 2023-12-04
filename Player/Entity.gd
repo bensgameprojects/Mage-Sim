@@ -20,22 +20,22 @@ var is_invisible = false
 # init rng
 var statePickerRNG = RandomNumberGenerator.new()
 #default values, can change per enemy in their individual script
-export var MOVE_ACCELERATION = 20
-export var MOVE_FRICTION = 160
-export var MOVE_MAX_SPEED = 80
-export var SPRINT_MAX_SPEED = 120
-export var SPRINT_ACCELERATION = 40
-export var KNOCKBACK_FRICTION = 20
-export var KNOCKBACK_SPEED = 200
+export(float) var MOVE_ACCELERATION = 20
+export(float) var MOVE_FRICTION = 160
+export(float) var MOVE_MAX_SPEED = 80
+export(float) var SPRINT_MAX_SPEED = 120
+export(float) var SPRINT_ACCELERATION = 40
+export(float) var KNOCKBACK_FRICTION = 20
+export(float) var KNOCKBACK_SPEED = 200
 # 0 is no knockback resistance, 1 is completely resistant to knockback
-export var KNOCKBACK_RESISTANCE = 0.0
+export(float) var KNOCKBACK_RESISTANCE = 0.0
 # Percentage of how much cooldown reduction you get
 # 0 is a 0% cooldown_reduction 100 is 100% reduced
-export var COOLDOWN_REDUCTION = 0 setget set_cooldown_reduction
+export(float) var COOLDOWN_REDUCTION = 0.0 setget set_cooldown_reduction
 # base cooldown time in seconds
-export var COOLDOWN_TIME = 1.5 setget set_cooldown_time
+export(float) var COOLDOWN_TIME = 1.5 setget set_cooldown_time
 # invincibility time in seconds
-export var HIT_INVINCIBILITY_TIME = 0.5 setget set_hit_invincibility_time
+export(float) var HIT_INVINCIBILITY_TIME = 0.5 setget set_hit_invincibility_time
 export(int) var max_health = 1 setget set_max_health
 #cant be an onready because set_max_health is called on above line
 # which uses the health variable
@@ -53,13 +53,12 @@ var invis_timer
 var hurtbox
 
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-
+const damage_effect = preload("res://UI/DamageValue.tscn")
 signal no_health()
 signal health_changed(value)
 signal max_health_changed(value)
 
 func _ready():
-	spawn()
 	cooldown_timer = Timer.new()
 	add_child(cooldown_timer)
 	cooldown_timer.connect("timeout", self, "_on_cooldown_timer_timeout")
@@ -68,9 +67,8 @@ func _ready():
 	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
 	self.connect("no_health", self, "_on_no_health")
 	hurtbox = get_hurtbox()
-
-func spawn():
-	self.health = max_health
+	if hurtbox != null:
+		hurtbox.connect("hit_by", self, "_hit_by_spell")
 
 func get_hurtbox():
 	for child in get_children():
@@ -78,16 +76,16 @@ func get_hurtbox():
 			return child
 	return null
 
-func set_cooldown_reduction(value):
+func set_cooldown_reduction(value :float):
 	COOLDOWN_REDUCTION = clamp(value, 0, 100)
 
-func set_cooldown_time(value):
+func set_cooldown_time(value :float):
 	COOLDOWN_TIME = max(0, value)
 
-func set_hit_invincibility_time(value):
+func set_hit_invincibility_time(value :float):
 	HIT_INVINCIBILITY_TIME = max(0, value)
 
-func set_max_health(value):
+func set_max_health(value :float):
 	# dont allow max_health to be < 1
 	max_health = max(value, 1)
 	# cap the current health to max health in case it changes
@@ -95,14 +93,14 @@ func set_max_health(value):
 	emit_signal("max_health_changed", max_health)
 
 # whenever health variable is set it will use this function to set it
-func set_health(value):
+func set_health(value :float):
 	# dont allow health to exceed maximum
 	health = clamp(value, 0, max_health)
 	emit_signal("health_changed", health)
 	if health <= 0:
 		emit_signal("no_health")
 
-func take_damage(value):
+func take_damage(value :float):
 	health = clamp(health - value, 0, max_health)
 	emit_signal("health_changed", health)
 	set_invincibility()
@@ -124,19 +122,18 @@ func load_ability(ability_name):
 # This function will check if we are on cooldown
 # if not, then use the spell and return true
 # else return false (no spell cast)
-func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vector2) -> bool:
+func use_ability_if_able(spell,initial_position: Vector2, initial_direction: Vector2, caster) -> bool:
 	if not is_on_cooldown() and not is_stunned:
-		use_ability(spell, initial_position, initial_direction)
+		use_ability(spell, initial_position, initial_direction, caster)
 		return true
 	return false
 
 # input is a packed scene that will be instanced
 # and its setup function will be executed.
-func use_ability(spell, initial_position: Vector2, initial_direction: Vector2) -> void:
-	#adds instance of spell to parent node, which is "SpawnHandler" as of 12/7
-	var spell_instance = spell.instance()
-	get_parent().add_child(spell_instance)
-	spell_instance.setup(self, initial_position, initial_direction)
+func use_ability(spell, initial_position: Vector2, initial_direction: Vector2, caster) -> void:
+	#emit signal to spawn the spell which is caught by whoever is gonna be the parent
+	#currently its the spawnhandler node
+	Events.emit_signal("spawn_spell", spell, initial_position, initial_direction, caster)
 	set_cooldown_on()
 
 func move_entity(direction_vector: Vector2) -> void:
@@ -202,3 +199,18 @@ func remove_stun():
 		stun_timer.stop()
 	is_stunned = false
 	self.modulate = Color.white
+
+# what happens when an entity is hit by something
+func _hit_by_spell(spell_info: Dictionary, given_position: Vector2):
+	# apply any keywords we know
+	if spell_info.has("damage"):
+		take_damage(spell_info["damage"])
+		var dmg_label = damage_effect.instance()
+		get_parent().add_child(dmg_label)
+		dmg_label.display_value(spell_info["damage"],  self.position)
+	if spell_info.has("stun_duration"):
+		apply_stun(spell_info["stun_duration"])
+	if spell_info.has("add_health"):
+		health += spell_info["add_health"]
+	if spell_info.has("knockback_speed"):
+		apply_knockback(given_position, spell_info["knockback_speed"])

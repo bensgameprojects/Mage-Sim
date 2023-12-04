@@ -16,7 +16,16 @@ func _ready():
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel") and self.visible:
+		close_menu()
+
+func close_menu():
 		self.visible = false
+		if quickwheel_slot_menu.is_connected("index_pressed", self, "_on_quickwheel_slot_choice"):
+			quickwheel_slot_menu.disconnect("index_pressed", self, "_on_quickwheel_slot_choice")
+			quickwheel_slot_menu.visible = false
+
+func get_unlocked_spells() -> Array:
+	return SpellList.get_unlocked_spell_ids()
 
 func get_spell_names() -> Array:
 	var dir := Directory.new()
@@ -50,4 +59,7 @@ func _on_quickwheel_slot_choice(index:int, selected_spell: String):
 
 
 func _on_SpellbookToggle_pressed():
-	self.visible = not self.visible
+	if not self.visible:
+		self.visible = true
+	else:
+		close_menu()

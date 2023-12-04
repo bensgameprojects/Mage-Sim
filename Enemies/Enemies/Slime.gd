@@ -86,3 +86,11 @@ func accelerate_to_point(position):
 
 func create_on_hit_effect():
 	hurtbox.create_hit_effect()
+
+func _on_Hitbox_area_entered(area):
+	var damage_info := {
+	"id":"1dmg_attack",
+	"damage":1,
+	"knockback_speed":200,
+	}
+	area.hit_by(damage_info, self.global_position)

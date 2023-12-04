@@ -14,9 +14,9 @@ func _ready():
 	self.visible = false
 	offset = offset * self.rect_scale
 	get_node(selected_node).self_modulate = Color.red
-	get_node(selected_node).assign_ability("FireAttack1")
-	yield(get_tree(), "idle_frame") # wait for a second so player can be ready to get this signal
-	Events.emit_signal("update_action", assigned_action, get_node(selected_node).get_ability())
+	get_node(selected_node).assign_ability("Fireball")
+	#yield(get_tree(), "idle_frame") # wait for a second so player can be ready to get this signal
+	_update_action(assigned_action, get_node(selected_node).get_ability())
 
 func _unhandled_input(event):
 	if event.is_action_pressed("quickwheel_1"):
@@ -34,7 +34,7 @@ func _unhandled_input(event):
 				get_node(selected_node).self_modulate = Color.white
 				get_node(new_selected_node).self_modulate = Color.red
 				selected_node = new_selected_node
-				Events.emit_signal("update_action", assigned_action, ability_name)
+				_update_action(assigned_action, ability_name)
 			else:
 				get_node(new_selected_node).self_modulate = Color.white
 
@@ -53,7 +53,7 @@ func _mouse_exited(name):
 func _on_assign_quickwheel(slot_name, selected_spell):
 	get_node(slot_name).assign_ability(selected_spell)
 	if(slot_name == selected_node):
-		Events.emit_signal("update_action", assigned_action, selected_spell)
+		_update_action(assigned_action, selected_spell)
 
 func _process(_delta):
 	if self.visible:
@@ -78,3 +78,11 @@ func _process(_delta):
 				else:
 					_mouse_exited(selected_node)
 				_mouse_entered(choice)
+
+func _update_action(action: String, ability: String):
+	if action == "left_click":
+		PlayerStats.left_click_ability = PlayerStats.load_ability(ability)
+		PlayerStats.left_click_ability_id = ability
+	elif action == "right_click":
+		PlayerStats.right_click_ability = PlayerStats.load_ability(ability)
+		PlayerStats.right_click_ability_id = ability

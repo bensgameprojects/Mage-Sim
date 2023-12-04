@@ -22,7 +22,7 @@ func _ready():
 	
 	# CONNECT to the spawn item event to carry out those requests
 	Events.connect("spawn_item", self, "_spawn_item")
-	
+	Events.connect("spawn_spell", self, "_spawn_spell")
 	# gets the enemy spawn areas on the map and then fills them up
 	enemy_spawn_areas = get_tree().get_nodes_in_group("enemy_spawn_areas")
 	num_spawn_areas = enemy_spawn_areas.size()
@@ -87,3 +87,9 @@ func _spawn_item(item_id : String, item_count: int, spawn_position, requestor_no
 	# give back to the node who requested the spawn.
 	if requestor_node != null and requestor_node.has_method("receive_item"):
 		requestor_node.receive_item(new_item)
+
+func _spawn_spell(spell: PackedScene, initial_position: Vector2, global_mouse_pos: Vector2, caster):
+	if spell != null:
+		var spell_instance = spell.instance()
+		add_child(spell_instance)
+		spell_instance.setup(caster, initial_position, global_mouse_pos)

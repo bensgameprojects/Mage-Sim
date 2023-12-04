@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gloot/item_protoset.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+json_data = "[
+{
+	\"id\":\"Firebolt\",
+	\"name\":\"Firebolt\",
+	\"element\":\"FIRE\",
+	\"damage\":3,
+	\"knockback_speed\":200,
+	\"is_unlocked\":true,
+},
+{
+	\"id\":\"HomingAttack\",
+	\"element\":\"FIRE\",
+	\"damage\":1,
+	\"knockback_speed\":100,
+	\"is_unlocked\":true,
+},
+{
+	\"id\":\"Fireball\",
+	\"name\":\"Fireball\",
+	\"element\":\"FIRE\",
+	\"damage\":1,
+	\"is_unlocked\":true,
+},
+{
+	\"id\":\"Spark\",
+	\"name\":\"Spark\",
+	\"element\":\"LIGHTNING\",
+	\"damage\":1,
+	\"stun_duration\":1,
+	\"is_unlocked\":true,
+},
+{
+	\"id\":\"Windblast\",
+	\"name\":\"Windblast\",
+	\"element\":\"WIND\",
+	\"damage\":1,
+	\"knockback_speed\":300,
+	\"is_unlocked\":true,
+},
+]"

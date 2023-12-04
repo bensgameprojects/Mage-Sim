@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Enemies/slime_spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Shadows/SmallShadow.png" type="Texture" id=2]
-[ext_resource path="res://Abilities/Bullets/Hitbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hurtbox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Enemies/Enemies/Slime.gd" type="Script" id=5]
 [ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=6]
@@ -55,6 +54,9 @@ height = 6.0
 [sub_resource type="CircleShape2D" id=10]
 radius = 126.063
 
+[sub_resource type="CircleShape2D" id=1]
+radius = 7.0
+
 [node name="Slime" type="KinematicBody2D"]
 collision_layer = 32
 collision_mask = 33
@@ -70,7 +72,7 @@ texture = ExtResource( 2 )
 position = Vector2( 1, -10 )
 scale = Vector2( 0.46875, 0.515625 )
 frames = SubResource( 18 )
-frame = 6
+frame = 4
 playing = true
 
 [node name="MovementCollision" type="CollisionShape2D" parent="."]
@@ -95,14 +97,15 @@ shape = SubResource( 10 )
 
 [node name="CooldownTimer" type="Timer" parent="."]
 
-[node name="Hitbox" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, -4 )
-collision_layer = 1024
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
 collision_mask = 4
 
-[node name="CollisionShape2D" parent="Hitbox" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, -2 )
+shape = SubResource( 1 )
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 
 [editable path="Hurtbox"]
 [editable path="PlayerDetectionZone"]
-[editable path="Hitbox"]

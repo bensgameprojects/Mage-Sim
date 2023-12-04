@@ -8,7 +8,7 @@ enum {
 
 var softCollisionPushVector = Vector2.ZERO
 
-var windattack = load_ability("WindAttack1")
+var windattack = load_ability("Windblast")
 
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var sprite = $AnimatedSprite
@@ -99,5 +99,5 @@ func create_on_hit_effect():
 
 func _on_shoot_timer_timeout(player):
 	if player != null:
-		use_ability_if_able(windattack, self.global_position, self.global_position.direction_to(player.global_position))
+		use_ability_if_able(windattack, self.global_position, player.global_position, self)
 		shoot_timer.start(rand_range(0,3))

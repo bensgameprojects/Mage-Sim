@@ -57,3 +57,6 @@ signal item_entered_pickup_range(item_scene)
 signal item_exited_pickup_range(item_scene)
 
 signal player_pickup_item(item_id, item_count)
+
+#something wants to spawn a spell
+signal spawn_spell(spell, initial_position, global_mouse_pos, caster)

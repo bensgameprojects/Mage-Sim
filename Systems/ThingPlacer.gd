@@ -78,17 +78,8 @@ func _process(_delta: float) -> void:
 	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
 	if has_placeable_blueprint:
 		_move_blueprint_in_world(world_to_map(get_global_mouse_position()))
-	"""# get the tile the player is looking at
-	var new_active_tile = get_active_tile()
-	# if it changed since last time then update
-	if(_player_facing_tile != new_active_tile):
-		# clear the old cell
-		_clear_player_facing_thing(_player_facing_tile)
-		# assign new cell
-		_player_facing_tile = new_active_tile
-		# get thing at the new tile and update display etc
-		_player_facing_thing(_player_facing_tile)
-		"""
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	var global_mouse_position := get_global_mouse_position()
 	# check whether we have a blueprint in hand (selected from ui) that can be placed
@@ -114,8 +105,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				# This line needs to get the building_id from somewhere and
 				# pass it rather than the name of the building.
 				var building_id = BuildingList.get_thing_name_from(_blueprint)
-				
-				if get_tree().get_nodes_in_group("InventoryUI")[0].deduct_cost_from_player_inv(BuildingList.get_recipe_by_id(building_id)):
+				var building_recipe = BuildingList.get_recipe_by_id(building_id)
+				if PlayerInventory.deduct_cost(building_recipe["component_ids"], building_recipe["component_amts"]):
 					_place_thing(cellv)
 					_update_neighboring_flat_things(cellv)
 				else: # Unable to afford building

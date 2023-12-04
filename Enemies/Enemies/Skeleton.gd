@@ -9,7 +9,7 @@ enum {
 
 var softCollisionPushVector = Vector2.ZERO
 
-var fireball = load_ability("FireAttack1")
+var fireball = load_ability("Firebolt")
 
 var player_stuff
 
@@ -122,4 +122,4 @@ func _on_cast_animation_finished():
 	state = CHASE
 	
 func cast_spell():
-	use_ability_if_able(fireball, self.global_position, self.global_position.direction_to(player_stuff.global_position))
+	use_ability_if_able(fireball, self.global_position, player_stuff.global_position, self)

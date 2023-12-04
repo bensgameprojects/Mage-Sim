@@ -1,8 +1,9 @@
 extends Bullet
 
-# Input stats here:
+
 func _ready():
-	element = "FIRE"
+	# set the spell_id, the caster will call the setup
+	spell_id = "Fireball"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
@@ -14,21 +15,13 @@ func _physics_process(_delta):
 #	properties.knockback_vector = velocity.normalized() * knockback
 #	properties.damage = damage
 	
-func setup(caster, bullet_start_position, bullet_direction):
+func setup(caster, bullet_start_position, global_mouse_pos):
 	# call the Bullet function (parent) to set the collision mask
-	._set_collision_mask(caster)
-	initial_position = bullet_start_position
-	initial_direction = bullet_direction
-	position = initial_position
-	velocity = speed * bullet_direction
+	# set up the initial_position, initial_direction, and initial_mouse_pos
+	# variables
+	.setup(caster, bullet_start_position, global_mouse_pos)
+	velocity = speed * initial_direction
 
 #turning world collision on
 func _on_BulletNode_body_entered(_body):
 	self.queue_free()
-
-
-func _on_BulletNode_area_entered(area):
-	var entity = area.get_parent()
-	if entity is Entity and hit_confirm(entity): # you hit something
-		entity.take_damage(damage)
-		entity.apply_knockback(self.global_position, knockback_speed)

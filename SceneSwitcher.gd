@@ -17,7 +17,6 @@ var player
 onready var levelTransitionAnimation := $SceneTransition/LevelTransitionAnimation
 onready var simulation := $Simulation
 var current_scene_name : String
-onready var health_ui := $UILayer/HealthUI
 var home_scene_state : Dictionary
 
 # Called when the node enters the scene tree for the first time.
@@ -36,10 +35,9 @@ func _ready():
 	var new_work_system = WorkSystem.new()
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
 	current_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
-	health_ui.setup(player)
 	Events.connect("change_level", self, "_on_SceneSwitcher_change_level")
 	Events.connect("respawn_player", self, "_on_SceneSwitcher_change_level", ["Home"])
-	Events.connect("player_died", self, "pause_game")
+#	Events.connect("player_died", self, "pause_game")
 	
 
 # this is called by a ZoneChanger node (see ZoneChanger.gd for details)

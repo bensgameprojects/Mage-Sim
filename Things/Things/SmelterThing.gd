@@ -48,8 +48,8 @@ func _on_WorkComponent_work_accomplished(amount):
 func _on_WorkComponent_work_done(current_recipe : Dictionary):
 	if work.deduct_cost(current_recipe):
 		# returns true meaning we successfully consumed the items.
-		var result_item = output_inventory.add_or_merge(current_recipe["product_item_id"], current_recipe["amount_produced"])
-		if (result_item == null or result_item.get_property("stack_size") == result_item.get_property("max_stack_size")):
+		var remainder = output_inventory.add_or_merge(current_recipe["product_item_id"], current_recipe["amount_produced"])
+		if remainder > 0:
 			work.can_produce_recipe = false
 	# We made the item or failed somehow, so setup work again. and check requirements for production.
 	work.setup_work(work.current_recipe)

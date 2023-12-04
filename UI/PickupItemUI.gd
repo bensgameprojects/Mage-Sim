@@ -17,8 +17,15 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("pickup_item"):
 		if(!pickuppableItemArray.empty()):
 			var popped_item = pop_pickup_stack()
-			Events.emit_signal("player_pickup_item", popped_item.get_item_id(), popped_item.get_item_count())
-			popped_item.queue_free()
+			var items_leftover = PlayerInventory.add_or_merge(popped_item.get_item_id(), popped_item.get_item_count())
+			if items_leftover > 0:
+				# change the number of items in the stack on the ground
+				popped_item.set_item_count(items_leftover)
+				# put back in pickup stack
+				add_to_pickup_stack(popped_item)
+			else:
+				#item is added to the inventory so delete the item from the ground
+				popped_item.queue_free()
 
 # go to the end of the array (which is the front of the stack)
 func add_to_pickup_stack(item):

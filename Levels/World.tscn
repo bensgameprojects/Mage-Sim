@@ -525,7 +525,7 @@ script = ExtResource( 10 )
 format = 1
 
 [node name="Background" type="Sprite" parent="."]
-position = Vector2( 160, 96 )
+position = Vector2( 154, 108 )
 scale = Vector2( 1.00171, 1.05873 )
 texture = ExtResource( 11 )
 region_enabled = true
@@ -564,7 +564,7 @@ script = ExtResource( 8 )
 [node name="ThingPlacer" parent="SpawnHandler" instance=ExtResource( 14 )]
 
 [node name="SpawnLocation" parent="SpawnHandler" instance=ExtResource( 4 )]
-position = Vector2( 224, 78 )
+position = Vector2( 223, 142 )
 
 [node name="Bushes" type="YSort" parent="SpawnHandler"]
 
@@ -695,7 +695,7 @@ position = Vector2( 16, 120 )
 position = Vector2( 24, 96 )
 
 [node name="Slime" parent="SpawnHandler/Enemies" instance=ExtResource( 17 )]
-position = Vector2( 236, 72 )
+position = Vector2( 238, 14 )
 
 [editable path="SpawnHandler/DroppedItems/SpawnAreaBlueberry"]
 [editable path="SpawnHandler/DroppedItems/SpawnArea"]

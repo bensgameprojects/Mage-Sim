@@ -11,7 +11,6 @@
 [ext_resource path="res://Enemies/Fantasy Skeleton Enemies/Skeleton Mage_death.png" type="Texture" id=9]
 [ext_resource path="res://Enemies/Fantasy Skeleton Enemies/Skeleton Mage_cast.png" type="Texture" id=10]
 
-
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 48, 48 )
@@ -336,7 +335,7 @@ max_health = 3
 position = Vector2( 4, -19 )
 frames = SubResource( 6 )
 animation = "cast"
-frame = 14
+frame = 13
 playing = true
 
 [node name="ShadowSprite" type="Sprite" parent="."]

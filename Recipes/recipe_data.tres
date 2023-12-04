@@ -111,7 +111,7 @@ json_data = "[
 	\"component_amts\":[1],
 	},
 	{
-	\"id\":\"FireAttack1\",
+	\"id\":\"Fireball\",
 	\"component_ids\":[\"coal\"],
 	\"component_amts\":[1],
 	},
@@ -126,12 +126,12 @@ json_data = "[
 	\"component_amts\":[1],
 	},
 	{
-	\"id\":\"StunAttack\",
+	\"id\":\"Spark\",
 	\"component_ids\":[\"eggplant\",],
 	\"component_amts\":[1],
 	},
 	{
-	\"id\":\"WindAttack1\",
+	\"id\":\"Windblast\",
 	\"component_ids\":[\"cherry\",],
 	\"component_amts\":[1],
 	},

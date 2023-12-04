@@ -1,0 +1,65 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://Abilities/Abilities/Fireball.gd" type="Script" id=1]
+[ext_resource path="res://Effects/Projectiles/1/7.png" type="Texture" id=2]
+[ext_resource path="res://Effects/Projectiles/1/29.png" type="Texture" id=3]
+[ext_resource path="res://Effects/Projectiles/1/9.png" type="Texture" id=4]
+[ext_resource path="res://Effects/Projectiles/1/8.png" type="Texture" id=5]
+[ext_resource path="res://Effects/Projectiles/1/13.png" type="Texture" id=6]
+[ext_resource path="res://Effects/Projectiles/1/16.png" type="Texture" id=7]
+[ext_resource path="res://Effects/Projectiles/1/1.png" type="Texture" id=8]
+[ext_resource path="res://Effects/Projectiles/1/28.png" type="Texture" id=9]
+[ext_resource path="res://Effects/Projectiles/1/18.png" type="Texture" id=10]
+[ext_resource path="res://Effects/Projectiles/1/14.png" type="Texture" id=11]
+[ext_resource path="res://Effects/Projectiles/1/21.png" type="Texture" id=12]
+[ext_resource path="res://Effects/Projectiles/1/4.png" type="Texture" id=13]
+[ext_resource path="res://Effects/Projectiles/1/25.png" type="Texture" id=14]
+[ext_resource path="res://Effects/Projectiles/1/15.png" type="Texture" id=15]
+[ext_resource path="res://Effects/Projectiles/1/23.png" type="Texture" id=16]
+[ext_resource path="res://Effects/Projectiles/1/6.png" type="Texture" id=17]
+[ext_resource path="res://Effects/Projectiles/1/30.png" type="Texture" id=18]
+[ext_resource path="res://Effects/Projectiles/1/19.png" type="Texture" id=19]
+[ext_resource path="res://Effects/Projectiles/1/3.png" type="Texture" id=20]
+[ext_resource path="res://Effects/Projectiles/1/22.png" type="Texture" id=21]
+[ext_resource path="res://Effects/Projectiles/1/26.png" type="Texture" id=22]
+[ext_resource path="res://Effects/Projectiles/1/12.png" type="Texture" id=23]
+[ext_resource path="res://Effects/Projectiles/1/2.png" type="Texture" id=24]
+[ext_resource path="res://Effects/Projectiles/1/10.png" type="Texture" id=25]
+[ext_resource path="res://Effects/Projectiles/1/5.png" type="Texture" id=26]
+[ext_resource path="res://Effects/Projectiles/1/11.png" type="Texture" id=27]
+[ext_resource path="res://Effects/Projectiles/1/27.png" type="Texture" id=28]
+[ext_resource path="res://Effects/Projectiles/1/20.png" type="Texture" id=29]
+[ext_resource path="res://Effects/Projectiles/1/24.png" type="Texture" id=30]
+[ext_resource path="res://Effects/Projectiles/1/17.png" type="Texture" id=31]
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 24 ), ExtResource( 20 ), ExtResource( 13 ), ExtResource( 26 ), ExtResource( 17 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 25 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 6 ), ExtResource( 11 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 31 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 29 ), ExtResource( 12 ), ExtResource( 21 ), ExtResource( 16 ), ExtResource( 30 ), ExtResource( 14 ), ExtResource( 22 ), ExtResource( 28 ), ExtResource( 9 ), ExtResource( 3 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "default",
+"speed": 30.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 4.88195
+height = 6.2361
+
+[node name="BulletNode" type="Area2D"]
+physics_interpolation_mode = 2
+collision_layer = 1024
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 7 )
+frame = 5
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite")
+
+[node name="BulletShape" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+scale = Vector2( 1.01425, 1 )
+shape = SubResource( 8 )
+
+[connection signal="body_entered" from="." to="." method="_on_BulletNode_body_entered"]

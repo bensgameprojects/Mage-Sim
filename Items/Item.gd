@@ -14,9 +14,9 @@ var collisionCounter = 0
 var item_ID
 var item_count
 
-func setup(item_id: String, item_count: int, spawn_position, texture):
+func setup(item_id: String, item_cnt: int, spawn_position, texture):
 	set_item_id(item_id)
-	set_item_count(item_count)
+	set_item_count(item_cnt)
 	set_sprite_texture(texture)
 	set_collision_layer_bit(LayerConstants.GATHERABLE_ITEM_LAYER_BIT, true)
 	spawn_sprite(spawn_position)

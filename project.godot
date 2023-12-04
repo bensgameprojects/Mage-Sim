@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Items/Item.gd"
 }, {
+"base": "Area2D",
+"class": "Hurtbox",
+"language": "GDScript",
+"path": "res://Hurtboxes + Hitboxes/Hurtbox.gd"
+}, {
 "base": "Node",
 "class": "Inventory",
 "language": "GDScript",
@@ -109,7 +114,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Things/Things/PipeThing.gd"
 }, {
-"base": "Entity",
+"base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
@@ -161,6 +166,7 @@ _global_script_class_icons={
 "CtrlItemSlotEx": "",
 "Entity": "",
 "GatherableItem": "",
+"Hurtbox": "",
 "Inventory": "",
 "InventoryGrid": "",
 "InventoryItem": "",
@@ -196,11 +202,14 @@ GLoot="*res://addons/gloot/gloot_autoload.gd"
 ItemsList="*res://Items/ItemList.tscn"
 RecipeList="*res://Recipes/RecipeList.tscn"
 BuildingList="*res://Things/BuildingList.tscn"
+SpellList="*res://Abilities/SpellList.tscn"
 Events="*res://Shared/events.gd"
 GroupConstants="*res://Shared/group_constants.gd"
 LayerConstants="*res://Shared/layer_constants.gd"
 Types="*res://Shared/Types.gd"
 NotificationTypes="*res://Shared/notification_types.gd"
+PlayerStats="*res://Player/PlayerStats.tscn"
+PlayerInventory="*res://Player/PlayerInventory.tscn"
 
 [debug]
 

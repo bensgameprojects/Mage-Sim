@@ -2,24 +2,23 @@ extends Bullet
 
 onready var animation_player = $AnimationPlayer
 onready var seek_area = $SeekArea
-var current_target = null
-var setup_complete := false
+var current_target_position = null
 var hit_all_targets_counter = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	spell_id = "HomingAttack"
+	max_hits_before_destruct = 5
+	max_hits_per_entity = 5
 	animation_player.play("start")
 
-func setup(caster, bullet_start_position, bullet_direction):
+func setup(caster, bullet_start_position, global_mouse_pos):
 	# call the Bullet function (parent) to set the collision mask
-	._set_collision_mask(caster)
-	initial_position = bullet_start_position
-	initial_direction = bullet_direction
-	position = initial_position
-	velocity = speed * bullet_direction
-	# We are going to use a new area for homing detection and set it up here
+	.setup(caster, bullet_start_position, global_mouse_pos)
+	velocity = speed * initial_direction
 	if caster is Player:
+		# We are going to use a new area for homing detection and set it up here
 		seek_area.set_collision_mask_bit(LayerConstants.ENEMY_HURTBOX_LAYER_BIT, true)
-	else:
+	else: # set to hit player
 		seek_area.set_collision_mask_bit(LayerConstants.PLAYER_HURTBOX_LAYER_BIT, true)
 
 # NOTE: There is an issue with get_overlapping_bodies
@@ -32,14 +31,13 @@ func setup(caster, bullet_start_position, bullet_direction):
 # being able to fizzle
 
 func _physics_process(_delta):
-	if(current_target == null):
-		current_target = find_nearest_target()
-		if((current_target == null or not is_instance_valid(current_target)) and hit_all_targets()):
+	current_target_position = find_nearest_target_position()
+	if(current_target_position == null):
 			hit_all_targets_counter += 1
 	else:
 		#reset the hit all targets counter cause you found one
 		hit_all_targets_counter = 0
-		velocity = speed*global_position.direction_to(get_current_target_position())
+		velocity = speed*global_position.direction_to(current_target_position)
 		global_position += velocity
 		rotation_degrees = velocity.angle() * (180/PI)
 #			self.queue_free()
@@ -55,44 +53,35 @@ func _on_BulletNode_body_entered(_body):
 
 
 func _on_BulletNode_area_entered(area):
-	var entity = area.get_parent()
-	if entity is Entity and hit_confirm(entity): # you hit something
-		entity.take_damage(damage)
-		entity.apply_knockback(self.global_position, knockback_speed)
+	if hit_confirm(area):
+		area.hit_by(spell_info, self.global_position)
 		# reset the current target on hit
-		current_target = null
+		current_target_position = null
 
-
-func find_nearest_target():
+# returns null if nothing was found, returns a Vector2 global_position
+# of the nearest target.
+func find_nearest_target_position():
 	var detected_areas = seek_area.get_overlapping_areas()
-	var nearest_target = null
+	var nearest_target_position = null
 	var target_distance = -1
 	var candidate_distance = -1
 	for area in detected_areas:
-		var entity = area.get_parent()
-		if entity is Entity and can_hit(entity):
+		if (area.get_parent() is Entity or area.get_parent() is Player) and can_hit(area):
 #			print("found entity " + entity.name)
-			candidate_distance = self.global_position.distance_to(entity.global_position)
-			if nearest_target == null:
+			candidate_distance = self.global_position.distance_to(area.global_position)
+			if nearest_target_position == null:
 				# You are the first or only target available
-				nearest_target = entity
+				nearest_target_position = area.global_position
 				target_distance = candidate_distance
 			elif target_distance > candidate_distance:
 				# There is a target and the new candidate is closer
-				nearest_target = entity
+				nearest_target_position = area.global_position
 				target_distance = candidate_distance
-	return nearest_target
-
-func get_current_target_position():
-	if(current_target != null and is_instance_valid(current_target)):
-		return current_target.global_position
-	else:
-		return Vector2.ZERO
+	return nearest_target_position
 
 func hit_all_targets() -> bool:
 	var detected_areas = seek_area.get_overlapping_areas()
 	for area in detected_areas:
-		var entity = area.get_parent()
-		if entity is Entity and can_hit(entity):
+		if can_hit(area):
 			return false
 	return true
