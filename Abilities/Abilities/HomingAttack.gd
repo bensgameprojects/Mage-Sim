@@ -38,8 +38,8 @@ func _physics_process(_delta):
 		#reset the hit all targets counter cause you found one
 		hit_all_targets_counter = 0
 		velocity = speed*global_position.direction_to(current_target_position)
-		global_position += velocity
-		rotation_degrees = velocity.angle() * (180/PI)
+		position += velocity
+		rotation = velocity.angle()
 #			self.queue_free()
 #	print(hit_all_targets_counter)
 	# if we cant find any more targets to hit 30 times in a row

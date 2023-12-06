@@ -5,11 +5,11 @@ extends Camera2D
 # var a = 2
 # var b = "text"
 export(float) var zoom_increment = 0.1
-export(float) var max_zoom = 0.4
-export(float) var min_zoom = 2.0
+export(float) var max_zoom = 0.2
+export(float) var min_zoom = 0.33
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	zoom = Vector2(min_zoom, min_zoom)
 
 
 func zoom_in():

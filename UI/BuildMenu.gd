@@ -28,7 +28,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _unhandled_input(event):
+func _gui_input(event):
 	if event.is_action_pressed("ui_cancel") and self.visible:
 		self.visible = false
 

@@ -177,7 +177,7 @@ func remove_stun():
 	self.modulate = Color.white
 
 # Returns packed scene for the corresponding ability
-func load_ability(ability_name):
+func load_ability(ability_name:String):
 	# build the path to the ability tscn from the name
 	var path = "res://Abilities/Abilities/" + ability_name + ".tscn"
 	# load it

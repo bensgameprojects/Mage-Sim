@@ -11,8 +11,8 @@ anchor_bottom = 1.0
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 320.0
-margin_bottom = 184.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.352941 )
 
 [node name="Button" type="Button" parent="."]
@@ -27,10 +27,11 @@ margin_bottom = 35.0
 text = "Respawn"
 
 [node name="Label" type="Label" parent="."]
-margin_left = 120.0
-margin_top = 56.0
-margin_right = 200.0
-margin_bottom = 76.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -192.0
+margin_right = 192.0
+margin_bottom = 104.0
 theme = ExtResource( 2 )
 custom_fonts/font = ExtResource( 1 )
 text = "You Died"

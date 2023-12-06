@@ -7,7 +7,6 @@ func _ready():
 
 func _process(_delta):
 	position += velocity
-	rotation_degrees = velocity.angle() * (180/PI)
 	# check to see if bullet needs to be destroyed or not
 	.check_and_destroy_bullet()
 #	properties.knockback_vector = velocity.normalized() * knockback
@@ -19,6 +18,7 @@ func setup(hurtbox_layer, bullet_start_position, global_mouse_pos):
 	# variables
 	.setup(hurtbox_layer, bullet_start_position, global_mouse_pos)
 	velocity = speed * initial_direction
+	rotation = initial_direction.angle()
 
 
 #turning world collision on

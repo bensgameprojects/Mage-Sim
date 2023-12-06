@@ -19,7 +19,8 @@ onready var hurtbox = $Hurtbox
 
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 const damage_effect = preload("res://UI/DamageValue.tscn")
-var input_vector
+var input_vector := Vector2.ZERO
+var spell_direction := Vector2.ZERO
 var state = MOVE
 var velocity := Vector2.ZERO
 # Called when the node enters the scene tree for the first time. (init)
@@ -40,18 +41,23 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("sprint"):
+	if (event.is_action("ui_left") or event.is_action("ui_right") 
+	or event.is_action("ui_up") or event.is_action("ui_down")):
+		input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	elif event.is_action_pressed("sprint"):
 		PlayerStats.is_sprint = true
 	elif event.is_action_released("sprint"):
 		PlayerStats.is_sprint = false
 	elif event.is_action_pressed("left_click"):
-		use_ability_if_able(PlayerStats.left_click_ability, global_position, get_global_mouse_position())
+		var mouse_pos = get_global_mouse_position()
+		if use_ability_if_able(PlayerStats.left_click_ability, self.global_position, mouse_pos):
+			spell_direction = self.global_position.direction_to(mouse_pos)
+			state = CAST
 
 # Called whenever physics tick happens, delta unlocks movement from framerate
 func _physics_process(delta):
 	# update the player stats position for everyone else's reference
 	PlayerStats.player_position = self.position
-	input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	# forces only 1 state to be running at a time
 	match state:
 		MOVE:
@@ -127,7 +133,12 @@ func detach_camera():
 	cameraHandler.set("remote_path", "")
 	
 func cast_state(_delta):
+	animationTree.set("parameters/Idle/blend_position", spell_direction)
+	animationTree.set("parameters/Run/blend_position", spell_direction)
+	animationTree.set("parameters/Attack/blend_position", spell_direction)
+	animationTree.set("parameters/Roll/blend_position", spell_direction)
 	animationState.travel("Attack")
+	velocity = velocity.move_toward(Vector2.ZERO, PlayerStats.MOVE_FRICTION)
 
 func create_on_hit_effect():
 	hurtbox.create_hit_effect()
@@ -206,3 +217,6 @@ func _hit_by_spell(spell_info: Dictionary, given_position: Vector2):
 		PlayerStats.health += spell_info["add_health"]
 	if spell_info.has("knockback_speed"):
 		PlayerStats.apply_knockback(given_position, spell_info["knockback_speed"])
+
+func get_facing_direction() -> Vector2:
+	return animationTree.get("parameters/Idle/blend_position")

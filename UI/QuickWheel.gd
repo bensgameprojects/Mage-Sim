@@ -2,53 +2,56 @@ extends Control
 
 var slots = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
 var player
-var is_open = false
 var new_selected_node = ""
-var selected_node = "N"
+var selected_node = "E"
 var assigned_action = "left_click"
 var center : Vector2
 var offset = Vector2(64,64)
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# center of the centerContainer(square)
+	offset = $CenterContainer.rect_size * self.rect_scale / (2)
 	Events.connect("assign_quickwheel", self, "_on_assign_quickwheel")
 	self.visible = false
-	offset = offset * self.rect_scale
-	get_node(selected_node).self_modulate = Color.red
+	#offset = offset * self.rect_scale
+	get_node(selected_node).play_selected_animation()
 	get_node(selected_node).assign_ability("Fireball")
 	#yield(get_tree(), "idle_frame") # wait for a second so player can be ready to get this signal
 	_update_action(assigned_action, get_node(selected_node).get_ability())
 
 func _unhandled_input(event):
 	if event.is_action_pressed("quickwheel_1"):
-		is_open = true
 		center = get_global_mouse_position() - offset
 		self.set_global_position(center)
 		self.visible = true
+		get_node(selected_node).play_selected_animation()
 		new_selected_node = ""
 	elif event.is_action_released("quickwheel_1"):
-		is_open = false
 		self.visible = false
+		get_node(selected_node).clear_highlight()
+		get_node(selected_node).stop_selected_animation()
 		if new_selected_node != "": # a new node was selected
 			var ability_name = get_node(new_selected_node).get_ability()
-			if ability_name != null:
-				get_node(selected_node).self_modulate = Color.white
-				get_node(new_selected_node).self_modulate = Color.red
+			if ability_name != "":
 				selected_node = new_selected_node
 				_update_action(assigned_action, ability_name)
-			else:
-				get_node(new_selected_node).self_modulate = Color.white
+			get_node(new_selected_node).clear_highlight()
 
 
 func _mouse_entered(name):
 	new_selected_node = name
-	get_node(new_selected_node).self_modulate = Color.aqua
+	#get_node(new_selected_node).self_modulate = Color.aqua
+	get_node(name).highlight()
 
 func _mouse_exited(name):
+	get_node(name).clear_highlight()
+	"""
 	if(name == selected_node):
-		get_node(name).self_modulate = Color.red
+		get_node(name).play_selected_animation()
 	else:
-		get_node(name).self_modulate = Color.white
+		get_node(name).stop_selected_animation()
 	new_selected_node = ""
+	"""
 	
 func _on_assign_quickwheel(slot_name, selected_spell):
 	get_node(slot_name).assign_ability(selected_spell)
@@ -58,13 +61,13 @@ func _on_assign_quickwheel(slot_name, selected_spell):
 func _process(_delta):
 	if self.visible:
 		var mouse_pos = get_global_mouse_position()
-		if (mouse_pos - offset - center).length() >= 4:
+		if (mouse_pos - offset - center).length() >= $CenterContainer.rect_size.x * self.rect_scale.x / 6:
 			var direction = center.direction_to(mouse_pos - offset)
 			var angle = direction.angle()
 			# truncate and divide the angle by 2PI/num_slots
 			# same as multiply by 4 / PI in this case
 			# modulo by slots.length in case of 2pi => 8 => 0
-			var choice = slots[int(floor(angle * 4/PI)) % slots.size()]
+			var choice = slots[int(round(angle * 4/PI)) % slots.size()]
 			# new_selected_node is keeping track of what the user
 			# is selecting when the menu is open
 			# selected_node is the selected item from last time

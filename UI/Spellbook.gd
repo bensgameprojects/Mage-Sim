@@ -7,16 +7,18 @@ onready var spell_list = $SpellList
 onready var quickwheel_slot_menu = $SpellList/QuickwheelSlotMenu
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.visible = false
+	#self.visible = false
 	spell_names = get_spell_names()
 	for spell in spell_names:
 		spell_list.add_item(spell)
+	print(spell_list)
 	for position in quickwheel_positions:
 		quickwheel_slot_menu.add_item(position)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel") and self.visible:
 		close_menu()
+		#accept_event()
 
 func close_menu():
 		self.visible = false

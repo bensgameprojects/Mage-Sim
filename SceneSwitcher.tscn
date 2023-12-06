@@ -7,7 +7,7 @@
 [ext_resource path="res://UI/QuickWheels.tscn" type="PackedScene" id=5]
 [ext_resource path="res://UI/Spellbook.tscn" type="PackedScene" id=6]
 [ext_resource path="res://UI/BuildMenu.tscn" type="PackedScene" id=7]
-[ext_resource path="res://UI/toriko_dynamicfont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://UI/monogram_size_32.tres" type="DynamicFont" id=8]
 [ext_resource path="res://UI/InfoGUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://UI/BuildingConfig.tscn" type="PackedScene" id=10]
 [ext_resource path="res://UI/NotificationUI.tscn" type="PackedScene" id=11]
@@ -68,6 +68,7 @@ color = Color( 0, 0, 0, 0 )
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="HealthUI" parent="UILayer" instance=ExtResource( 3 )]
+rect_scale = Vector2( 6, 6 )
 mouse_filter = 2
 
 [node name="InventoryUI" parent="UILayer" groups=["InventoryUI"] instance=ExtResource( 2 )]
@@ -87,19 +88,27 @@ mouse_filter = 2
 visible = false
 
 [node name="SpellbookToggle" type="Button" parent="UILayer"]
-margin_left = 290.0
-margin_top = 166.0
-margin_right = 318.0
-margin_bottom = 178.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -184.0
+margin_top = -40.0
+margin_right = -92.0
+margin_bottom = -8.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 8 )
 text = "Spells"
 
 [node name="BuildMenuToggle" type="Button" parent="UILayer"]
-margin_left = 259.0
-margin_top = 166.0
-margin_right = 288.0
-margin_bottom = 178.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -80.0
+margin_top = -40.0
+margin_right = -8.0
+margin_bottom = -8.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 8 )
 text = "Build"
@@ -109,9 +118,14 @@ margin_left = -168.0
 margin_right = -8.0
 
 [node name="NotificationUI" parent="UILayer" instance=ExtResource( 11 )]
-margin_bottom = 20.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -952.0
+margin_top = 132.0
+margin_right = 952.0
 
 [node name="RespawnMenu" parent="UILayer" instance=ExtResource( 13 )]
+visible = false
 
 [node name="Simulation" type="Node" parent="." groups=["Simulation"]]
 script = ExtResource( 4 )
