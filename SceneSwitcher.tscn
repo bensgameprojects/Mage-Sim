@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://SceneSwitcher.gd" type="Script" id=1]
 [ext_resource path="res://UI/InventoryUI.tscn" type="PackedScene" id=2]
@@ -7,12 +7,13 @@
 [ext_resource path="res://UI/QuickWheels.tscn" type="PackedScene" id=5]
 [ext_resource path="res://UI/Spellbook.tscn" type="PackedScene" id=6]
 [ext_resource path="res://UI/BuildMenu.tscn" type="PackedScene" id=7]
-[ext_resource path="res://UI/monogram_size_32.tres" type="DynamicFont" id=8]
+[ext_resource path="res://UI/monogram_notification_font.tres" type="DynamicFont" id=8]
 [ext_resource path="res://UI/InfoGUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://UI/BuildingConfig.tscn" type="PackedScene" id=10]
 [ext_resource path="res://UI/NotificationUI.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Pauser.gd" type="Script" id=12]
 [ext_resource path="res://UI/RespawnMenu.tscn" type="PackedScene" id=13]
+[ext_resource path="res://UI/InteractUI.tscn" type="PackedScene" id=14]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -75,6 +76,8 @@ mouse_filter = 2
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 
+[node name="PickupItemUI" parent="UILayer" instance=ExtResource( 14 )]
+
 [node name="QuickWheels" parent="UILayer" instance=ExtResource( 5 )]
 
 [node name="Spellbook" parent="UILayer" instance=ExtResource( 6 )]
@@ -92,10 +95,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -184.0
-margin_top = -40.0
-margin_right = -92.0
-margin_bottom = -8.0
+margin_left = -360.0
+margin_top = -72.0
+margin_right = -196.0
+margin_bottom = -12.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 8 )
 text = "Spells"
@@ -105,15 +108,16 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -80.0
-margin_top = -40.0
-margin_right = -8.0
-margin_bottom = -8.0
+margin_left = -176.0
+margin_top = -72.0
+margin_right = -44.0
+margin_bottom = -12.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 8 )
 text = "Build"
 
 [node name="BuildingConfig" parent="UILayer" instance=ExtResource( 10 )]
+visible = false
 margin_left = -168.0
 margin_right = -8.0
 

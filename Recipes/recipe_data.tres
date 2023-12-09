@@ -136,7 +136,7 @@ json_data = "[
 	\"component_amts\":[1],
 	},
 	{
-	\"id\":\"DoTAttack\",
+	\"id\":\"Burn\",
 	\"component_ids\":[\"cherry\",],
 	\"component_amts\":[1],
 	},

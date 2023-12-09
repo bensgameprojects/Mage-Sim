@@ -30,7 +30,7 @@ json_data = "[
 {
 	\"id\":\"Spark\",
 	\"name\":\"Spark\",
-	\"element\":\"LIGHTNING\",
+	\"element\":\"WIND\",
 	\"damage\":1,
 	\"stun_duration\":1,
 	\"is_unlocked\":true,
@@ -41,6 +41,14 @@ json_data = "[
 	\"element\":\"WIND\",
 	\"damage\":1,
 	\"knockback_speed\":300,
+	\"is_unlocked\":true,
+},
+{
+	\"id\":\"Burn\",
+	\"name\":\"Burn\",
+	\"element\":\"FIRE\",
+	\"regen\":-1,
+	\"regen_duration\":3,
 	\"is_unlocked\":true,
 },
 ]"

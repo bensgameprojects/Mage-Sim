@@ -235,7 +235,7 @@ theme=false
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
-theme/custom_font="res://Themes/Fonts/monogram/monogram.tres"
+theme/custom_font="res://UI/monogram_notification_font.tres"
 
 [importer_defaults]
 

@@ -34,3 +34,12 @@ properties = {
 "grid_position": Vector2( 2, 0 ),
 "stack_size": 999.0
 }
+
+[node name="cherry" type="Node" parent="."]
+script = ExtResource( 1 )
+protoset = ExtResource( 3 )
+prototype_id = "cherry"
+properties = {
+"grid_position": Vector2( 3, 0 ),
+"stack_size": 999.0
+}

@@ -28,7 +28,10 @@ export var KNOCKBACK_SPEED := 200.0
 # 0 is no knockback resistance, 1 is completely resistant to knockback
 export var KNOCKBACK_RESISTANCE := 0.0
 
+# this gets updated each physics process with the player's gloabl_position
+# in player.gd
 var player_position := Vector2.ZERO
+# this gets updated when a knockback event happens
 var knockback_vector := Vector2.ZERO
 
 ##############################
@@ -46,7 +49,6 @@ export var COOLDOWN_TIME = 1.5 setget set_cooldown_time
 
 # invincibility time in seconds
 export var HIT_INVINCIBILITY_TIME = 0.5 setget set_hit_invincibility_time
-
 
 ################################
 #   CURRENT STATUS EFFECTS     #
@@ -70,13 +72,13 @@ var is_burning = false
 var burn_timer
 
 var is_regening = false
-var regen_timer
 
 var is_invisible = false
 var invis_timer
 
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-
+const damage_effect = preload("res://UI/DamageValue.tscn")
+const regen_component = preload("res://Abilities/Bullets/Regen.tscn")
 signal no_health()
 signal health_changed(value)
 signal max_health_changed(value)
@@ -85,10 +87,10 @@ signal invincibility_changed(value)
 func _ready():
 	cooldown_timer = Timer.new()
 	add_child(cooldown_timer)
+	cooldown_timer.connect("timeout", self, "_on_cooldown_timer_timeout")
 	stun_timer = Timer.new()
 	add_child(stun_timer)
 	stun_timer.connect("timeout", self, "remove_stun")
-	cooldown_timer.connect("timeout", self, "_on_cooldown_timer_timeout")
 	invincibility_timer = Timer.new()
 	add_child(invincibility_timer)
 	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
@@ -125,16 +127,22 @@ func set_health(value):
 	if health <= 0:
 		emit_signal("no_health")
 
-func take_damage(value):
+func take_damage(value, damage_type):
 	health = clamp(health - value, 0, max_health)
 	emit_signal("health_changed", health)
 	set_invincibility()
 	if health <= 0:
 		emit_signal("no_health")
+	Events.emit_signal("display_value", value, damage_type, player_position)
+
+func heal(value):
+	health = clamp(health + value, 0, max_health)
+	emit_signal("health_changed", health)
+	Events.emit_signal("display_value", value, "HEAL", player_position)
 
 func apply_knockback(source_position: Vector2, knockback_speed):
 	KNOCKBACK_SPEED = knockback_speed * (1 - KNOCKBACK_RESISTANCE)
-	knockback_vector = source_position.direction_to(self.global_position) * KNOCKBACK_SPEED
+	knockback_vector = source_position.direction_to(player_position) * KNOCKBACK_SPEED
 
 # check if we're on cool down or not
 func is_on_cooldown():
@@ -153,10 +161,12 @@ func _on_cooldown_timer_timeout():
 func set_invincibility():
 	invincibility_timer.start(HIT_INVINCIBILITY_TIME)
 	is_invincible = true
+	emit_signal("invincibility_changed", true)
 
 func _on_invincibility_timer_timeout():
 	is_invincible = false
 	invincibility_timer.stop()
+	emit_signal("invincibility_changed", false)
 
 # For now we will just modulate the color of the stunned as an indicator
 func apply_stun(duration):
@@ -165,9 +175,6 @@ func apply_stun(duration):
 		stun_timer.start(duration)
 		self.modulate = Color.yellow
 	else:
-		# you're already stunned get locked up noob hehe
-		# choose the max between your current stun amount and 
-		# how much we are trying to apply
 		stun_timer.start(max(stun_timer.time_left, duration))
 
 func remove_stun():
@@ -175,6 +182,22 @@ func remove_stun():
 		stun_timer.stop()
 	is_stunned = false
 	self.modulate = Color.white
+
+# each time the regen timer goes off this happens
+func _apply_regen_tick(regen_amount, damage_type):
+	if regen_amount > 0:
+		heal(regen_amount)
+	if regen_amount < 0:
+		take_damage(-1*regen_amount, damage_type)
+
+func apply_regen_spell(regen_value: int, regen_duration: float, type: String):
+	# immediate tick when the spell is cast
+	_apply_regen_tick(regen_value, type)
+	var new_regen = regen_component.instance()
+	new_regen.setup(regen_value, regen_duration, type)
+	# connect to the regen component to take damage/regain health
+	new_regen.connect("regen_tick", self, "_apply_regen_tick")
+	add_child(new_regen)
 
 # Returns packed scene for the corresponding ability
 func load_ability(ability_name:String):

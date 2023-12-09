@@ -78,7 +78,7 @@ func _get_item_position() -> Vector2:
 
 func _ready() -> void:
 	stack_size_font.font_data = load("res://Themes/Fonts/monogram/ttf/monogram.ttf")
-	stack_size_font.size = 8
+	stack_size_font.size = 48
 	stack_size_font.outline_size = 1
 	stack_size_font.outline_color = Color(0,0,0,1)
 	stack_size_label.set("custom_fonts/font", stack_size_font)

@@ -4,167 +4,154 @@
 [ext_resource path="res://addons/gloot/ctrl_inventory_grid.gd" type="Script" id=3]
 
 [node name="BuildingConfig" type="TabContainer"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -160.0
+anchor_left = 0.64
+anchor_right = 0.758
+rect_min_size = Vector2( 750, 750 )
 script = ExtResource( 2 )
 
 [node name="Recipes" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 25.0
-margin_right = -4.0
-margin_bottom = -4.0
+visible = false
+anchor_top = 0.102
+anchor_right = 0.777
+anchor_bottom = 0.159
 grow_horizontal = 0
+rect_min_size = Vector2( 500, 500 )
 
 [node name="MarginContainer" type="MarginContainer" parent="Recipes"]
-margin_left = 60.0
-margin_top = -1.0
-margin_right = 148.0
-margin_bottom = 137.0
+anchor_left = 0.554
+anchor_right = 0.554
+anchor_bottom = 0.25
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Recipes/MarginContainer"]
-margin_right = 88.0
-margin_bottom = 138.0
+margin_right = 264.0
+margin_bottom = 306.0
 
 [node name="PanelTitle" type="Label" parent="Recipes/MarginContainer/VBoxContainer"]
-margin_right = 88.0
-margin_bottom = 7.0
+margin_right = 264.0
+margin_bottom = 52.0
 text = "Recipe Info"
 align = 1
 
 [node name="RecipeName" type="Label" parent="Recipes/MarginContainer/VBoxContainer"]
-margin_top = 11.0
-margin_right = 88.0
-margin_bottom = 18.0
+margin_top = 56.0
+margin_right = 264.0
+margin_bottom = 108.0
 align = 1
 
 [node name="ProductItemTexture" type="TextureRect" parent="Recipes/MarginContainer/VBoxContainer"]
-margin_top = 22.0
-margin_right = 88.0
-margin_bottom = 22.0
-stretch_mode = 3
+margin_top = 112.0
+margin_right = 264.0
+margin_bottom = 188.0
+rect_min_size = Vector2( 76, 76 )
+expand = true
+stretch_mode = 6
 
 [node name="RecipeRequirements" type="Label" parent="Recipes/MarginContainer/VBoxContainer"]
-margin_top = 26.0
-margin_right = 88.0
-margin_bottom = 33.0
+margin_top = 192.0
+margin_right = 264.0
+margin_bottom = 244.0
 
 [node name="MakeRecipeButton" type="Button" parent="Recipes/MarginContainer/VBoxContainer"]
-margin_top = 37.0
-margin_right = 88.0
-margin_bottom = 50.0
+margin_top = 248.0
+margin_right = 264.0
+margin_bottom = 306.0
 text = "Assign"
 
 [node name="Label" type="Label" parent="Recipes"]
-margin_left = 4.0
-margin_top = -1.0
-margin_right = 52.0
-margin_bottom = 6.0
-text = "Recipes"
+anchor_left = 0.01
+anchor_right = 0.386
+text = "Recipe List"
 align = 1
 
 [node name="RecipeItem" type="ItemList" parent="Recipes"]
-margin_top = 7.0
-margin_right = 52.0
-margin_bottom = 143.0
+anchor_left = 0.01
+anchor_top = 0.1
+anchor_right = 0.409
+anchor_bottom = 1.0
 
 [node name="Status" type="Control" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 25.0
-margin_right = -4.0
-margin_bottom = -4.0
+anchor_left = 0.17
+anchor_top = 0.023
+anchor_right = 0.42
+anchor_bottom = 0.057
 
 [node name="MarginContainer" type="MarginContainer" parent="Status"]
-margin_left = 4.0
-margin_top = -1.0
-margin_right = 148.0
-margin_bottom = 151.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Status/MarginContainer"]
-margin_right = 144.0
-margin_bottom = 152.0
+margin_right = 384.0
+margin_bottom = 420.0
 
 [node name="TitleLabel" type="Label" parent="Status/MarginContainer/VBoxContainer"]
-margin_right = 144.0
-margin_bottom = 7.0
+margin_right = 384.0
+margin_bottom = 52.0
 text = "Building Config"
 align = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="Status/MarginContainer/VBoxContainer"]
-margin_top = 11.0
-margin_right = 144.0
-margin_bottom = 59.0
+margin_top = 56.0
+margin_right = 384.0
+margin_bottom = 420.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Status/MarginContainer/VBoxContainer/CenterContainer"]
-margin_left = 45.0
-margin_right = 98.0
-margin_bottom = 48.0
+margin_right = 384.0
+margin_bottom = 364.0
 
-[node name="ProductItemInfo" type="HBoxContainer" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_right = 53.0
-margin_bottom = 7.0
-
-[node name="Label" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo"]
-margin_right = 45.0
-margin_bottom = 7.0
+[node name="Label" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_right = 384.0
+margin_bottom = 52.0
 text = "Current Recipe:"
 
-[node name="ProductTextureRect" type="TextureRect" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo"]
-margin_left = 49.0
-margin_right = 49.0
-margin_bottom = 7.0
+[node name="ProductTextureRect" type="TextureRect" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 56.0
+margin_right = 384.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 76, 76 )
+expand = true
+stretch_mode = 6
 
-[node name="ProductItemName" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo"]
-margin_left = 53.0
-margin_right = 53.0
-margin_bottom = 7.0
+[node name="ProductItemName" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 136.0
+margin_right = 384.0
+margin_bottom = 188.0
 
 [node name="OutputInventoryLabel" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_top = 11.0
-margin_right = 53.0
-margin_bottom = 18.0
+margin_top = 192.0
+margin_right = 384.0
+margin_bottom = 244.0
 text = "Output Inventory"
 align = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_top = 22.0
-margin_right = 53.0
-margin_bottom = 22.0
+margin_top = 248.0
+margin_right = 384.0
+margin_bottom = 248.0
 
 [node name="OutputInventoryCtrl" type="Control" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/CenterContainer"]
-margin_left = 26.0
-margin_right = 26.0
+margin_left = 192.0
+margin_right = 192.0
 script = ExtResource( 3 )
-field_dimensions = Vector2( 16, 16 )
-
-[node name="WorkProgressBar" type="ProgressBar" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_top = 26.0
-margin_right = 53.0
-margin_bottom = 33.0
 
 [node name="InputinventoryLabel" type="Label" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_top = 37.0
-margin_right = 53.0
-margin_bottom = 44.0
+margin_top = 252.0
+margin_right = 384.0
+margin_bottom = 304.0
 text = "Input Inventory"
 align = 1
 
+[node name="WorkProgressBar" type="ProgressBar" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 308.0
+margin_right = 384.0
+margin_bottom = 360.0
+
 [node name="CenterContainer2" type="CenterContainer" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
-margin_top = 48.0
-margin_right = 53.0
-margin_bottom = 48.0
+margin_top = 364.0
+margin_right = 384.0
+margin_bottom = 364.0
 
 [node name="InputInventoryCtrl" type="Control" parent="Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/CenterContainer2"]
-margin_left = 26.0
-margin_right = 26.0
+margin_left = 192.0
+margin_right = 192.0
 script = ExtResource( 3 )
-field_dimensions = Vector2( 16, 16 )
 
 [connection signal="pressed" from="Recipes/MarginContainer/VBoxContainer/MakeRecipeButton" to="." method="_on_MakeRecipeButton_pressed"]
 [connection signal="item_selected" from="Recipes/RecipeItem" to="." method="_on_RecipeItem_item_selected"]

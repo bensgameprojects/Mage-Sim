@@ -13,7 +13,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/coal.png\"
+		\"image\": \"res://Assets/Items/coal.png\"
 	},
 	{
 		\"id\": \"paper\",
@@ -23,7 +23,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/paper.png\"
+		\"image\": \"res://Assets/Items/paper.png\"
 	},
 	{
 		\"id\": \"brick\",
@@ -33,7 +33,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/brickpng\"
+		\"image\": \"res://Assets/Items/brick.png\"
 	},
 	{
 		\"id\": \"shield\",
@@ -43,7 +43,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/shield.png\"
+		\"image\": \"res://Assets/Items/shield.png\"
 	},
 	{
 		\"id\": \"blueberry\",
@@ -53,7 +53,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/Fruits Asset/Black Outline/01.png\"
+		\"image\": \"res://Assets/Items/blueberry.png\"
 	},
 	{
 		\"id\": \"pear\",
@@ -63,7 +63,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 3,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/Fruits Asset/Black Outline/02.png\"
+		\"image\": \"res://Assets/Items/pear.png\"
 	},
 	{
 		\"id\": \"cherry\",
@@ -73,7 +73,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\": 999,
 		\"is_stackable\":true,
-		\"image\": \"res://Items/Fruits Asset/Black Outline/03.png\"
+		\"image\": \"res://Assets/Items/cherry.png\"
 	},
 	{
 		\"id\":\"potato\",
@@ -83,7 +83,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FreePixelFood/Food/Potato.png\"
+		\"image\":\"res://Assets/Items/potato.png\"
 	},
 		{
 		\"id\":\"fish\",
@@ -93,7 +93,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FreePixelFood/Food/Fish.png\"
+		\"image\":\"res://Assets/Items/fish.png\"
 	},
 			{
 		\"id\":\"shrimp\",
@@ -103,7 +103,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FreePixelFood/Food/Shrimp.png\"
+		\"image\":\"res://Assets/Items/shrimp.png\"
 	},
 				{
 		\"id\":\"bread\",
@@ -113,7 +113,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FreePixelFood/Food/Bread.png\"
+		\"image\":\"res://Assets/Items/bread.png\"
 	},
 					{
 		\"id\":\"beer\",
@@ -123,7 +123,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FreePixelFood/Food/Beer.png\"
+		\"image\":\"res://Assets/Items/beer.png\"
 	},
 						{
 		\"id\":\"eggplant\",
@@ -133,7 +133,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/FarmingCrops16x16/eggplant1.png\"
+		\"image\":\"res://Assets/Items/eggplant.png\"
 	},
 							{
 		\"id\":\"lumber\",
@@ -143,7 +143,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/lumber.png\"
+		\"image\":\"res://Assets/Items/lumber.png\"
 	},
 								{
 		\"id\":\"mushroom\",
@@ -153,7 +153,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/lpc-food-v2/mushroom.png\"
+		\"image\":\"res://Assets/Items/mushroom.png\"
 	},
 									{
 		\"id\":\"rock\",
@@ -163,7 +163,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Sprout Lands - Sprites - Basic pack/rock.png\"
+		\"image\":\"res://Assets/Items/rock.png\"
 	},
 										{
 		\"id\":\"diamond\",
@@ -173,7 +173,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01e.png\"
+		\"image\":\"res://Assets/Items/diamond.png\"
 	},
 											{
 		\"id\":\"ruby\",
@@ -183,7 +183,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01d.png\"
+		\"image\":\"res://Assets/Items/ruby.png\"
 	},
 											{
 		\"id\":\"sapphire\",
@@ -193,7 +193,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01c.png\"
+		\"image\":\"res://Assets/Items/sapphire.png\"
 	},
 											{
 		\"id\":\"emerald\",
@@ -203,7 +203,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/crystal_01a.png\"
+		\"image\":\"res://Assets/Items/emerald.png\"
 	},
 												{
 		\"id\":\"scroll\",
@@ -213,7 +213,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/scroll_01a.png\"
+		\"image\":\"res://Assets/Items/scroll.png\"
 	},
 												{
 		\"id\":\"ironore\",
@@ -223,7 +223,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Tools Asset 16x16/33.png\"
+		\"image\":\"res://Assets/Items/ironore.png\"
 	},
 													{
 		\"id\":\"copperore\",
@@ -233,7 +233,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/Tools Asset 16x16/37.png\"
+		\"image\":\"res://IAssets/tems/copperore.png\"
 	},
 														{
 		\"id\":\"bottle\",
@@ -243,7 +243,7 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/bottle.png\"
+		\"image\":\"res://Assets/Items/bottle.png\"
 	},
 															{
 		\"id\":\"water\",
@@ -253,6 +253,16 @@ json_data = "[
 		\"stack_size\":1,
 		\"max_stack_size\":999,
 		\"is_stackable\":true,
-		\"image\":\"res://Items/water.png\"
+		\"image\":\"res://Assets/Items/water.png\"
+	},
+															{
+		\"id\":\"apple\",
+		\"name\":\"Apple\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":999,
+		\"is_stackable\":true,
+		\"image\":\"res://Assets/Items/apple.png\"
 	},
 ]"

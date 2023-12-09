@@ -1,7 +1,6 @@
 extends Control
 
 onready var playerCtrlInventoryGrid = $InventoryPanel/VBoxContainer/CenterContainer2/PlayerCtrlInventoryGrid
-onready var pickupItemUI = $PickupItemUI
 onready var inventory_panel = $InventoryPanel
 onready var itemScene = preload("res://Items/Item.tscn")
 
@@ -9,7 +8,6 @@ onready var itemScene = preload("res://Items/Item.tscn")
 func _ready():
 	inventory_panel.hide()
 	playerCtrlInventoryGrid.inventory = null
-	Events.connect("player_pickup_item", self, "add_new_item")
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_inv_toggle"):

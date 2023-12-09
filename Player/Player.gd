@@ -17,8 +17,6 @@ onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var cameraHandler = $CameraHandler
 onready var hurtbox = $Hurtbox
 
-const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-const damage_effect = preload("res://UI/DamageValue.tscn")
 var input_vector := Vector2.ZERO
 var spell_direction := Vector2.ZERO
 var state = MOVE
@@ -27,7 +25,7 @@ var velocity := Vector2.ZERO
 func _ready():
 	# activate the animation tree.
 	animationTree.active = true
-	PlayerStats.player_position = self.position
+	PlayerStats.player_position = self.global_position
 	# add the player to the player group
 	add_to_group(GroupConstants.PLAYER_GROUP)
 	# using some signals for ui to update action
@@ -147,10 +145,7 @@ func create_on_hit_effect():
 # so they dont queue_free because we need the player
 # as a reference for the simulation.
 func _on_no_health():
-	# change to player death effect if we ever get one of those.
-	var enemyDeathEffect = EnemyDeathEffect.instance()
-	get_parent().add_child(enemyDeathEffect)
-	enemyDeathEffect.global_position = global_position
+	Events.emit_signal("death_effect", self.global_position)
 	self.visible = false
 	PlayerStats.is_stunned = true
 	PlayerStats.is_invincible = true
@@ -205,18 +200,20 @@ func deduct_cost_from_player_inv(recipe) -> bool:
 
 # what happens when an entity is hit by something
 func _hit_by_spell(spell_info: Dictionary, given_position: Vector2):
+	var element_type := ""
+	if spell_info.has("element"):
+		element_type = spell_info["element"]
 	# apply any keywords we know
 	if spell_info.has("damage"):
-		PlayerStats.take_damage(spell_info["damage"])
-		var dmg_label = damage_effect.instance()
-		get_parent().add_child(dmg_label)
-		dmg_label.display_value(spell_info["damage"], self.position)
+		PlayerStats.take_damage(spell_info["damage"], element_type)
 	if spell_info.has("stun_duration"):
 		PlayerStats.apply_stun(spell_info["stun_duration"])
 	if spell_info.has("add_health"):
-		PlayerStats.health += spell_info["add_health"]
+		PlayerStats.heal(spell_info["add_health"])
 	if spell_info.has("knockback_speed"):
 		PlayerStats.apply_knockback(given_position, spell_info["knockback_speed"])
+	if spell_info.has_all(["regen", "regen_duration"]):
+		PlayerStats.apply_regen_spell(spell_info["regen"], spell_info["regen_duration"], element_type)
 
 func get_facing_direction() -> Vector2:
 	return animationTree.get("parameters/Idle/blend_position")

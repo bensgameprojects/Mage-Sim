@@ -3,8 +3,8 @@ extends Control
 # Onready vars for Status stuff
 onready var title_label = $Status/MarginContainer/VBoxContainer/TitleLabel
 onready var recipe_item_list = $Recipes/RecipeItem
-onready var product_texture_rect = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductTextureRect
-onready var product_item_name_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemInfo/ProductItemName
+onready var product_texture_rect = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductTextureRect
+onready var product_item_name_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ProductItemName
 onready var work_progress_bar = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/WorkProgressBar
 onready var input_inventory_label = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/InputinventoryLabel
 onready var input_inventory_ctrl = $Status/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/CenterContainer2/InputInventoryCtrl
@@ -123,8 +123,11 @@ func _update_thing(thing: Thing) -> void:
 		thing_expected_output = work_component.current_output
 		if not thing_assigned_recipe.empty():
 			# Set the work progress bar if there's a recipe
-			work_progress_bar.max_value = work_component.current_recipe["base_craft_time"]
+			# for some reason the work_done signal is happening at 90% progress
+			# despite the timing being correct. this little scaling hack will make it count to 100%
+			work_progress_bar.max_value = work_component.current_recipe["base_craft_time"]*0.9
 			work_progress_bar.value = work_progress_bar.max_value - work_component.available_work
+			#print("max " + str(work_progress_bar.max_value) + " available " + str(work_component.available_work))
 		else:
 			work_progress_bar.max_value = 1.0
 			work_progress_bar.value = 0.0
@@ -132,9 +135,10 @@ func _update_thing(thing: Thing) -> void:
 		if not thing_expected_output.empty():
 			product_item_name_label.text = thing_expected_output["name"]
 			product_texture_rect.texture = load(thing_expected_output["image"])
+			#product_texture_rect.rect_scale = output_inventory_ctrl.field_dimensions / product_texture_rect.rect_size
 		else:
 			product_item_name_label.text = "No recipe set!"
-		worker_panel.set_deferred("rect_size", Vector2.ZERO)
+		#worker_panel.set_deferred("rect_size", Vector2.ZERO)
 
 func _set_power_info(thing: Thing):
 	# This will show some data about the power system
@@ -161,7 +165,8 @@ func set_recipe_panel(recipe: Dictionary):
 	current_recipe_info_recipe = recipe
 	recipe_name.text = recipe["name"]
 	recipe_product_item_texture_rect.texture = load(ItemsList.get_item_data_by_id(recipe["product_item_id"])["image"])
-	recipe_product_item_texture_rect.rect_size = Vector2(16,16)
+	#recipe_product_item_texture_rect.rect_size = Vector2(16,16)
+	#recipe_product_item_texture_rect.set_deferred("rect_scale", output_inventory_ctrl.field_dimensions / recipe_product_item_texture_rect.rect_size)
 	recipe_requirements.text = build_requirements_string(recipe)
 	if thing_assigned_recipe == recipe:
 		assign_recipe_button.disabled = true
@@ -199,6 +204,7 @@ func disconnect_work_signals(work_component: WorkComponent) -> void:
 
 func _on_work_accomplished(work_done) -> void:
 	work_progress_bar.value += work_done
+	#print("value " + str(work_progress_bar.value) + " work_done " + str(work_done))
 
 # Reset the work progress bar the inventory should auto update when the item is added 
 func _on_work_done(_current_output) -> void:

@@ -19,6 +19,10 @@ signal player_died
 
 signal respawn_player
 
+signal display_value(value, damage_type, player_position)
+
+signal death_effect(position)
+
 # Signal emitted by the quickwheels whenever a new ability
 # is selected. Will send the action button and the
 # corresponding ability name

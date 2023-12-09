@@ -534,7 +534,7 @@ destination_scene_name = "RoomTemplate"
 position = Vector2( 225, 174 )
 destination_scene_name = "World"
 
-[node name="SpawnHandler" type="YSort" parent="."]
+[node name="SpawnHandler" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
 [node name="ThingPlacer" parent="SpawnHandler" instance=ExtResource( 8 )]
@@ -543,16 +543,6 @@ tile_data = PoolIntArray( -720910, 28, 4, -720909, 28, 196609, -720908, 28, 1966
 [node name="SpawnLocation" parent="SpawnHandler" instance=ExtResource( 6 )]
 visible = false
 position = Vector2( 225, 146 )
-
-[node name="Bushes" type="YSort" parent="SpawnHandler"]
-
-[node name="Grasses" type="YSort" parent="SpawnHandler"]
-
-[node name="Trees" type="YSort" parent="SpawnHandler"]
-
-[node name="DroppedItems" type="YSort" parent="SpawnHandler"]
-
-[node name="Enemies" type="YSort" parent="SpawnHandler"]
 
 [node name="SpawnArea" parent="SpawnHandler" instance=ExtResource( 10 )]
 position = Vector2( 286, 106 )
@@ -565,3 +555,15 @@ position = Vector2( 391, 105 )
 item_ID = "blueberry"
 max_stack = 5
 min_stack = 5
+
+[node name="YSort" type="YSort" parent="SpawnHandler"]
+
+[node name="Bushes" type="YSort" parent="SpawnHandler/YSort"]
+
+[node name="Grasses" type="YSort" parent="SpawnHandler/YSort"]
+
+[node name="Trees" type="YSort" parent="SpawnHandler/YSort"]
+
+[node name="DroppedStuff" type="YSort" parent="SpawnHandler/YSort"]
+
+[node name="Enemies" type="YSort" parent="SpawnHandler/YSort"]

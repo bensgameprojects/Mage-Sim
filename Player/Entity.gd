@@ -47,13 +47,13 @@ var cooldown_timer
 var stun_timer
 var freeze_timer
 var burn_timer
-var regen_timer
 var invis_timer
 
 var hurtbox
 
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
-const damage_effect = preload("res://UI/DamageValue.tscn")
+const regen_component = preload("res://Abilities/Bullets/Regen.tscn")
+
 signal no_health()
 signal health_changed(value)
 signal max_health_changed(value)
@@ -100,12 +100,13 @@ func set_health(value :float):
 	if health <= 0:
 		emit_signal("no_health")
 
-func take_damage(value :float):
+func take_damage(value :float, damage_type: String):
 	health = clamp(health - value, 0, max_health)
 	emit_signal("health_changed", health)
 	set_invincibility()
 	if health <= 0:
 		emit_signal("no_health")
+	Events.emit_signal("display_value", value, damage_type, self.global_position)
 
 func apply_knockback(source_position: Vector2, knockback_speed):
 	KNOCKBACK_SPEED = knockback_speed * (1 - KNOCKBACK_RESISTANCE)
@@ -171,12 +172,8 @@ func _on_invincibility_timer_timeout():
 # Basic death function
 # Overwrite if you want something else. 
 func _on_no_health():
-#	disconnect("timeout", cooldown_timer, "_on_cooldown_timer_timeout")
+	Events.emit_signal("death_effect", self.global_position)
 	queue_free()
-	#instance the death effect
-	var enemyDeathEffect = EnemyDeathEffect.instance()
-	get_parent().add_child(enemyDeathEffect)
-	enemyDeathEffect.global_position = global_position
 
 # For now we will just modulate the color of the stunned as an indicator
 func apply_stun(duration):
@@ -200,17 +197,39 @@ func remove_stun():
 	is_stunned = false
 	self.modulate = Color.white
 
+func heal(value):
+	health = clamp(health + value, 0, max_health)
+	Events.emit_signal("display_value", value, "HEAL", self.global_position)
+
+# each time the regen timer goes off this happens
+func _apply_regen_tick(regen_amount, damage_type):
+	if regen_amount > 0:
+		heal(regen_amount)
+	if regen_amount < 0:
+		take_damage(-1*regen_amount, damage_type)
+
+func apply_regen_spell(regen_value: int, regen_duration: float, type: String):
+	# immediate tick when the spell is cast
+	_apply_regen_tick(regen_value, type)
+	var new_regen = regen_component.instance()
+	new_regen.setup(regen_value, regen_duration, type)
+	# connect to the regen component to take damage/regain health
+	new_regen.connect("regen_tick", self, "_apply_regen_tick")
+	add_child(new_regen)
+
 # what happens when an entity is hit by something
 func _hit_by_spell(spell_info: Dictionary, given_position: Vector2):
+	var element_type := ""
+	if spell_info.has("element"):
+		element_type = spell_info["element"]
 	# apply any keywords we know
 	if spell_info.has("damage"):
-		take_damage(spell_info["damage"])
-		var dmg_label = damage_effect.instance()
-		get_parent().add_child(dmg_label)
-		dmg_label.display_value(spell_info["damage"],  self.position)
+		take_damage(spell_info["damage"], element_type)
 	if spell_info.has("stun_duration"):
 		apply_stun(spell_info["stun_duration"])
 	if spell_info.has("add_health"):
-		health += spell_info["add_health"]
+		heal(spell_info["add_health"])
 	if spell_info.has("knockback_speed"):
 		apply_knockback(given_position, spell_info["knockback_speed"])
+	if spell_info.has_all(["regen", "regen_duration"]):
+		apply_regen_spell(spell_info["regen"], spell_info["regen_duration"], element_type)

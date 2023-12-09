@@ -536,7 +536,7 @@ destination_scene_name = "RoomTemplate"
 [node name="HomeTeleporter" parent="." instance=ExtResource( 9 )]
 position = Vector2( 48, 160 )
 
-[node name="SpawnHandler" type="YSort" parent="."]
+[node name="SpawnHandler" type="Node2D" parent="."]
 script = ExtResource( 7 )
 
 [node name="EnemySpawnArea" parent="SpawnHandler" instance=ExtResource( 1 )]
@@ -550,23 +550,25 @@ shape = SubResource( 52 )
 [node name="SpawnLocation" parent="SpawnHandler" instance=ExtResource( 2 )]
 position = Vector2( 144, 80 )
 
-[node name="Bushes" type="YSort" parent="SpawnHandler"]
+[node name="YSort" type="YSort" parent="SpawnHandler"]
 
-[node name="Grasses" type="YSort" parent="SpawnHandler"]
+[node name="Bushes" type="YSort" parent="SpawnHandler/YSort"]
 
-[node name="Trees" type="YSort" parent="SpawnHandler"]
+[node name="Grasses" type="YSort" parent="SpawnHandler/YSort"]
 
-[node name="Bush" parent="SpawnHandler/Trees" instance=ExtResource( 11 )]
+[node name="Trees" type="YSort" parent="SpawnHandler/YSort"]
+
+[node name="Bush" parent="SpawnHandler/YSort/Trees" instance=ExtResource( 11 )]
 position = Vector2( 176, 160 )
 
-[node name="Bush2" parent="SpawnHandler/Trees" instance=ExtResource( 11 )]
+[node name="Bush2" parent="SpawnHandler/YSort/Trees" instance=ExtResource( 11 )]
 position = Vector2( 16, 128 )
 
-[node name="Tree" parent="SpawnHandler/Trees" instance=ExtResource( 12 )]
+[node name="Tree" parent="SpawnHandler/YSort/Trees" instance=ExtResource( 12 )]
 position = Vector2( 48, 64 )
 
-[node name="DroppedItems" type="YSort" parent="SpawnHandler"]
+[node name="DroppedStuff" type="YSort" parent="SpawnHandler/YSort"]
 
-[node name="Enemies" type="YSort" parent="SpawnHandler"]
+[node name="Enemies" type="YSort" parent="SpawnHandler/YSort"]
 
 [editable path="SpawnHandler/EnemySpawnArea"]

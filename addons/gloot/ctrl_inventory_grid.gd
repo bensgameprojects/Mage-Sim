@@ -8,7 +8,7 @@ tool
 signal item_dropped
 signal inventory_item_activated
 
-export(Vector2) var field_dimensions: Vector2 = Vector2(32, 32) setget _set_field_dimensions
+export(Vector2) var field_dimensions: Vector2 = Vector2(76,76) setget _set_field_dimensions
 export(int) var item_spacing: int = 0 setget _set_item_spacing
 export(bool) var draw_grid: bool = true setget _set_draw_grid
 export(Color) var grid_color: Color = Color.black setget _set_grid_color
@@ -256,7 +256,6 @@ func _populate_list() -> void:
 		ctrl_inventory_item.ctrl_inventory = self
 		ctrl_inventory_item.texture = default_item_texture
 		ctrl_inventory_item.item = item
-#		ctrl_inventory_item.stack_size_label = RichTextLabel.new()
 		ctrl_inventory_item.connect("grabbed", self, "_on_item_grab")
 		ctrl_inventory_item.connect("activated", self, "_on_item_activated")
 		_ctrl_item_container.add_child(ctrl_inventory_item)
@@ -298,7 +297,6 @@ func _on_item_grab(ctrl_inventory_item, offset: Vector2) -> void:
 func _get_streched_item_sprite_size(item: InventoryItem) -> Vector2:
 	var item_size: Vector2 = inventory.get_item_size(item)
 	var sprite_size: Vector2 = item_size * field_dimensions
-
 	# Also take item spacing into consideration
 	sprite_size += (item_size - Vector2.ONE) * item_spacing
 

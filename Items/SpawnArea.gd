@@ -6,7 +6,7 @@ export var respawn_time = 3
 export var max_stack = 3
 export var min_stack = 1
 onready var spawn_region = $CollisionShape2D
-var spawnTimer
+var spawnTimer = Timer.new()
 var item_reference : GatherableItem
 
 # You can use these functions to move a spawn area or change it's radius
@@ -28,7 +28,6 @@ func getSpawnRegionPosition():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	item_reference = null
-	spawnTimer = Timer.new()
 	spawnTimer.connect("timeout", self, "_on_SpawnTimer_timeout")
 	add_child(spawnTimer)
 	spawnTimer.start(respawn_time)
@@ -40,7 +39,7 @@ func _ready():
 # reset timer and spawn new item
 func _on_SpawnTimer_timeout():
 	# timer will be paused and reset because a new item will be made
-	spawnTimer.set_paused(true)
+	spawnTimer.paused = true
 	# determine how many items to spawn
 	var item_count = int(round(rand_range(min_stack,max_stack)))
 #	print("spawn timer timed out! about to make a new item")
@@ -62,10 +61,10 @@ func _on_SpawnArea_body_exited(body):
 	if body == item_reference:
 		#called when the gatherable item that spawned is leaves the area
 		# spawn timer should be started and unpaused
-		spawnTimer.set_paused(false)
+		spawnTimer.paused = false
 		spawnTimer.start(respawn_time)
 
 # if there is an item then the spawn timer should be paused
 func _on_SpawnArea_body_entered(body):
 	if body == item_reference:
-		spawnTimer.set_paused(true)
+		spawnTimer.paused = true
