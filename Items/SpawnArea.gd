@@ -7,6 +7,7 @@ export var max_stack = 3
 export var min_stack = 1
 onready var spawn_region = $CollisionShape2D
 var spawnTimer = Timer.new()
+# this is a reference to the item this spawnarea spawned on the ground
 var item_reference : GatherableItem
 
 # You can use these functions to move a spawn area or change it's radius

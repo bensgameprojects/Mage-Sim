@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Player/SwordHitbox.gd" type="Script" id=4]
 [ext_resource path="res://Hurtboxes + Hitboxes/Hurtbox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Shadows/MediumShadow.png" type="Texture" id=6]
-[ext_resource path="res://Player/PickupDetector.gd" type="Script" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -845,7 +844,6 @@ rotation = 1.5708
 [node name="PickupDetector" type="Area2D" parent="PickupPivot"]
 collision_layer = 128
 collision_mask = 0
-script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupPivot/PickupDetector"]
 position = Vector2( 12, 0 )

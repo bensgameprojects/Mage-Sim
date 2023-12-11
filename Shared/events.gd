@@ -56,9 +56,9 @@ signal spawn_item(item_id, item_count, position, requestor_node)
 
 signal spawn_item_on_player(item_id, item_count)
 
-signal item_entered_pickup_range(item_scene)
+signal interact_entered_range(interact_component)
 
-signal item_exited_pickup_range(item_scene)
+signal interact_exited_range(interact_component)
 
 signal player_pickup_item(item_id, item_count)
 

@@ -3,7 +3,7 @@
 [ext_resource path="res://UI/PickupItemUI.gd" type="Script" id=1]
 [ext_resource path="res://UI/monogram_notification_font.tres" type="DynamicFont" id=2]
 
-[node name="PickupItemUI" type="Control"]
+[node name="InteractUI" type="Control"]
 anchor_left = 0.66
 anchor_top = 0.44
 anchor_right = 0.66

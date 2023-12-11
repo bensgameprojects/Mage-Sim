@@ -3,11 +3,11 @@ extends Control
 onready var focusLabel = $FocusLabel
 var pickuppableItemArray = Array()
 var pickupHead = 0
-
+const key_constant = "F: "
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Events.connect("item_entered_pickup_range", self, "add_to_pickup_stack")
-	Events.connect("item_exited_pickup_range", self, "remove_from_pickup_stack")
+	Events.connect("interact_entered_range", self, "add_to_pickup_stack")
+	Events.connect("interact_exited_range", self, "remove_from_pickup_stack")
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_focus_next"):
@@ -16,16 +16,8 @@ func _unhandled_input(event):
 		previous_item_in_pickup_stack()
 	elif event.is_action_pressed("pickup_item"):
 		if(!pickuppableItemArray.empty()):
-			var popped_item = pop_pickup_stack()
-			var items_leftover = PlayerInventory.add_or_merge(popped_item.get_item_id(), popped_item.get_item_count())
-			if items_leftover > 0:
-				# change the number of items in the stack on the ground
-				popped_item.set_item_count(items_leftover)
-				# put back in pickup stack
-				add_to_pickup_stack(popped_item)
-			else:
-				#item is added to the inventory so delete the item from the ground
-				popped_item.queue_free()
+			var selected_interact_component = pop_pickup_stack()
+			selected_interact_component.emit_signal("interact_pressed")
 
 # go to the end of the array (which is the front of the stack)
 func add_to_pickup_stack(item):
@@ -92,9 +84,7 @@ func previous_item_in_pickup_stack():
 
 # shows a item pickup prompt for whatever is at the head
 func show_item_pickup_prompt():
-	var name = ItemsList.get_item_name_by_id(pickuppableItemArray[pickupHead].get_item_id())
-	var quantity = pickuppableItemArray[pickupHead].get_item_count()
-	focusLabel.text = "F: Pick up " + str(quantity) + " " + name
+	focusLabel.text = key_constant + pickuppableItemArray[pickupHead].get_prompt()
 	focusLabel.visible = true
 
 func hide_item_pickup_prompt():

@@ -1,6 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Items/Item.gd" type="Script" id=1]
+[ext_resource path="res://Systems/InteractComponent.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CapsuleShape2D" id=4]
 radius = 2.56363
@@ -9,11 +10,7 @@ height = 5.0
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 12.0
-
 [node name="Item" type="KinematicBody2D"]
-collision_layer = 0
 script = ExtResource( 1 )
 
 [node name="ItemSprite" type="Sprite" parent="."]
@@ -33,15 +30,7 @@ collision_mask = 16
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision"]
 shape = SubResource( 1 )
 
-[node name="PickupDetection" type="Area2D" parent="."]
-visible = false
-collision_layer = 256
-collision_mask = 128
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetection"]
-shape = SubResource( 3 )
+[node name="InteractComponent" parent="." instance=ExtResource( 2 )]
 
 [connection signal="area_entered" from="SoftCollision" to="." method="_on_SoftCollision_area_entered"]
 [connection signal="area_exited" from="SoftCollision" to="." method="_on_SoftCollision_area_exited"]
-[connection signal="area_entered" from="PickupDetection" to="." method="_on_PickupDetection_area_entered"]
-[connection signal="area_exited" from="PickupDetection" to="." method="_on_PickupDetection_area_exited"]

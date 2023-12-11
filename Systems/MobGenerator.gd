@@ -1,5 +1,4 @@
 extends Node
-class_name MobGenerator
 # This scene/node will randomly generate groups of mobs
 # from the available enemies in the
 # enemy_path folder.
@@ -10,13 +9,17 @@ const enemy_path : String = "res://Enemies/Enemies/"
 const enemy_filename_suffix : String = ".tscn"
 
 var rng = RandomNumberGenerator.new()
-
+# An array of enemy_ids (keys for enemy_scenes)
 var enemy_list : Array
+# A dictionary keyed by the enemy scene names (enemy_id) and
+# whose values are corresponding PackedScene that can be spawned
+var enemy_scenes : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	enemy_list = _find_enemies_in(enemy_path)
 	# Populate the enemy list with the enemies we have to choose from
-	_find_enemies_in(enemy_path)
+	enemy_scenes = load_enemy_dict(enemy_list)
 	# Set the rng seed and state
 	# randomly generate seed/state values for the rng based on time.
 	rng.randomize()
@@ -28,7 +31,7 @@ func _seed_rng(seed_value: int, state_value: int) -> void:
 
 # returns a enemy groups dictionary, keys are the unique group integer id
 # and values are mob dictionaries.
-# A mob dictionary is keyed by the mobs name string and the value is how many to spawn
+# A mob dictionary is keyed by the enemy's PackedScene and the value is how many to spawn
 # in that group.
 func generate_mob_dict(number_of_groups: int, max_enemies_in_group: int) -> Dictionary:
 	var group_dict : Dictionary = {}
@@ -38,18 +41,17 @@ func generate_mob_dict(number_of_groups: int, max_enemies_in_group: int) -> Dict
 		var total_enemy_count: int = 0
 		# key : enemy type string, value : number of those enemies in the mob
 		var mob_dict := {}
-		# shuffle the elements of the enemy list so we dont frontload
-		# with the same mobs each time.
-		enemy_list.shuffle()
-		for enemy_type in enemy_list:
-			# if we have capped enemies in the group, no more of the rest.
-			if total_enemy_count >= max_enemies_in_group:
-				mob_dict[enemy_type] = 0
-			else: # otherwise we should generate a value and keep track
-				mob_dict[enemy_type] = rng.randi_range(1,max_enemies_in_group - total_enemy_count)
-				total_enemy_count += mob_dict[enemy_type]
+		while (max_enemies_in_group > total_enemy_count):
+			var random_enemy_scene = pick_random_enemy()
+			# otherwise we should generate a value and keep track
+			mob_dict[random_enemy_scene] = rng.randi_range(1,max_enemies_in_group - total_enemy_count)
+			total_enemy_count += mob_dict[random_enemy_scene]
 		group_dict[group] = mob_dict
 	return group_dict
+
+# returns a random enemy scene from the list of enemies
+func pick_random_enemy() -> PackedScene:
+	return enemy_scenes[enemy_list[rng.randi_range(0,enemy_list.size()-1)]]
 
 # Returns a loaded enemy packedscene for instancing given the enemy name
 func load_enemy(enemy_name: String):
@@ -59,27 +61,28 @@ func load_enemy(enemy_name: String):
 # loads all the enemies as packed scenes and returns them
 # so they can be instanced by a spawner
 # enemy_scenes dictionary is keyed by the enemy id string
-func load_enemy_list() -> Dictionary:
-	var enemy_scenes := {}
+func load_enemy_dict(enemy_list : Array) -> Dictionary:
+	var scene_dict := {}
 	for enemy in enemy_list:
-		enemy_scenes[enemy] = load_enemy(enemy)
-	return enemy_scenes
+		scene_dict[enemy] = load_enemy(enemy)
+	return scene_dict
 
 # makes a list of all the enemies in the enemy_path folder
 # strings of enemy name which can be used to load the enemy
 # with the function load_enemy(enemy_name)
-func _find_enemies_in(path: String) -> void:
+func _find_enemies_in(path: String) -> Array:
+	var enemy_list : Array = []
 	var directory := Directory.new()
 	var error := directory.open(path)
 	if error != OK:
 		print("Library Error: %s" % error)
-		return
+		return enemy_list
 	
 	error = directory.list_dir_begin(true,true)
 	
 	if error != OK:
 		print("Library Error: %s" % error)
-		return 
+		return enemy_list
 	
 	var filename := directory.get_next()
 	
@@ -89,7 +92,7 @@ func _find_enemies_in(path: String) -> void:
 				# add it to the list
 				enemy_list.append(filename.replace(enemy_filename_suffix, ""))
 		filename = directory.get_next()
-	return
+	return enemy_list
 
 func _test_func() -> void:
 	for i in range(1, 4):
