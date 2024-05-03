@@ -263,7 +263,6 @@ func transfer_to(item: InventoryItem, destination: InventoryGrid, position: Vect
 				emit_signal("contents_changed")
 				# Wasn't able to transfer it so put it back, although merged as much as possible
 				return false
-
 	return false
 
 func transfer_to_next_free_pos(item: InventoryItem, destination: InventoryGrid):

@@ -1,13 +1,8 @@
 extends Node
 
-# This Scene Switcher will transfer between the simulation
-# and the ARPG world parts
-# since each can be viewed as a separate game
-# The SceneSwitcher is the SOLE MEMBER of the group called SceneSwitcher which
-# can be used to find this node and connect with it like this:
-# var scene_switcher = get_tree().get_nodes_in_group("SceneSwitcher")[0]
-# then you can connect to it with connect(signal, scene_switcher, method_name)
-# from wherever you are
+# This Scene Switcher will transfer between game scenes and
+# eventually also menu scenes. This node also handles 
+# the saving and loading.
 
 var player_scene = preload("res://Player/Player.tscn")
 # will handle transferring the data of the player and any other necessary info
@@ -17,7 +12,7 @@ var player
 onready var levelTransitionAnimation := $SceneTransition/LevelTransitionAnimation
 onready var simulation := $Simulation
 var current_scene_name : String
-var home_scene_state : Dictionary
+var scene_save_states : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,21 +35,25 @@ func _ready():
 #	Events.connect("player_died", self, "pause_game")
 	
 
-# this is called by a ZoneChanger node (see ZoneChanger.gd for details)
-# ZoneChanger emits a level_change signal with the path to the destination scene
+# ZoneChanger emits a level_change signal with the name of the destination scene
 # This is resolved here.
 func _on_SceneSwitcher_change_level(destination_scene_name: String):
 	levelTransitionAnimation.play("fade_in")
 	# stop the simulation timer while the level switches
 	pause_game()
-	# load an instance of the destination scene
-	var new_scene = load(_build_scene_path(destination_scene_name)).instance()
 	# get the player node from the current scene
 	player = current_scene.remove_player()
-	if current_scene_name == "Home":
-		home_scene_state = save_scene()
+	scene_save_states[current_scene_name] = save_current_scene()
 	# set the new scene name
 	current_scene_name = destination_scene_name
+	# remove the old scene
+	remove_child(current_scene)
+	# call the free on the old scene since everything is handled
+	current_scene.queue_free()
+	# load an instance of the destination scene
+	var new_scene = load(_build_scene_path(destination_scene_name)).instance()
+	# reassign current scene var for next time
+	current_scene = new_scene
 	# add the new scene
 	add_child(new_scene)
 	# add the player to the new scene
@@ -66,19 +65,12 @@ func _on_SceneSwitcher_change_level(destination_scene_name: String):
 	var new_thing_tracker = ThingTracker.new()
 	var new_power_system = PowerSystem.new()
 	var new_work_system = WorkSystem.new()
-	# setup the entity_placer on the scene
-	# this is going to also add all the Things spawned under the thingplacer to the trackers
+	# setup the thing_placer on the scene
 	new_scene.setup_thing_placer(current_scene_name, new_thing_tracker, ground_tiles, flat_things, player)
-	if destination_scene_name == "Home":
-		new_scene.load_things(home_scene_state["simulation"])
 	# then the trackers and systems are given to the simulation.
 	simulation.setup(current_scene_name, new_thing_tracker, new_power_system, new_work_system, ground_tiles, thing_placer, flat_things, player)
-	# remove the old scene
-	remove_child(current_scene)
-	# call the free on the old scene since everything is handled
-	current_scene.queue_free()
-	# reassign current scene var for next time
-	current_scene = new_scene
+	if scene_save_states.has(destination_scene_name):
+		load_scene(scene_save_states[destination_scene_name])
 	levelTransitionAnimation.play("fade_out")
 	resume_game()
 
@@ -100,7 +92,18 @@ func resume_game():
 	get_tree().paused = false
 	simulation.resume()
 
-func save_scene() -> Dictionary:
-	var save_dict = {"current_scene_name": current_scene_name}
-	save_dict["simulation"] = simulation.save()
+# All the persistent nodes in the SaveScene group. Currently just the Simulation node,
+# but will be expanded to include the Spawnhandler node for enemies.
+# A node added to the save group should exist in the tree when loaded
+# SaveScene is all the nodes needed to save the scene
+# A full save group for the player's inventory, stats etc will be added later
+func save_current_scene() -> Dictionary:
+	var save_dict := {}
+	for node  in get_tree().get_nodes_in_group("SceneSave"):
+		save_dict[node.name] = node.save()
+	#save_dict["simulation"] = simulation.save()
 	return save_dict
+
+func load_scene(save_dict: Dictionary):
+	for node in get_tree().get_nodes_in_group("SceneSave"):
+		node.load_state(save_dict[node.name])

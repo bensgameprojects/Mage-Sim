@@ -5,7 +5,7 @@ onready var spawnHandler = $SpawnHandler
 # we get the lowest ground layer as a reference for the simulation system
 # to place objects in the world that snap to the grid. therefore groundlayer1
 # needs to INCLUDE ALL of the relevant collision information for the level
-onready var _ground = $GroundLayer1
+onready var _ground = $Buildmap
 onready var _thing_placer = $SpawnHandler/ThingPlacer
 onready var _flat_things = $FlatThings
 var _scene_name

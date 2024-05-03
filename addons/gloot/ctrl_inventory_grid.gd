@@ -258,8 +258,9 @@ func _populate_list() -> void:
 		ctrl_inventory_item.item = item
 		ctrl_inventory_item.connect("grabbed", self, "_on_item_grab")
 		ctrl_inventory_item.connect("activated", self, "_on_item_activated")
+		ctrl_inventory_item.connect("mouse_entered", self, "_show_tooltip", [ctrl_inventory_item])
+		ctrl_inventory_item.connect("mouse_exited", self, "_clear_tooltip")
 		_ctrl_item_container.add_child(ctrl_inventory_item)
-
 	_refresh_selection()
 
 
@@ -314,6 +315,15 @@ func _on_item_activated(ctrl_inventory_item) -> void:
 
 	emit_signal("inventory_item_activated", item)
 
+func _show_tooltip(ctrl_inventory_item) -> void:
+	var item: InventoryItem = ctrl_inventory_item.item
+	if !item:
+		_clear_tooltip()
+		return
+	Events.emit_signal("show_inventory_tooltip", item)
+
+func _clear_tooltip() -> void:
+	Events.emit_signal("show_inventory_tooltip", null)
 
 func _select(item: InventoryItem) -> void:
 	_selected_item = item
@@ -340,7 +350,6 @@ func _input(event: InputEvent) -> void:
 	var global_grabbed_item_pos = _get_grabbed_item_global_pos()
 	if _is_hovering(global_grabbed_item_pos):
 		var field_coords = get_field_coords(global_grabbed_item_pos)
-#		print("moving item to field coords" + str(field_coords))
 		_move_item(inventory.get_item_index(item), field_coords)
 	else:
 		emit_signal("item_dropped", item, global_grabbed_item_pos)
@@ -359,6 +368,7 @@ func _get_grabbed_item_global_pos() -> Vector2:
 
 func _on_item_dropped(item: InventoryItem, global_drop_pos: Vector2) -> void:
 	if !_is_hovering(global_drop_pos):
+		# dropped outside the inventory spaces
 		return
 
 	if !inventory:

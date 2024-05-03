@@ -19,6 +19,7 @@ func _ready():
 	# Connect to the events
 	Events.connect("hovered_over_thing", self, "_on_hovered_over_thing")
 	Events.connect("info_updated", self, "_on_info_updated")
+	Events.connect("show_inventory_tooltip", self, "_on_hovered_over_inventory_item")
 	hide()
 
 
@@ -54,4 +55,17 @@ func _on_hovered_over_thing(thing: Node) -> void:
 func _on_info_updated(thing: Node) -> void:
 	if current_thing and thing == current_thing:
 		_set_info(current_thing)
+		set_deferred("rect_size", Vector2.ZERO)
+
+func _on_hovered_over_inventory_item(inventory_item: InventoryItem):
+	if inventory_item == null:
+		label.text = ""
+		hide()
+	else:
+		label.text = inventory_item.get_property("name")
+		var category = inventory_item.get_property("category")
+		if category != null and category == "Equipment":
+			var equipment_reference = load("res://Items/Equipment/" + inventory_item.prototype_id + ".gd").new()
+			label.text = label.text + "\n" + equipment_reference.description
+		show()
 		set_deferred("rect_size", Vector2.ZERO)

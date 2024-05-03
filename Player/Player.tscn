@@ -750,12 +750,12 @@ states/Idle/position = Vector2( 357, 77 )
 states/Roll/node = SubResource( 54 )
 states/Roll/position = Vector2( 357, -19 )
 states/Run/node = SubResource( 26 )
-states/Run/position = Vector2( 544, 77 )
+states/Run/position = Vector2( 545, 77 )
 states/SpinnyAttack/node = SubResource( 42 )
 states/SpinnyAttack/position = Vector2( 169, 77 )
 transitions = [ "Idle", "Run", SubResource( 27 ), "Run", "Idle", SubResource( 28 ), "Idle", "Attack", SubResource( 39 ), "Attack", "Idle", SubResource( 40 ), "Idle", "SpinnyAttack", SubResource( 43 ), "SpinnyAttack", "Idle", SubResource( 44 ), "Roll", "Idle", SubResource( 55 ), "Idle", "Roll", SubResource( 56 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -191.207, 28.1367 )
+graph_offset = Vector2( -191.207, -61.2734 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
@@ -839,7 +839,7 @@ position = Vector2( 0, -5 )
 shape = SubResource( 57 )
 
 [node name="PickupPivot" type="Position2D" parent="."]
-rotation = 1.5708
+rotation = 3.14159
 
 [node name="PickupDetector" type="Area2D" parent="PickupPivot"]
 collision_layer = 128

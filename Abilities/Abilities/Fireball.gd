@@ -1,6 +1,5 @@
 extends Bullet
 
-
 func _ready():
 	# set the spell_id, the caster will call the setup
 	spell_id = "Fireball"

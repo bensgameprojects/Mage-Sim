@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Items/ItemProtoset.tres" type="Resource" id=1]
+[ext_resource path="res://addons/gloot/inventory_grid.gd" type="Script" id=2]
+[ext_resource path="res://Player/PlayerEquipment.gd" type="Script" id=3]
+
+[node name="Equipment" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Helm" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )
+
+[node name="Chest" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )
+
+[node name="Legs" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )
+
+[node name="Feet" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )
+
+[node name="Gloves" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )
+
+[node name="Weapon" type="Node" parent="."]
+script = ExtResource( 2 )
+item_protoset = ExtResource( 1 )
+size = Vector2( 1, 1 )

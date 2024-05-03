@@ -15,6 +15,7 @@ json_data = "[
 },
 {
 	\"id\":\"HomingAttack\",
+	\"name\":\"Phoenix\",
 	\"element\":\"FIRE\",
 	\"damage\":1,
 	\"knockback_speed\":100,

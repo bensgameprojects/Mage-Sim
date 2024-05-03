@@ -34,7 +34,7 @@ func _ready():
 	setup()
 
 func setup() -> void:
-	self.max_hearts = PlayerStats.max_health
+	self.max_hearts = PlayerStats.stat_block.max_health.compute()
 	self.hearts = PlayerStats.health
 	PlayerStats.connect("health_changed", self, "set_hearts")
 	PlayerStats.connect("max_health_changed", self, "set_max_hearts")

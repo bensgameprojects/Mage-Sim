@@ -37,6 +37,7 @@ signal place_blueprint(thing_id)
 # emitted when cell is hovered over sends the thing in that cell
 signal hovered_over_thing(thing)
 
+signal show_inventory_tooltip(inventory_item)
 #building config sends this signal when opened to request the thing that 
 # the player is facing (if any)
 signal get_player_facing_thing

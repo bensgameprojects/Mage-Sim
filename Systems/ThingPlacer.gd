@@ -92,8 +92,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	var cellv := world_to_map(global_mouse_position)
 	# check if occupied
 	var cell_is_occupied := _thing_tracker.is_cell_occupied(cellv)
-	# check if there's a ground tile to place on
-	var is_on_ground := _ground.get_cellv(cellv) == 0
+	# check to see that there is no "No-Build" tile in this cell
+	var is_on_ground := _ground.get_cellv(cellv) != 0
+	#print(is_on_ground, " ", _ground.get_cellv(cellv))
 	# If the user releases the deconstruct key or presses another mouse button,
 	# we can abort. _abort_deconstruct safely disconnects the timer
 	if event is InputEventMouseButton or event.is_action_released("deconstruct"):
@@ -169,7 +170,7 @@ func _move_blueprint_in_world(cellv: Vector2) -> void:
 	var is_close_to_player := (
 		get_global_mouse_position().distance_to(_player.global_position) < MAXIMUM_WORK_DISTANCE
 	)
-	var is_on_ground : bool = _ground.get_cellv(cellv) == 0
+	var is_on_ground : bool = _ground.get_cellv(cellv) != 0
 	var cell_is_occupied := _thing_tracker.is_cell_occupied(cellv)
 	
 	# Tint according to whether the current tile is valid or not.

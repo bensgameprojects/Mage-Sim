@@ -21,8 +21,8 @@ func _ready():
 	MOVE_MAX_SPEED = 20
 	KNOCKBACK_FRICTION = 20
 	KNOCKBACK_SPEED = 200
-	max_health = 3
-	health = max_health
+	stat_block.max_health.base = 3
+	reset_health()
 
 func _physics_process(_delta):
 	knockback_vector = move_and_slide(knockback_vector)

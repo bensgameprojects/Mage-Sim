@@ -22,10 +22,6 @@ var _power_system : PowerSystem
 var _work_system : WorkSystem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# NOTE: the tutorial says to set the entity_placer setup here
-	# but since we are using the scene switcher for scene setup
-	# we can make the call there
-	# simulation_timer.start(simulation_speed)
 	pass
 
 func set_thing_placer(thing_placer) -> void:
@@ -78,6 +74,9 @@ func _on_SimulationTimer_timeout():
 
 func save() -> Dictionary:
 	return _thing_tracker.save()
+
+func load_state(save_dict : Dictionary):
+	_thing_placer.load_state(save_dict)
 
 func pause():
 	simulation_timer.stop()

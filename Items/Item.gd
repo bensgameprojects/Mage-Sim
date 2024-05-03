@@ -74,12 +74,12 @@ func _on_SoftCollision_area_exited(_area):
 		velocity = Vector2.ZERO
 
 func _on_interact():
-			var items_leftover = PlayerInventory.add_or_merge(item_ID, item_count)
-			if items_leftover > 0:
-				# change the number of items in the stack on the ground
-				set_item_count(items_leftover)
-				# put back in pickup stack
-				Events.emit_signal("interact_entered_range", interact)
-			else:
-				#item is added to the inventory so delete the item from the ground
-				queue_free()
+	var items_leftover = PlayerInventory.add_or_merge(item_ID, item_count)
+	if items_leftover > 0:
+		# change the number of items in the stack on the ground
+		set_item_count(items_leftover)
+		# put back in pickup stack
+		Events.emit_signal("interact_entered_range", interact)
+	else:
+		#item is added to the inventory so delete the item from the ground
+		queue_free()

@@ -45,7 +45,7 @@ tracks/0/keys = {
 "values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
 }
 
-[node name="SceneSwitcher" type="Node" groups=["SceneSwitcher"]]
+[node name="SceneSwitcher" type="Node"]
 script = ExtResource( 1 )
 
 [node name="Pauser" type="Node" parent="."]
@@ -87,9 +87,6 @@ visible = false
 visible = false
 mouse_filter = 2
 
-[node name="InfoGUI" parent="UILayer" instance=ExtResource( 9 )]
-visible = false
-
 [node name="SpellbookToggle" type="Button" parent="UILayer"]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -121,6 +118,9 @@ visible = false
 margin_left = -168.0
 margin_right = -8.0
 
+[node name="InfoGUI" parent="UILayer" instance=ExtResource( 9 )]
+visible = false
+
 [node name="NotificationUI" parent="UILayer" instance=ExtResource( 11 )]
 anchor_left = 0.5
 anchor_right = 0.5
@@ -131,7 +131,7 @@ margin_right = 952.0
 [node name="RespawnMenu" parent="UILayer" instance=ExtResource( 13 )]
 visible = false
 
-[node name="Simulation" type="Node" parent="." groups=["Simulation"]]
+[node name="Simulation" type="Node" parent="." groups=["SceneSave", "Simulation"]]
 script = ExtResource( 4 )
 
 [node name="SimulationTimer" type="Timer" parent="Simulation"]

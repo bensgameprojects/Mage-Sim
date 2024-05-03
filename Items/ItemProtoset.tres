@@ -265,4 +265,16 @@ json_data = "[
 		\"is_stackable\":true,
 		\"image\":\"res://Assets/Items/apple.png\"
 	},
+															{
+		\"id\":\"firerobe\",
+		\"name\":\"Fire Robe\",
+		\"width\":1,
+		\"height\":1,
+		\"stack_size\":1,
+		\"max_stack_size\":1,
+		\"is_stackable\":false,
+		\"category\":\"Equipment\",
+		\"slot\":\"Body\",
+		\"image\":\"res://Assets/Items/apple.png\"
+	},
 ]"

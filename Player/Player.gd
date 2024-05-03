@@ -129,7 +129,8 @@ func attach_camera(camera_path):
 
 func detach_camera():
 	cameraHandler.set("remote_path", "")
-	
+
+
 func cast_state(_delta):
 	animationTree.set("parameters/Idle/blend_position", spell_direction)
 	animationTree.set("parameters/Run/blend_position", spell_direction)

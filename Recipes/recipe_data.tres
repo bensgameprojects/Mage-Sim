@@ -106,6 +106,16 @@ json_data = "[
 		\"base_craft_time\":5
 	},
 	{
+		\"id\":\"firerobe\",
+		\"name\":\"Fire Robe\",
+		\"producing_things\":[\"PaperMill\"],
+		\"component_ids\":[\"cherry\"],
+		\"component_amts\":[1],
+		\"product_item_id\":\"firerobe\",
+		\"amount_produced\":1,
+		\"base_craft_time\":5
+	},
+	{
 	\"id\":\"Firebolt\",
 	\"component_ids\":[\"coal\"],
 	\"component_amts\":[1],
